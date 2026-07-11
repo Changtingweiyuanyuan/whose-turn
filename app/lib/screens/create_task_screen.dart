@@ -6,6 +6,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../models/task.dart';
 import '../state/providers.dart';
+import '../widgets/app_back_button.dart';
 import '../theme/app_colors.dart';
 
 const _emojiChoices = ['🍵', '🗑️', '🐶', '🧺', '🧹', '🛒', '🍱', '🎁', '📚', '🚗'];
@@ -76,7 +77,10 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
         [];
 
     return Scaffold(
-      appBar: AppBar(title: const Text('發起任務')),
+      appBar: AppBar(
+        leading: const AppBackButton(),
+        title: const Text('發起任務'),
+      ),
       body: ShadForm(
         key: _formKey,
         child: ListView(

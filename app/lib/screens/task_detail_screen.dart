@@ -5,6 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../models/task.dart';
 import '../state/providers.dart';
+import '../widgets/app_back_button.dart';
 import '../theme/app_colors.dart';
 import '../widgets/reward_badge.dart';
 import '../widgets/star_progress.dart';
@@ -36,7 +37,10 @@ class TaskDetailScreen extends ConsumerWidget {
       });
 
     return Scaffold(
-      appBar: AppBar(title: const Text('任務詳情')),
+      appBar: AppBar(
+        leading: const AppBackButton(),
+        title: const Text('任務詳情'),
+      ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
         children: [

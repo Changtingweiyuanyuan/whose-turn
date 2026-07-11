@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../state/providers.dart';
+import '../widgets/app_back_button.dart';
 import '../theme/app_colors.dart';
 
 /// 任務完成慶祝頁 —— 神秘獎勵在這裡揭曉。
@@ -21,7 +22,10 @@ class CelebrationScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('任務完成')),
+      appBar: AppBar(
+        leading: const AppBackButton(),
+        title: const Text('任務完成'),
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
