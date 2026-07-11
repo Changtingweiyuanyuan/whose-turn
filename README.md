@@ -14,7 +14,8 @@
 | 項目 | 決定 |
 |---|---|
 | 技術選型 | Flutter |
-| 登入方式 | LINE Login + 訪客模式 |
+| 後端 | Firebase（Firestore + Auth + FCM，Spark 免費方案）＋ Cloudflare Worker（LINE OAuth → Firebase custom token） |
+| 登入方式 | LINE Login + 訪客模式（Firebase Anonymous Auth，之後以帳號升級綁定 LINE） |
 | Domain | whoseturn.app |
 | 年齡分級 | 不設限，允許小孩使用 |
 | 監測（Sentry / Analytics） | 雛形完成後再導入 |
