@@ -1,0 +1,87 @@
+rules_version = '2';
+
+// 今天換誰？ — Firestore Security Rules
+// 核心政策：
+//   1. 訪客（anonymous）可加入群組、接任務、送出完成
+//   2. 訪客不可建立群組、不可發起任務
+//   3. 星星只加不扣（starTotal 只允許遞增）
+//   4. completion 的確認/退回只有任務發起人能做
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // 訪客判定：Firebase Auth 的 sign_in_provider
+    function isGuest() {
+      return request.auth.token.firebase.sign_in_provider == 'anonymous';
+    }
+
+    function isMember(groupId) {
+      return exists(/databases/$(database)/documents/groups/$(groupId)/members/$(request.auth.uid));
+    }
+
+    match /users/{uid} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.auth.uid == uid;
+      // starTotal 只加不扣；mergedInto 僅由 Worker（Admin 權限，繞過 rules）寫入
+      allow update: if signedIn()
+        && request.auth.uid == uid
+        && request.resource.data.starTotal >= resource.data.starTotal
+        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['mergedInto']);
+
+      match /notifications/{notificationId} {
+        allow read, update: if signedIn() && request.auth.uid == uid;
+        allow create: if signedIn(); // 其他成員的動作觸發通知（MVP：client 寫入；之後改 Cloud Functions/Worker）
+      }
+    }
+
+    match /groups/{groupId} {
+      allow read: if signedIn();
+      // 訪客不可建立群組
+      allow create: if signedIn()
+        && !isGuest()
+        && request.resource.data.createdBy == request.auth.uid;
+      allow update: if signedIn() && resource.data.createdBy == request.auth.uid;
+
+      match /members/{memberUid} {
+        allow read: if signedIn();
+        // 加入群組：訪客也可以；只能把自己加進去
+        allow create: if signedIn()
+          && request.auth.uid == memberUid
+          && request.resource.data.userId == request.auth.uid;
+        // 離開群組：只能刪自己
+        allow delete: if signedIn() && request.auth.uid == memberUid;
+      }
+    }
+
+    match /tasks/{taskId} {
+      allow read: if signedIn() && isMember(resource.data.groupId);
+      // 訪客不可發起任務
+      allow create: if signedIn()
+        && !isGuest()
+        && request.resource.data.createdBy == request.auth.uid
+        && isMember(request.resource.data.groupId);
+      // 接單/放棄/取消/狀態推進：發起人或接單人（狀態機細節由 App 層維護，MVP 信任群組成員）
+      allow update: if signedIn()
+        && isMember(resource.data.groupId)
+        && (resource.data.createdBy == request.auth.uid
+            || resource.data.claimedBy == request.auth.uid
+            || resource.data.status == 'open');
+
+      match /completions/{completionId} {
+        allow read: if signedIn();
+        // 送出完成：訪客也可以；只能以自己名義送出，且初始狀態必須是 pending
+        allow create: if signedIn()
+          && request.resource.data.userId == request.auth.uid
+          && request.resource.data.status == 'pending';
+        // 確認 / 退回：只有任務發起人
+        allow update: if signedIn()
+          && get(/databases/$(database)/documents/tasks/$(taskId)).data.createdBy == request.auth.uid
+          && request.resource.data.status in ['confirmed', 'rejected'];
+      }
+    }
+  }
+}
