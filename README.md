@@ -5,9 +5,36 @@
 
 **Task Marketplace + Reward System** — 不是排程、不是輪流，而是「今天誰想拿？👀」
 
+## 專案結構
+
+```
+app/      Flutter App（目前跑在 in-memory 假後端上，完整可玩）
+worker/   Cloudflare Worker：LINE Login → Firebase custom token + 帳號合併
+firebase/ Firestore security rules
+docs/     PRD、資料模型與任務狀態機
+```
+
+## 開發
+
+```bash
+# App（假資料模式，開瀏覽器就能玩）
+cd app
+flutter run -d chrome     # 或 -d ios / -d android
+flutter test              # 18 tests
+flutter analyze
+
+# Worker
+cd worker
+npm install && npm test   # 6 tests
+```
+
+App 內建「Demo 視角切換」（我的 → Demo 視角切換），可在 媽媽／哥哥／訪客 之間切換，
+同時體驗發起人（確認、退回）與接單人（接單、完成、領獎）視角。
+
 ## 文件
 
 - [PRD（MVP v1.0）](docs/prd.html) — 產品定位、6 大功能、核心流程、Reward Types、Non-Goals、Roadmap
+- [資料模型與任務狀態機](docs/data-model.md)
 
 ## 已定案的決策
 
