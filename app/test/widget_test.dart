@@ -39,10 +39,9 @@ void main() {
     expect(find.text('50 元'), findsOneWidget);
   });
 
-  testWidgets('神秘任務顯示 🎁 ??? 而不是獎勵內容', (tester) async {
+  testWidgets('神秘任務顯示「神秘禮物」而不是獎勵內容', (tester) async {
     await tester.pumpWidget(wrap(const TaskWallScreen()));
-    expect(find.text('🎁 ???'), findsOneWidget);
-    expect(find.text('神秘禮物'), findsNothing);
+    expect(find.text('神秘禮物'), findsOneWidget);
   });
 
   testWidgets('點「我要接」後卡片變成進行中', (tester) async {

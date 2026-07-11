@@ -78,9 +78,6 @@ class MyTasksScreen extends ConsumerWidget {
                         if (pendingCount > 0) ...[
                           const SizedBox(width: 4),
                           ShadBadge(
-                            backgroundColor: AppColors.pink,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 6, vertical: 0),
                             child: Text('$pendingCount',
                                 style: const TextStyle(fontSize: 11)),
                           ),

@@ -57,8 +57,6 @@ class CelebrationScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 24),
               ShadBadge(
-                backgroundColor: AppColors.pink,
-                foregroundColor: AppColors.white,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
                 child: Text(

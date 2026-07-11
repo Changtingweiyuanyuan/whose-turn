@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../state/providers.dart';
@@ -33,7 +34,7 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
           ShadButton(
             width: double.infinity,
             backgroundColor: const Color(0xFF06C755), // LINE 品牌綠
-            leading: const Icon(LucideIcons.messageCircle, size: 18),
+            leading: const Icon(Iconsax.message_copy, size: 18),
             onPressed: () async {
               await ref.read(repositoryProvider).bindLine();
               if (sheetContext.mounted) {
@@ -45,7 +46,6 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
           const SizedBox(height: 8),
           ShadButton.ghost(
             width: double.infinity,
-            foregroundColor: AppColors.navySoft,
             onPressed: () => Navigator.of(sheetContext).pop(false),
             child: const Text('下次再說'),
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../models/task.dart';
@@ -82,7 +83,7 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
                   selectedOptionBuilder: (context, value) => Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(LucideIcons.arrowDownUp,
+                      const Icon(Iconsax.sort_copy,
                           size: 14, color: AppColors.navySoft),
                       const SizedBox(width: 6),
                       Text(_sortLabels[value]!),
@@ -172,13 +173,11 @@ class _FilterPill extends StatelessWidget {
       child: selected
           ? ShadButton(
               size: ShadButtonSize.sm,
-              backgroundColor: AppColors.navy,
               onPressed: onTap,
               child: Text(label),
             )
           : ShadButton.ghost(
               size: ShadButtonSize.sm,
-              foregroundColor: AppColors.navySoft,
               onPressed: onTap,
               child: Text(label),
             ),

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
-
-import '../theme/app_colors.dart';
 
 /// AppBar 返回鍵：有上一頁就返回，沒有（深層連結、重新整理）就回任務牆。
 class AppBackButton extends StatelessWidget {
@@ -11,7 +10,6 @@ class AppBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ShadButton.ghost(
-      foregroundColor: AppColors.navy,
       onPressed: () {
         if (context.canPop()) {
           context.pop();
@@ -19,7 +17,7 @@ class AppBackButton extends StatelessWidget {
           context.go('/');
         }
       },
-      child: const Icon(LucideIcons.arrowLeft, size: 22),
+      child: const Icon(Iconsax.arrow_left_2_copy, size: 22),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../state/providers.dart';
@@ -122,9 +123,7 @@ class ProfileScreen extends ConsumerWidget {
                     runSpacing: 8,
                     children: [
                       for (final uid in group.memberUids)
-                        ShadBadge(
-                          backgroundColor: AppColors.cream,
-                          foregroundColor: AppColors.navy,
+                        ShadBadge.outline(
                           child: Text(
                             '${repo.userOf(uid).avatarEmoji} ${repo.userOf(uid).displayName}',
                             style: const TextStyle(fontSize: 13),
@@ -137,7 +136,7 @@ class ProfileScreen extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: ShadButton.outline(
-                          leading: const Icon(LucideIcons.link, size: 16),
+                          leading: const Icon(Iconsax.link_copy, size: 16),
                           onPressed: () {
                             Clipboard.setData(
                                 ClipboardData(text: group.inviteLink));
@@ -153,7 +152,6 @@ class ProfileScreen extends ConsumerWidget {
                       ),
                       const SizedBox(width: 8),
                       ShadButton.ghost(
-                        foregroundColor: AppColors.navySoft,
                         onPressed: () => _confirmLeave(context, ref),
                         child: const Text('離開'),
                       ),
@@ -344,7 +342,7 @@ class _ActionCard extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(LucideIcons.chevronRight,
+            const Icon(Iconsax.arrow_right_3_copy,
                 size: 18, color: AppColors.navySoft),
           ],
         ),

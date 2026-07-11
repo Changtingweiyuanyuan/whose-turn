@@ -25,7 +25,7 @@ abstract final class AppShadTheme {
     destructiveForeground: AppColors.white,
     border: AppColors.lightGray,
     input: AppColors.lightGray,
-    ring: AppColors.pink,
+    ring: AppColors.navySoft,
     selection: AppColors.pinkSoft,
   );
 

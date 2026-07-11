@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../models/task.dart';
 import '../state/providers.dart';
-import '../widgets/app_back_button.dart';
 import '../theme/app_colors.dart';
+import '../widgets/app_back_button.dart';
 
 const _emojiChoices = ['🍵', '🗑️', '🐶', '🧺', '🧹', '🛒', '🍱', '🎁', '📚', '🚗'];
 
+/// v1.0 只開放三種獎勵類型
 const _rewardTypeLabels = {
   RewardType.normal: '一般',
-  RewardType.mystery: '神秘',
-  RewardType.money: '金額',
-  RewardType.privilege: '特權',
-  RewardType.experience: '體驗',
+  RewardType.money: '現金',
+  RewardType.mystery: '神秘禮物',
 };
 
 class CreateTaskScreen extends ConsumerStatefulWidget {
@@ -31,6 +31,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
   final _countController = TextEditingController(text: '1');
 
   String _emoji = _emojiChoices.first;
+  RewardType _rewardType = RewardType.normal;
   bool _anyoneCanClaim = true;
 
   @override
@@ -49,12 +50,13 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
     if (!form.saveAndValidate()) return;
     final values = form.value;
 
+    final reward = (values['reward'] as String).trim();
     final repo = ref.read(repositoryProvider);
     await repo.createTask(
       title: (values['title'] as String).trim(),
       emoji: _emoji,
-      rewardType: values['rewardType'] as RewardType,
-      rewardLabel: (values['reward'] as String).trim(),
+      rewardType: _rewardType,
+      rewardLabel: _rewardType == RewardType.money ? '$reward 元' : reward,
       requiredCount: int.parse(values['count'] as String),
       deadline: values['deadline'] as DateTime?,
       assigneeUid: _anyoneCanClaim ? null : values['assignee'] as String?,
@@ -65,6 +67,39 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
         const ShadToast(description: Text('🍿 任務已發佈到任務牆！')),
       );
     }
+  }
+
+  /// 獎勵內容欄位依獎勵類型變化：
+  /// 一般 → 獎勵內容；神秘禮物 → 獎勵內容（內容將保密）；現金 → 獎勵金額（數字 + 元）
+  Widget _buildRewardField() {
+    return switch (_rewardType) {
+      RewardType.money => ShadInputFormField(
+          id: 'reward',
+          label: const Text('獎勵金額'),
+          placeholder: const Text('例如：50'),
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          trailing: const Text('元',
+              style: TextStyle(fontSize: 13, color: AppColors.navySoft)),
+          validator: (v) {
+            final n = int.tryParse(v.trim());
+            if (n == null || n < 1) return '請輸入獎勵金額';
+            return null;
+          },
+        ),
+      RewardType.mystery => ShadInputFormField(
+          id: 'reward',
+          label: const Text('獎勵內容（內容將保密）'),
+          placeholder: const Text('例如：神秘禮物、驚喜行程…'),
+          validator: (v) => v.trim().isEmpty ? '請輸入獎勵內容' : null,
+        ),
+      _ => ShadInputFormField(
+          id: 'reward',
+          label: const Text('獎勵內容'),
+          placeholder: const Text('例如：珍奶一杯、看一場電影…'),
+          validator: (v) => v.trim().isEmpty ? '請輸入獎勵內容' : null,
+        ),
+    };
   }
 
   @override
@@ -118,14 +153,14 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               ],
             ),
             const SizedBox(height: 16),
-            const _FieldLabel('完成次數'),
+            const _FieldLabel('需要完成'),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ShadButton.outline(
-                  size: ShadButtonSize.sm,
+                  height: 40,
                   onPressed: () => _stepCount(-1),
-                  child: const Icon(LucideIcons.minus, size: 16),
+                  child: const Icon(Iconsax.minus_copy, size: 16),
                 ),
                 SizedBox(
                   width: 96,
@@ -140,8 +175,9 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                         FilteringTextInputFormatter.digitsOnly,
                         LengthLimitingTextInputFormatter(2),
                       ],
-                      style: const TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.w800),
+                      trailing: const Text('次',
+                          style: TextStyle(
+                              fontSize: 13, color: AppColors.navySoft)),
                       validator: (v) {
                         final n = int.tryParse(v);
                         if (n == null || n < 1) return '至少 1 次';
@@ -151,25 +187,21 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                   ),
                 ),
                 ShadButton.outline(
-                  size: ShadButtonSize.sm,
+                  height: 40,
                   onPressed: () => _stepCount(1),
-                  child: const Icon(LucideIcons.plus, size: 16),
+                  child: const Icon(Iconsax.add_copy, size: 16),
                 ),
               ],
-            ),
-            const SizedBox(height: 16),
-            ShadInputFormField(
-              id: 'reward',
-              label: const Text('獎勵內容'),
-              placeholder: const Text('例如：珍奶一杯、50 元、神秘禮物…'),
-              validator: (v) => v.trim().isEmpty ? '請輸入獎勵內容' : null,
             ),
             const SizedBox(height: 16),
             ShadRadioGroupFormField<RewardType>(
               id: 'rewardType',
               label: const Text('獎勵類型'),
-              initialValue: RewardType.normal,
+              initialValue: _rewardType,
               axis: Axis.horizontal,
+              onChanged: (v) {
+                if (v != null) setState(() => _rewardType = v);
+              },
               items: [
                 for (final entry in _rewardTypeLabels.entries)
                   ShadRadio(
@@ -177,11 +209,13 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                     label: Text(entry.value),
                   ),
               ],
-              validator: (v) => v == null ? '請選擇獎勵類型' : null,
             ),
+            const SizedBox(height: 16),
+            _buildRewardField(),
             const SizedBox(height: 16),
             ShadDatePickerFormField(
               id: 'deadline',
+              width: double.infinity,
               label: const Text('截止日期（可不填）'),
             ),
             const SizedBox(height: 16),
@@ -201,6 +235,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               const SizedBox(height: 8),
               ShadSelectFormField<String>(
                 id: 'assignee',
+                minWidth: double.infinity,
                 label: const Text('指定給'),
                 placeholder: const Text('選擇成員'),
                 options: [

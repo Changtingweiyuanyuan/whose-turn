@@ -40,62 +40,6 @@ abstract final class AppTheme {
           fontWeight: FontWeight.w700,
         ),
       ),
-      cardTheme: const CardThemeData(
-        color: AppColors.white,
-        elevation: 1.5,
-        shadowColor: Color(0x14255359),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(16)),
-        ),
-        margin: EdgeInsets.zero,
-      ),
-      filledButtonTheme: FilledButtonThemeData(
-        style: FilledButton.styleFrom(
-          backgroundColor: AppColors.pink,
-          foregroundColor: AppColors.white,
-          shape: const StadiumBorder(),
-          textStyle: const TextStyle(fontWeight: FontWeight.w700),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        ),
-      ),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          foregroundColor: AppColors.navy,
-          side: const BorderSide(color: AppColors.lightGray, width: 1.5),
-          shape: const StadiumBorder(),
-          textStyle: const TextStyle(fontWeight: FontWeight.w700),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-        ),
-      ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: AppColors.white,
-        hintStyle: const TextStyle(color: AppColors.starEmpty),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.lightGray),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.lightGray),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: AppColors.pink, width: 1.5),
-        ),
-      ),
-      navigationBarTheme: NavigationBarThemeData(
-        backgroundColor: AppColors.white,
-        indicatorColor: AppColors.pinkSoft,
-        labelTextStyle: WidgetStatePropertyAll(
-          textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w600),
-        ),
-      ),
-      snackBarTheme: const SnackBarThemeData(
-        backgroundColor: AppColors.navy,
-        contentTextStyle: TextStyle(color: AppColors.white),
-        behavior: SnackBarBehavior.floating,
-      ),
     );
   }
 }
