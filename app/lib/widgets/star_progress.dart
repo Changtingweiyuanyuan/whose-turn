@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
 
-/// ⭐⭐⭐☆☆　3 / 5
+/// 任務進度：次數 ≤ 5 用星星（⭐⭐⭐☆☆　3 / 5），
+/// 次數 > 5 星星呈現不完整，改用進度條（▓▓▓░░░　7 / 20）。
 class StarProgress extends StatelessWidget {
   const StarProgress({
     super.key,
@@ -19,31 +20,48 @@ class StarProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 星星最多畫 5 顆，超過 5 次的任務以比例呈現
-    final totalStars = required.clamp(1, 5);
-    final filledStars =
-        required <= 5 ? confirmed : (confirmed * totalStars / required).floor();
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        for (var i = 0; i < totalStars; i++)
-          Icon(
-            i < filledStars ? Icons.star_rounded : Icons.star_outline_rounded,
-            size: size,
-            color: i < filledStars ? AppColors.yellow : AppColors.starEmpty,
-          ),
-        if (showCount) ...[
-          const SizedBox(width: 6),
-          Text(
+    final countText = showCount
+        ? Text(
             '$confirmed / $required',
             style: TextStyle(
               fontSize: size * 0.75,
               fontWeight: FontWeight.w700,
               color: AppColors.navySoft,
             ),
+          )
+        : null;
+
+    if (required > 5) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(999),
+            child: SizedBox(
+              width: size * 5.3,
+              height: size * 0.45,
+              child: LinearProgressIndicator(
+                value: (confirmed / required).clamp(0.0, 1.0),
+                backgroundColor: AppColors.lightGray,
+                valueColor: const AlwaysStoppedAnimation(AppColors.yellow),
+              ),
+            ),
           ),
+          if (countText != null) ...[const SizedBox(width: 6), countText],
         ],
+      );
+    }
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        for (var i = 0; i < required.clamp(1, 5); i++)
+          Icon(
+            i < confirmed ? Icons.star_rounded : Icons.star_outline_rounded,
+            size: size,
+            color: i < confirmed ? AppColors.yellow : AppColors.starEmpty,
+          ),
+        if (countText != null) ...[const SizedBox(width: 6), countText],
       ],
     );
   }

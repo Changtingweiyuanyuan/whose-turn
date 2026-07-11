@@ -133,6 +133,30 @@ class FakeAppRepository extends AppRepository {
         createdAt: now.subtract(const Duration(days: 1)),
         deadline: now.add(const Duration(hours: 8)),
       ),
+      // 高次數任務：進度以進度條呈現（> 5 次）
+      Task(
+        id: _nextId('t'),
+        groupId: 'g-home',
+        title: '背英文單字',
+        emoji: '📚',
+        rewardType: RewardType.normal,
+        rewardLabel: 'Switch 遊戲一片',
+        requiredCount: 20,
+        createdBy: mom.uid,
+        createdAt: now.subtract(const Duration(days: 7)),
+        claimedBy: bro.uid,
+        status: TaskStatus.claimed,
+        completions: [
+          for (var i = 0; i < 7; i++)
+            Completion(
+              id: _nextId('c'),
+              userId: bro.uid,
+              submittedAt: now.subtract(Duration(days: 7 - i)),
+              status: CompletionStatus.confirmed,
+              resolvedAt: now.subtract(Duration(days: 7 - i)),
+            ),
+        ],
+      ),
     ]);
 
     _notifications.add(NotificationItem(
