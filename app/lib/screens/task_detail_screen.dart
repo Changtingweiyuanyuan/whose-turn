@@ -26,9 +26,14 @@ class TaskDetailScreen extends ConsumerWidget {
     final creator = repo.userOf(task.createdBy);
     final isCreator = task.createdBy == me.uid;
     final isClaimant = task.claimedBy == me.uid;
-    final pending = task.completions
-        .where((c) => c.status == CompletionStatus.pending)
-        .toList();
+    // 完成紀錄：待確認在最上面，其餘依時間新→舊
+    final history = task.completions.toList()
+      ..sort((a, b) {
+        final aPending = a.status == CompletionStatus.pending ? 0 : 1;
+        final bPending = b.status == CompletionStatus.pending ? 0 : 1;
+        if (aPending != bPending) return aPending - bPending;
+        return b.submittedAt.compareTo(a.submittedAt);
+      });
 
     return Scaffold(
       appBar: AppBar(title: const Text('任務詳情')),
@@ -104,12 +109,12 @@ class TaskDetailScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 24),
 
-          // ---- 發起人視角：待確認清單 ----
-          if (isCreator && pending.isNotEmpty) ...[
-            const Text('等待確認',
+          // ---- 完成紀錄（待確認可操作 + 歷史保留）----
+          if (history.isNotEmpty) ...[
+            const Text('完成紀錄',
                 style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
             const SizedBox(height: 8),
-            for (final c in pending)
+            for (final c in history)
               Card(
                 margin: const EdgeInsets.only(bottom: 8),
                 child: ListTile(
@@ -118,28 +123,34 @@ class TaskDetailScreen extends ConsumerWidget {
                   title: Text('${repo.userOf(c.userId).displayName} 完成了一次'),
                   subtitle:
                       Text(DateFormat('MM/dd HH:mm').format(c.submittedAt)),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      OutlinedButton(
-                        onPressed: () => repo.rejectCompletion(task.id, c.id),
-                        style: OutlinedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 14),
-                          minimumSize: Size.zero,
-                        ),
-                        child: const Text('退回'),
-                      ),
-                      const SizedBox(width: 8),
-                      FilledButton(
-                        onPressed: () => repo.confirmCompletion(task.id, c.id),
-                        style: FilledButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(horizontal: 14),
-                          minimumSize: Size.zero,
-                        ),
-                        child: const Text('✔ 確認'),
-                      ),
-                    ],
-                  ),
+                  trailing: c.status == CompletionStatus.pending && isCreator
+                      ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            OutlinedButton(
+                              onPressed: () =>
+                                  repo.rejectCompletion(task.id, c.id),
+                              style: OutlinedButton.styleFrom(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 14),
+                                minimumSize: Size.zero,
+                              ),
+                              child: const Text('退回'),
+                            ),
+                            const SizedBox(width: 8),
+                            FilledButton(
+                              onPressed: () =>
+                                  repo.confirmCompletion(task.id, c.id),
+                              style: FilledButton.styleFrom(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 14),
+                                minimumSize: Size.zero,
+                              ),
+                              child: const Text('✔ 確認'),
+                            ),
+                          ],
+                        )
+                      : _CompletionStatusLabel(status: c.status),
                 ),
               ),
             const SizedBox(height: 16),
@@ -238,6 +249,25 @@ class TaskDetailScreen extends ConsumerWidget {
     }
 
     return const [];
+  }
+}
+
+class _CompletionStatusLabel extends StatelessWidget {
+  const _CompletionStatusLabel({required this.status});
+
+  final CompletionStatus status;
+
+  @override
+  Widget build(BuildContext context) {
+    final (label, color) = switch (status) {
+      CompletionStatus.pending => ('等待確認', AppColors.navySoft),
+      CompletionStatus.confirmed => ('⭐ 已確認', AppColors.pink),
+      CompletionStatus.rejected => ('已退回', AppColors.navySoft),
+    };
+    return Text(
+      label,
+      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: color),
+    );
   }
 }
 

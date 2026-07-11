@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -28,9 +29,9 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   final _rewardController = TextEditingController();
+  final _countController = TextEditingController(text: '1');
 
   String _emoji = _emojiChoices.first;
-  int _requiredCount = 1;
   RewardType _rewardType = RewardType.normal;
   DateTime? _deadline;
   bool _anyoneCanClaim = true;
@@ -40,7 +41,13 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
   void dispose() {
     _titleController.dispose();
     _rewardController.dispose();
+    _countController.dispose();
     super.dispose();
+  }
+
+  void _stepCount(int delta) {
+    final current = int.tryParse(_countController.text) ?? 1;
+    _countController.text = '${(current + delta).clamp(1, 99)}';
   }
 
   Future<void> _submit() async {
@@ -51,7 +58,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
       emoji: _emoji,
       rewardType: _rewardType,
       rewardLabel: _rewardController.text.trim(),
-      requiredCount: _requiredCount,
+      requiredCount: int.parse(_countController.text),
       deadline: _deadline,
       assigneeUid: _anyoneCanClaim ? null : _assigneeUid,
     );
@@ -117,22 +124,36 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               children: [
                 _StepperButton(
                   icon: Icons.remove_rounded,
-                  onTap: () => setState(
-                      () => _requiredCount = (_requiredCount - 1).clamp(1, 99)),
+                  onTap: () => _stepCount(-1),
                 ),
-                Container(
-                  width: 72,
-                  alignment: Alignment.center,
-                  child: Text(
-                    '$_requiredCount',
-                    style: const TextStyle(
-                        fontSize: 22, fontWeight: FontWeight.w800),
+                SizedBox(
+                  width: 88,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    child: TextFormField(
+                      controller: _countController,
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                        LengthLimitingTextInputFormatter(2),
+                      ],
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.w800),
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(vertical: 10),
+                      ),
+                      validator: (v) {
+                        final n = int.tryParse(v ?? '');
+                        if (n == null || n < 1) return '至少 1 次';
+                        return null;
+                      },
+                    ),
                   ),
                 ),
                 _StepperButton(
                   icon: Icons.add_rounded,
-                  onTap: () => setState(
-                      () => _requiredCount = (_requiredCount + 1).clamp(1, 99)),
+                  onTap: () => _stepCount(1),
                 ),
               ],
             ),
