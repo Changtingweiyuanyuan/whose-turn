@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../models/task.dart';
 import '../theme/app_colors.dart';
@@ -20,15 +21,13 @@ class RewardBadge extends StatelessWidget {
       _ => (AppColors.pinkSoft, AppColors.pink),
     };
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(999),
-      ),
+    return ShadBadge(
+      backgroundColor: bg,
+      foregroundColor: fg,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
       child: Text(
         isMystery ? '🎁 ???' : label,
-        style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: fg),
+        style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),
       ),
     );
   }

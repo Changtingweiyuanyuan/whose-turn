@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../models/app_user.dart';
 import '../models/task.dart';
@@ -27,72 +28,63 @@ class TaskCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final canClaim = task.canClaimBy(viewer.uid);
 
-    return Card(
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _TaskEmoji(emoji: task.emoji),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            task.title,
-                            style: const TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w700,
-                            ),
+    return GestureDetector(
+      onTap: onTap,
+      child: ShadCard(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _TaskEmoji(emoji: task.emoji),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          task.title,
+                          style: const TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
-                        RewardBadge(task: task, viewerUid: viewer.uid),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      '發起人：${creator.displayName}',
-                      style: const TextStyle(
-                        fontSize: 13,
-                        color: AppColors.navySoft,
                       ),
+                      RewardBadge(task: task, viewerUid: viewer.uid),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '發起人：${creator.displayName}',
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: AppColors.navySoft,
                     ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        StarProgress(
-                          confirmed: task.confirmedCount,
-                          required: task.requiredCount,
-                        ),
-                        const Spacer(),
-                        if (canClaim)
-                          FilledButton(
-                            onPressed: onClaim,
-                            style: FilledButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 8,
-                              ),
-                              minimumSize: Size.zero,
-                            ),
-                            child: const Text('我要接'),
-                          )
-                        else
-                          _StatusChip(task: task, viewerUid: viewer.uid),
-                      ],
-                    ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      StarProgress(
+                        confirmed: task.confirmedCount,
+                        required: task.requiredCount,
+                      ),
+                      const Spacer(),
+                      if (canClaim)
+                        ShadButton(
+                          size: ShadButtonSize.sm,
+                          onPressed: onClaim,
+                          child: const Text('我要接'),
+                        )
+                      else
+                        _StatusChip(task: task, viewerUid: viewer.uid),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

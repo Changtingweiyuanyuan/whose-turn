@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../models/task.dart';
 import '../state/providers.dart';
@@ -10,6 +11,13 @@ import '../widgets/task_card.dart';
 enum TaskWallFilter { all, mine, claimed }
 
 enum TaskWallSort { newest, deadline, mystery, reward }
+
+const _sortLabels = {
+  TaskWallSort.newest: '最新',
+  TaskWallSort.deadline: '快截止',
+  TaskWallSort.mystery: '神秘',
+  TaskWallSort.reward: '高獎勵',
+};
 
 /// 任務牆（首頁）—— App 最重要畫面。
 class TaskWallScreen extends ConsumerStatefulWidget {
@@ -61,24 +69,28 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
             child: Row(
               children: [
-                const Text(
-                  '👀 今天換誰？',
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
+                const Expanded(
+                  child: Text(
+                    '👀 今天換誰？',
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ),
-                const Spacer(),
-                PopupMenuButton<TaskWallSort>(
-                  icon: const Icon(Icons.sort_rounded, color: AppColors.navy),
+                ShadSelect<TaskWallSort>(
                   initialValue: _sort,
-                  onSelected: (v) => setState(() => _sort = v),
-                  itemBuilder: (_) => const [
-                    PopupMenuItem(
-                        value: TaskWallSort.newest, child: Text('最新')),
-                    PopupMenuItem(
-                        value: TaskWallSort.deadline, child: Text('快截止')),
-                    PopupMenuItem(
-                        value: TaskWallSort.mystery, child: Text('神秘')),
-                    PopupMenuItem(
-                        value: TaskWallSort.reward, child: Text('高獎勵')),
+                  onChanged: (v) => setState(() => _sort = v ?? _sort),
+                  selectedOptionBuilder: (context, value) => Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(LucideIcons.arrowDownUp,
+                          size: 14, color: AppColors.navySoft),
+                      const SizedBox(width: 6),
+                      Text(_sortLabels[value]!),
+                    ],
+                  ),
+                  options: [
+                    for (final entry in _sortLabels.entries)
+                      ShadOption(value: entry.key, child: Text(entry.value)),
                   ],
                 ),
               ],
@@ -89,17 +101,17 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Row(
               children: [
-                _FilterChip(
+                _FilterPill(
                   label: '全部任務',
                   selected: _filter == TaskWallFilter.all,
                   onTap: () => setState(() => _filter = TaskWallFilter.all),
                 ),
-                _FilterChip(
+                _FilterPill(
                   label: '我發起的',
                   selected: _filter == TaskWallFilter.mine,
                   onTap: () => setState(() => _filter = TaskWallFilter.mine),
                 ),
-                _FilterChip(
+                _FilterPill(
                   label: '我接的',
                   selected: _filter == TaskWallFilter.claimed,
                   onTap: () => setState(() => _filter = TaskWallFilter.claimed),
@@ -125,8 +137,10 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
                         onClaim: () async {
                           await repo.claimTask(task.id);
                           if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('接下「${task.title}」！加油 💪')),
+                            ShadToaster.of(context).show(
+                              ShadToast(
+                                description: Text('接下「${task.title}」！加油 💪'),
+                              ),
                             );
                           }
                         },
@@ -140,8 +154,8 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
   }
 }
 
-class _FilterChip extends StatelessWidget {
-  const _FilterChip({
+class _FilterPill extends StatelessWidget {
+  const _FilterPill({
     required this.label,
     required this.selected,
     required this.onTap,
@@ -155,25 +169,19 @@ class _FilterChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(right: 8),
-      child: GestureDetector(
-        onTap: onTap,
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 7),
-          decoration: BoxDecoration(
-            color: selected ? AppColors.navy : Colors.transparent,
-            borderRadius: BorderRadius.circular(999),
-          ),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: selected ? AppColors.white : AppColors.navySoft,
+      child: selected
+          ? ShadButton(
+              size: ShadButtonSize.sm,
+              backgroundColor: AppColors.navy,
+              onPressed: onTap,
+              child: Text(label),
+            )
+          : ShadButton.ghost(
+              size: ShadButtonSize.sm,
+              foregroundColor: AppColors.navySoft,
+              onPressed: onTap,
+              child: Text(label),
             ),
-          ),
-        ),
-      ),
     );
   }
 }

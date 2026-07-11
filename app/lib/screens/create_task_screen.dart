@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../models/task.dart';
 import '../state/providers.dart';
@@ -26,21 +26,14 @@ class CreateTaskScreen extends ConsumerStatefulWidget {
 }
 
 class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _titleController = TextEditingController();
-  final _rewardController = TextEditingController();
+  final _formKey = GlobalKey<ShadFormState>();
   final _countController = TextEditingController(text: '1');
 
   String _emoji = _emojiChoices.first;
-  RewardType _rewardType = RewardType.normal;
-  DateTime? _deadline;
   bool _anyoneCanClaim = true;
-  String? _assigneeUid;
 
   @override
   void dispose() {
-    _titleController.dispose();
-    _rewardController.dispose();
     _countController.dispose();
     super.dispose();
   }
@@ -51,21 +44,24 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
   }
 
   Future<void> _submit() async {
-    if (!_formKey.currentState!.validate()) return;
+    final form = _formKey.currentState!;
+    if (!form.saveAndValidate()) return;
+    final values = form.value;
+
     final repo = ref.read(repositoryProvider);
     await repo.createTask(
-      title: _titleController.text.trim(),
+      title: (values['title'] as String).trim(),
       emoji: _emoji,
-      rewardType: _rewardType,
-      rewardLabel: _rewardController.text.trim(),
-      requiredCount: int.parse(_countController.text),
-      deadline: _deadline,
-      assigneeUid: _anyoneCanClaim ? null : _assigneeUid,
+      rewardType: values['rewardType'] as RewardType,
+      rewardLabel: (values['reward'] as String).trim(),
+      requiredCount: int.parse(values['count'] as String),
+      deadline: values['deadline'] as DateTime?,
+      assigneeUid: _anyoneCanClaim ? null : values['assignee'] as String?,
     );
     if (mounted) {
       context.pop();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('🍿 任務已發佈到任務牆！')),
+      ShadToaster.of(context).show(
+        const ShadToast(description: Text('🍿 任務已發佈到任務牆！')),
       );
     }
   }
@@ -81,17 +77,16 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('發起任務')),
-      body: Form(
+      body: ShadForm(
         key: _formKey,
         child: ListView(
           padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
           children: [
-            const _FieldLabel('任務名稱'),
-            TextFormField(
-              controller: _titleController,
-              decoration: const InputDecoration(hintText: '例如：洗碗、倒垃圾、遛狗…'),
-              validator: (v) =>
-                  (v == null || v.trim().isEmpty) ? '請輸入任務名稱' : null,
+            ShadInputFormField(
+              id: 'title',
+              label: const Text('任務名稱'),
+              placeholder: const Text('例如：洗碗、倒垃圾、遛狗…'),
+              validator: (v) => v.trim().isEmpty ? '請輸入任務名稱' : null,
             ),
             const SizedBox(height: 16),
             const _FieldLabel('圖示'),
@@ -121,16 +116,19 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
             const SizedBox(height: 16),
             const _FieldLabel('完成次數'),
             Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _StepperButton(
-                  icon: Icons.remove_rounded,
-                  onTap: () => _stepCount(-1),
+                ShadButton.outline(
+                  size: ShadButtonSize.sm,
+                  onPressed: () => _stepCount(-1),
+                  child: const Icon(LucideIcons.minus, size: 16),
                 ),
                 SizedBox(
-                  width: 88,
+                  width: 96,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: TextFormField(
+                    child: ShadInputFormField(
+                      id: 'count',
                       controller: _countController,
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.number,
@@ -139,108 +137,92 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                         LengthLimitingTextInputFormatter(2),
                       ],
                       style: const TextStyle(
-                          fontSize: 20, fontWeight: FontWeight.w800),
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(vertical: 10),
-                      ),
+                          fontSize: 18, fontWeight: FontWeight.w800),
                       validator: (v) {
-                        final n = int.tryParse(v ?? '');
+                        final n = int.tryParse(v);
                         if (n == null || n < 1) return '至少 1 次';
                         return null;
                       },
                     ),
                   ),
                 ),
-                _StepperButton(
-                  icon: Icons.add_rounded,
-                  onTap: () => _stepCount(1),
+                ShadButton.outline(
+                  size: ShadButtonSize.sm,
+                  onPressed: () => _stepCount(1),
+                  child: const Icon(LucideIcons.plus, size: 16),
                 ),
               ],
             ),
             const SizedBox(height: 16),
-            const _FieldLabel('獎勵內容'),
-            TextFormField(
-              controller: _rewardController,
-              decoration:
-                  const InputDecoration(hintText: '例如：珍奶一杯、50 元、神秘禮物…'),
-              validator: (v) =>
-                  (v == null || v.trim().isEmpty) ? '請輸入獎勵內容' : null,
+            ShadInputFormField(
+              id: 'reward',
+              label: const Text('獎勵內容'),
+              placeholder: const Text('例如：珍奶一杯、50 元、神秘禮物…'),
+              validator: (v) => v.trim().isEmpty ? '請輸入獎勵內容' : null,
             ),
             const SizedBox(height: 16),
-            const _FieldLabel('獎勵類型'),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
+            ShadRadioGroupFormField<RewardType>(
+              id: 'rewardType',
+              label: const Text('獎勵類型'),
+              initialValue: RewardType.normal,
+              axis: Axis.horizontal,
+              items: [
                 for (final entry in _rewardTypeLabels.entries)
-                  ChoiceChip(
+                  ShadRadio(
+                    value: entry.key,
                     label: Text(entry.value),
-                    selected: _rewardType == entry.key,
-                    selectedColor: AppColors.pink,
-                    labelStyle: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: _rewardType == entry.key
-                          ? AppColors.white
-                          : AppColors.navy,
-                    ),
-                    onSelected: (_) => setState(() => _rewardType = entry.key),
                   ),
               ],
+              validator: (v) => v == null ? '請選擇獎勵類型' : null,
             ),
             const SizedBox(height: 16),
-            const _FieldLabel('截止日期（可不填）'),
-            OutlinedButton.icon(
-              onPressed: () async {
-                final picked = await showDatePicker(
-                  context: context,
-                  firstDate: DateTime.now(),
-                  lastDate: DateTime.now().add(const Duration(days: 365)),
-                );
-                if (picked != null) setState(() => _deadline = picked);
-              },
-              icon: const Icon(Icons.calendar_today_rounded, size: 18),
-              label: Text(
-                _deadline == null
-                    ? '選擇日期'
-                    : DateFormat('yyyy/MM/dd').format(_deadline!),
-              ),
+            ShadDatePickerFormField(
+              id: 'deadline',
+              label: const Text('截止日期（可不填）'),
             ),
             const SizedBox(height: 16),
-            SwitchListTile(
-              contentPadding: EdgeInsets.zero,
-              title: const Text('誰都可以接',
-                  style: TextStyle(fontWeight: FontWeight.w600)),
-              activeThumbColor: AppColors.pink,
-              value: _anyoneCanClaim,
-              onChanged: (v) => setState(() => _anyoneCanClaim = v),
+            Row(
+              children: [
+                const Expanded(
+                  child: Text('誰都可以接',
+                      style: TextStyle(fontWeight: FontWeight.w600)),
+                ),
+                ShadSwitch(
+                  value: _anyoneCanClaim,
+                  onChanged: (v) => setState(() => _anyoneCanClaim = v),
+                ),
+              ],
             ),
             if (!_anyoneCanClaim) ...[
-              const _FieldLabel('指定給'),
-              DropdownButtonFormField<String>(
-                initialValue: _assigneeUid,
-                hint: const Text('選擇成員'),
-                items: [
+              const SizedBox(height: 8),
+              ShadSelectFormField<String>(
+                id: 'assignee',
+                label: const Text('指定給'),
+                placeholder: const Text('選擇成員'),
+                options: [
                   for (final m in members)
-                    DropdownMenuItem(
+                    ShadOption(
                       value: m.uid,
                       child: Text('${m.avatarEmoji} ${m.displayName}'),
                     ),
                 ],
-                onChanged: (v) => setState(() => _assigneeUid = v),
-                validator: (v) => !_anyoneCanClaim && v == null ? '請選擇成員' : null,
+                selectedOptionBuilder: (context, value) {
+                  final m = repo.userOf(value);
+                  return Text('${m.avatarEmoji} ${m.displayName}');
+                },
+                validator: (v) =>
+                    !_anyoneCanClaim && v == null ? '請選擇成員' : null,
               ),
             ],
             const SizedBox(height: 28),
-            FilledButton(
-              style: FilledButton.styleFrom(
-                backgroundColor: AppColors.yellow,
-                foregroundColor: AppColors.navy,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                textStyle:
-                    const TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
-              ),
+            ShadButton.secondary(
+              width: double.infinity,
+              size: ShadButtonSize.lg,
               onPressed: _submit,
-              child: const Text('發佈任務'),
+              child: const Text(
+                '發佈任務',
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+              ),
             ),
           ],
         ),
@@ -265,31 +247,6 @@ class _FieldLabel extends StatelessWidget {
           fontWeight: FontWeight.w700,
           color: AppColors.navySoft,
         ),
-      ),
-    );
-  }
-}
-
-class _StepperButton extends StatelessWidget {
-  const _StepperButton({required this.icon, required this.onTap});
-
-  final IconData icon;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
-      child: Container(
-        width: 44,
-        height: 44,
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppColors.lightGray),
-        ),
-        child: Icon(icon, color: AppColors.navy),
       ),
     );
   }

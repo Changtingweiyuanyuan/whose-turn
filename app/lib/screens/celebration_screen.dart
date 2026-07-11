@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
@@ -51,19 +52,16 @@ class CelebrationScreen extends ConsumerWidget {
                 child: Text(task.emoji, style: const TextStyle(fontSize: 72)),
               ),
               const SizedBox(height: 24),
-              Container(
+              ShadBadge(
+                backgroundColor: AppColors.pink,
+                foregroundColor: AppColors.white,
                 padding:
                     const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-                decoration: BoxDecoration(
-                  color: AppColors.pink,
-                  borderRadius: BorderRadius.circular(999),
-                ),
                 child: Text(
                   '獎勵已解鎖：${task.rewardLabel}',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
-                    color: AppColors.white,
                   ),
                 ),
               ),
@@ -73,22 +71,18 @@ class CelebrationScreen extends ConsumerWidget {
               Row(
                 children: [
                   Expanded(
-                    child: OutlinedButton(
+                    child: ShadButton.outline(
                       onPressed: () => context.go('/'),
                       child: const Text('回任務牆'),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
-                    child: FilledButton(
-                      style: FilledButton.styleFrom(
-                        backgroundColor: AppColors.yellow,
-                        foregroundColor: AppColors.navy,
-                      ),
+                    child: ShadButton.secondary(
                       onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text('分享功能 v1.1 登場，先自己開心一下 🍿')),
+                        ShadToaster.of(context).show(
+                          const ShadToast(
+                              description: Text('分享功能 v1.1 登場，先自己開心一下 🍿')),
                         );
                       },
                       child: const Text('分享喜悅'),

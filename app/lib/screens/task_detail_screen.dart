@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../models/task.dart';
 import '../state/providers.dart';
@@ -69,43 +69,48 @@ class TaskDetailScreen extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 24),
-          _InfoCard(
-            children: [
-              _InfoRow(label: '完成條件', value: '${task.title} ${task.requiredCount} 次'),
-              _InfoRow(
-                label: '獎勵內容',
-                value: task.rewardLabelFor(me.uid) == '???'
-                    ? '🎁 完成才揭曉'
-                    : task.rewardLabel,
-              ),
-              if (task.deadline != null)
+          ShadCard(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            child: Column(
+              children: [
                 _InfoRow(
-                  label: '截止日期',
-                  value: DateFormat('yyyy/MM/dd HH:mm').format(task.deadline!),
-                ),
-              if (task.assigneeUid != null)
+                    label: '完成條件',
+                    value: '${task.title} ${task.requiredCount} 次'),
                 _InfoRow(
-                  label: '指定給',
-                  value: repo.userOf(task.assigneeUid!).displayName,
+                  label: '獎勵內容',
+                  value: task.rewardLabelFor(me.uid) == '???'
+                      ? '🎁 完成才揭曉'
+                      : task.rewardLabel,
                 ),
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Row(
-                  children: [
-                    const SizedBox(
-                      width: 88,
-                      child: Text('進度',
-                          style: TextStyle(color: AppColors.navySoft)),
-                    ),
-                    StarProgress(
-                      confirmed: task.confirmedCount,
-                      required: task.requiredCount,
-                      size: 24,
-                    ),
-                  ],
+                if (task.deadline != null)
+                  _InfoRow(
+                    label: '截止日期',
+                    value: DateFormat('yyyy/MM/dd HH:mm').format(task.deadline!),
+                  ),
+                if (task.assigneeUid != null)
+                  _InfoRow(
+                    label: '指定給',
+                    value: repo.userOf(task.assigneeUid!).displayName,
+                  ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: Row(
+                    children: [
+                      const SizedBox(
+                        width: 88,
+                        child: Text('進度',
+                            style: TextStyle(color: AppColors.navySoft)),
+                      ),
+                      StarProgress(
+                        confirmed: task.confirmedCount,
+                        required: task.requiredCount,
+                        size: 24,
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(height: 24),
 
@@ -115,42 +120,56 @@ class TaskDetailScreen extends ConsumerWidget {
                 style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
             const SizedBox(height: 8),
             for (final c in history)
-              Card(
-                margin: const EdgeInsets.only(bottom: 8),
-                child: ListTile(
-                  leading: Text(repo.userOf(c.userId).avatarEmoji,
-                      style: const TextStyle(fontSize: 26)),
-                  title: Text('${repo.userOf(c.userId).displayName} 完成了一次'),
-                  subtitle:
-                      Text(DateFormat('MM/dd HH:mm').format(c.submittedAt)),
-                  trailing: c.status == CompletionStatus.pending && isCreator
-                      ? Row(
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: ShadCard(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: Row(
+                    children: [
+                      Text(repo.userOf(c.userId).avatarEmoji,
+                          style: const TextStyle(fontSize: 26)),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${repo.userOf(c.userId).displayName} 完成了一次',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.w600),
+                            ),
+                            Text(
+                              DateFormat('MM/dd HH:mm').format(c.submittedAt),
+                              style: const TextStyle(
+                                  fontSize: 12, color: AppColors.navySoft),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (c.status == CompletionStatus.pending && isCreator)
+                        Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            OutlinedButton(
+                            ShadButton.outline(
+                              size: ShadButtonSize.sm,
                               onPressed: () =>
                                   repo.rejectCompletion(task.id, c.id),
-                              style: OutlinedButton.styleFrom(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 14),
-                                minimumSize: Size.zero,
-                              ),
                               child: const Text('退回'),
                             ),
                             const SizedBox(width: 8),
-                            FilledButton(
+                            ShadButton(
+                              size: ShadButtonSize.sm,
                               onPressed: () =>
                                   repo.confirmCompletion(task.id, c.id),
-                              style: FilledButton.styleFrom(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 14),
-                                minimumSize: Size.zero,
-                              ),
                               child: const Text('✔ 確認'),
                             ),
                           ],
                         )
-                      : _CompletionStatusLabel(status: c.status),
+                      else
+                        _CompletionStatusLabel(status: c.status),
+                    ],
+                  ),
                 ),
               ),
             const SizedBox(height: 16),
@@ -175,16 +194,11 @@ class TaskDetailScreen extends ConsumerWidget {
     final me = repo.currentUser;
 
     Widget primary(String label, Future<void> Function() onPressed) {
-      return SizedBox(
+      return ShadButton(
         width: double.infinity,
-        child: FilledButton(
-          style: FilledButton.styleFrom(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            textStyle: const TextStyle(fontSize: 17),
-          ),
-          onPressed: () => onPressed(),
-          child: Text(label),
-        ),
+        size: ShadButtonSize.lg,
+        onPressed: () => onPressed(),
+        child: Text(label, style: const TextStyle(fontSize: 17)),
       );
     }
 
@@ -201,8 +215,8 @@ class TaskDetailScreen extends ConsumerWidget {
         primary('我完成一次', () async {
           await repo.submitCompletion(task.id);
           if (context.mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('已送出，等待發起人確認 ⏳')),
+            ShadToaster.of(context).show(
+              const ShadToast(description: Text('已送出，等待發起人確認 ⏳')),
             );
           }
         }),
@@ -216,10 +230,10 @@ class TaskDetailScreen extends ConsumerWidget {
           ),
         const SizedBox(height: 8),
         Center(
-          child: TextButton(
+          child: ShadButton.ghost(
+            foregroundColor: AppColors.navySoft,
             onPressed: () => repo.abandonTask(task.id),
-            child: const Text('放棄任務（回到任務牆）',
-                style: TextStyle(color: AppColors.navySoft)),
+            child: const Text('放棄任務（回到任務牆）'),
           ),
         ),
       ];
@@ -237,12 +251,13 @@ class TaskDetailScreen extends ConsumerWidget {
     if (isCreator && task.status == TaskStatus.open) {
       return [
         Center(
-          child: TextButton(
+          child: ShadButton.ghost(
+            foregroundColor: AppColors.navySoft,
             onPressed: () async {
               await repo.cancelTask(task.id);
               if (context.mounted) context.pop();
             },
-            child: const Text('取消任務', style: TextStyle(color: AppColors.navySoft)),
+            child: const Text('取消任務'),
           ),
         ),
       ];
@@ -267,22 +282,6 @@ class _CompletionStatusLabel extends StatelessWidget {
     return Text(
       label,
       style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: color),
-    );
-  }
-}
-
-class _InfoCard extends StatelessWidget {
-  const _InfoCard({required this.children});
-
-  final List<Widget> children;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        child: Column(children: children),
-      ),
     );
   }
 }

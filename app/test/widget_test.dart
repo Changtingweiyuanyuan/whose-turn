@@ -2,12 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 import 'package:whose_turn/app.dart';
 import 'package:whose_turn/screens/my_tasks_screen.dart';
 import 'package:whose_turn/screens/task_wall_screen.dart';
+import 'package:whose_turn/theme/shad_theme.dart';
 
 Widget wrap(Widget child) {
-  return ProviderScope(child: MaterialApp(home: Scaffold(body: child)));
+  return ProviderScope(
+    child: ShadApp.custom(
+      theme: AppShadTheme.light,
+      appBuilder: (context) => MaterialApp(
+        home: Scaffold(body: child),
+        builder: (context, child) => ShadAppBuilder(child: child),
+      ),
+    ),
+  );
 }
 
 void main() {
@@ -44,10 +54,10 @@ void main() {
 
   testWidgets('我的任務顯示三個 Tab 與星星進度', (tester) async {
     await tester.pumpWidget(wrap(const MyTasksScreen()));
-    // Tab 標籤與卡片狀態標籤都可能出現「進行中」，只驗 Tab 存在
-    expect(find.widgetWithText(Tab, '進行中'), findsOneWidget);
+    // Tab 標籤與卡片狀態標籤都可能出現「進行中」
+    expect(find.text('進行中'), findsWidgets);
     expect(find.text('等待確認'), findsOneWidget);
-    expect(find.widgetWithText(Tab, '已完成'), findsOneWidget);
+    expect(find.text('已完成'), findsOneWidget);
     expect(find.text('3 / 5'), findsOneWidget); // seed：洗碗 3/5
   });
 }

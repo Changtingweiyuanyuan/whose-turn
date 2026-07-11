@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../theme/app_colors.dart';
 
@@ -35,16 +36,13 @@ class StarProgress extends StatelessWidget {
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(999),
-            child: SizedBox(
-              width: size * 5.3,
-              height: size * 0.45,
-              child: LinearProgressIndicator(
-                value: (confirmed / required).clamp(0.0, 1.0),
-                backgroundColor: AppColors.lightGray,
-                valueColor: const AlwaysStoppedAnimation(AppColors.yellow),
-              ),
+          SizedBox(
+            width: size * 5.3,
+            child: ShadProgress(
+              value: (confirmed / required).clamp(0.0, 1.0),
+              minHeight: size * 0.45,
+              color: AppColors.yellow,
+              backgroundColor: AppColors.lightGray,
             ),
           ),
           if (countText != null) ...[const SizedBox(width: 6), countText],

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
@@ -50,7 +51,7 @@ class _HomeShellState extends ConsumerState<HomeShell> {
         foregroundColor: AppColors.white,
         shape: const CircleBorder(),
         onPressed: _startCreateTask,
-        child: const Icon(Icons.add_rounded, size: 30),
+        child: const Icon(LucideIcons.plus, size: 28),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
@@ -61,27 +62,27 @@ class _HomeShellState extends ConsumerState<HomeShell> {
         child: Row(
           children: [
             _NavItem(
-              icon: Icons.home_rounded,
+              icon: LucideIcons.house,
               label: '任務牆',
               selected: _index == 0,
               onTap: () => setState(() => _index = 0),
             ),
             _NavItem(
-              icon: Icons.checklist_rounded,
+              icon: LucideIcons.listChecks,
               label: '我的任務',
               selected: _index == 1,
               onTap: () => setState(() => _index = 1),
             ),
             const Expanded(child: SizedBox()), // FAB 缺口
             _NavItem(
-              icon: Icons.chat_bubble_outline_rounded,
+              icon: LucideIcons.messageCircle,
               label: '訊息',
               selected: _index == 2,
               badgeCount: unread,
               onTap: () => setState(() => _index = 2),
             ),
             _NavItem(
-              icon: Icons.person_outline_rounded,
+              icon: LucideIcons.user,
               label: '我的',
               selected: _index == 3,
               onTap: () => setState(() => _index = 3),

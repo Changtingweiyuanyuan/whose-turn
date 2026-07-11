@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
@@ -39,29 +39,40 @@ class NotificationsScreen extends ConsumerWidget {
                     separatorBuilder: (_, _) => const SizedBox(height: 8),
                     itemBuilder: (context, i) {
                       final n = items[i];
-                      return Card(
-                        color: n.read ? AppColors.white : AppColors.yellowSoft,
-                        child: ListTile(
-                          title: Text(
-                            n.title,
-                            style:
-                                const TextStyle(fontWeight: FontWeight.w700),
+                      return GestureDetector(
+                        onTap: () async {
+                          await repo.markNotificationRead(n.id);
+                          if (n.taskId != null && context.mounted) {
+                            context.push('/task/${n.taskId}');
+                          }
+                        },
+                        child: ShadCard(
+                          backgroundColor:
+                              n.read ? AppColors.white : AppColors.yellowSoft,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                n.title,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                n.body,
+                                style: const TextStyle(
+                                    fontSize: 13, color: AppColors.navySoft),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                DateFormat('MM/dd HH:mm').format(n.createdAt),
+                                style: const TextStyle(
+                                    fontSize: 12, color: AppColors.navySoft),
+                              ),
+                            ],
                           ),
-                          subtitle: Padding(
-                            padding: const EdgeInsets.only(top: 2),
-                            child: Text(
-                              '${n.body}\n${DateFormat('MM/dd HH:mm').format(n.createdAt)}',
-                              style: const TextStyle(
-                                  fontSize: 13, color: AppColors.navySoft),
-                            ),
-                          ),
-                          isThreeLine: true,
-                          onTap: () async {
-                            await repo.markNotificationRead(n.id);
-                            if (n.taskId != null && context.mounted) {
-                              context.push('/task/${n.taskId}');
-                            }
-                          },
                         ),
                       );
                     },
