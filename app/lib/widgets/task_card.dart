@@ -98,15 +98,10 @@ class _TaskEmoji extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 52,
-      height: 52,
-      decoration: const BoxDecoration(
-        color: AppColors.bg,
-        shape: BoxShape.circle,
-      ),
-      alignment: Alignment.center,
-      child: Text(emoji, style: const TextStyle(fontSize: 26)),
+    // 編輯排版風：emoji 裸放當插圖，不包圓形色底
+    return SizedBox(
+      width: 48,
+      child: Text(emoji, style: const TextStyle(fontSize: 34)),
     );
   }
 }

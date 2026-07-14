@@ -73,7 +73,7 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
                 const Expanded(
                   child: Text(
                     '👀 今天換誰？',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800),
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800),
                     overflow: TextOverflow.ellipsis,
                   ),
                 ),

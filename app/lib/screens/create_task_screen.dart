@@ -254,7 +254,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               ),
             ],
             const SizedBox(height: 28),
-            ShadButton.secondary(
+            ShadButton(
               width: double.infinity,
               size: ShadButtonSize.lg,
               onPressed: _submit,

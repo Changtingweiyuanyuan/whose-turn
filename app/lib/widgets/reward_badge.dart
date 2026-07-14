@@ -22,11 +22,13 @@ class RewardBadge extends StatelessWidget {
       _ => (AppColors.main, AppColors.ink),
     };
 
+    // 扁平色塊：radius 6，不是膠囊
     return ShadBadge(
       backgroundColor: bg,
       hoverBackgroundColor: bg,
       foregroundColor: fg,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
       child: Text(
         text,
         style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700),

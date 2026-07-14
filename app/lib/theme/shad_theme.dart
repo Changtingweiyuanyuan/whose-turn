@@ -14,9 +14,10 @@ abstract final class AppShadTheme {
     cardForeground: AppColors.ink,
     popover: AppColors.white,
     popoverForeground: AppColors.ink,
-    primary: AppColors.main,
-    primaryForeground: AppColors.ink,
-    secondary: AppColors.orange,
+    // 編輯排版風：主要按鈕墨黑白字，main 作為選中/次要 surface
+    primary: AppColors.ink,
+    primaryForeground: AppColors.white,
+    secondary: AppColors.main,
     secondaryForeground: AppColors.ink,
     muted: AppColors.lightGray,
     mutedForeground: AppColors.inkSoft,
@@ -33,6 +34,13 @@ abstract final class AppShadTheme {
   static ShadThemeData get light => ShadThemeData(
         brightness: Brightness.light,
         colorScheme: _colorScheme,
+        // 銳利不膠囊：全域圓角 8
+        radius: BorderRadius.circular(8),
+        // 細線不陰影：卡片 1px 邊框、無 shadow
+        cardTheme: ShadCardTheme(
+          shadows: const [],
+          border: ShadBorder.all(color: AppColors.lightGray, width: 1),
+        ),
         textTheme: ShadTextTheme(
           family: GoogleFonts.robotoCondensed().fontFamily!,
         ),

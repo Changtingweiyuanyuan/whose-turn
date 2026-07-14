@@ -234,7 +234,8 @@ class TaskDetailScreen extends ConsumerWidget {
           ),
         const SizedBox(height: 8),
         Center(
-          child: ShadButton.ghost(
+          child: ShadButton.link(
+            foregroundColor: AppColors.orange,
             onPressed: () => repo.abandonTask(task.id),
             child: const Text('放棄任務（回到任務牆）'),
           ),
@@ -254,7 +255,8 @@ class TaskDetailScreen extends ConsumerWidget {
     if (isCreator && task.status == TaskStatus.open) {
       return [
         Center(
-          child: ShadButton.ghost(
+          child: ShadButton.link(
+            foregroundColor: AppColors.orange,
             onPressed: () async {
               await repo.cancelTask(task.id);
               if (context.mounted) context.pop();
