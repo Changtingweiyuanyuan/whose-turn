@@ -4,29 +4,30 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import 'app_colors.dart';
 
-/// shadcn_ui 主題：把品牌五色對應到 shadcn 的色彩系統。
+/// shadcn_ui 主題 —— 品牌色票 v2：
+/// 背景 #F7F7F7、墨黑 #010101、主色 #C2D1D3、橘 #FF8B04、粉 #CF729B。
 abstract final class AppShadTheme {
   static const _colorScheme = ShadColorScheme(
-    background: AppColors.cream,
-    foreground: AppColors.navy,
+    background: AppColors.bg,
+    foreground: AppColors.ink,
     card: AppColors.white,
-    cardForeground: AppColors.navy,
+    cardForeground: AppColors.ink,
     popover: AppColors.white,
-    popoverForeground: AppColors.navy,
-    primary: AppColors.pink,
-    primaryForeground: AppColors.white,
-    secondary: AppColors.yellow,
-    secondaryForeground: AppColors.navy,
+    popoverForeground: AppColors.ink,
+    primary: AppColors.main,
+    primaryForeground: AppColors.ink,
+    secondary: AppColors.orange,
+    secondaryForeground: AppColors.ink,
     muted: AppColors.lightGray,
-    mutedForeground: AppColors.navySoft,
-    accent: AppColors.pinkSoft,
-    accentForeground: AppColors.navy,
+    mutedForeground: AppColors.inkSoft,
+    accent: AppColors.mainSoft,
+    accentForeground: AppColors.ink,
     destructive: Color(0xFFC0392B),
     destructiveForeground: AppColors.white,
     border: AppColors.lightGray,
     input: AppColors.lightGray,
-    ring: AppColors.navySoft,
-    selection: AppColors.pinkSoft,
+    ring: AppColors.ink,
+    selection: AppColors.main,
   );
 
   static ShadThemeData get light => ShadThemeData(

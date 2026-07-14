@@ -47,7 +47,7 @@ class _HomeShellState extends ConsumerState<HomeShell> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.pink,
+        backgroundColor: AppColors.ink,
         foregroundColor: AppColors.white,
         shape: const CircleBorder(),
         onPressed: _startCreateTask,
@@ -111,7 +111,7 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = selected ? AppColors.pink : AppColors.navySoft;
+    final color = selected ? AppColors.ink : AppColors.inkSoft;
     return Expanded(
       child: InkWell(
         onTap: onTap,

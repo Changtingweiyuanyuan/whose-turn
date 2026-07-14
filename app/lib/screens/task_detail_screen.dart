@@ -69,7 +69,7 @@ class TaskDetailScreen extends ConsumerWidget {
           Center(
             child: Text(
               '${creator.avatarEmoji} 發起人：${creator.displayName}',
-              style: const TextStyle(color: AppColors.navySoft),
+              style: const TextStyle(color: AppColors.inkSoft),
             ),
           ),
           const SizedBox(height: 24),
@@ -103,7 +103,7 @@ class TaskDetailScreen extends ConsumerWidget {
                       const SizedBox(
                         width: 88,
                         child: Text('進度',
-                            style: TextStyle(color: AppColors.navySoft)),
+                            style: TextStyle(color: AppColors.inkSoft)),
                       ),
                       StarProgress(
                         confirmed: task.confirmedCount,
@@ -146,7 +146,7 @@ class TaskDetailScreen extends ConsumerWidget {
                             Text(
                               DateFormat('MM/dd HH:mm').format(c.submittedAt),
                               style: const TextStyle(
-                                  fontSize: 12, color: AppColors.navySoft),
+                                  fontSize: 12, color: AppColors.inkSoft),
                             ),
                           ],
                         ),
@@ -229,7 +229,7 @@ class TaskDetailScreen extends ConsumerWidget {
             padding: EdgeInsets.only(top: 12),
             child: Center(
               child: Text('已完成一次・等待確認中',
-                  style: TextStyle(color: AppColors.navySoft)),
+                  style: TextStyle(color: AppColors.inkSoft)),
             ),
           ),
         const SizedBox(height: 8),
@@ -277,9 +277,9 @@ class _CompletionStatusLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (label, color) = switch (status) {
-      CompletionStatus.pending => ('等待確認', AppColors.navySoft),
+      CompletionStatus.pending => ('等待確認', AppColors.inkSoft),
       CompletionStatus.confirmed => ('⭐ 已確認', AppColors.pink),
-      CompletionStatus.rejected => ('已退回', AppColors.navySoft),
+      CompletionStatus.rejected => ('已退回', AppColors.inkSoft),
     };
     return Text(
       label,
@@ -303,7 +303,7 @@ class _InfoRow extends StatelessWidget {
         children: [
           SizedBox(
             width: 88,
-            child: Text(label, style: const TextStyle(color: AppColors.navySoft)),
+            child: Text(label, style: const TextStyle(color: AppColors.inkSoft)),
           ),
           Expanded(
             child: Text(value,

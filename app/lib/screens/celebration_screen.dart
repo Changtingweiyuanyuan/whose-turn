@@ -42,7 +42,7 @@ class CelebrationScreen extends ConsumerWidget {
               Text(
                 task.title,
                 style: const TextStyle(
-                    fontSize: 20, color: AppColors.navySoft),
+                    fontSize: 20, color: AppColors.inkSoft),
               ),
               const SizedBox(height: 32),
               Container(
@@ -68,7 +68,7 @@ class CelebrationScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              const Text('太棒了！', style: TextStyle(color: AppColors.navySoft)),
+              const Text('太棒了！', style: TextStyle(color: AppColors.inkSoft)),
               const SizedBox(height: 40),
               Row(
                 children: [

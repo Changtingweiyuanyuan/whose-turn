@@ -31,7 +31,7 @@ class NotificationsScreen extends ConsumerWidget {
                     child: Text('還沒有訊息\n有人發起任務時會通知你 👀',
                         textAlign: TextAlign.center,
                         style:
-                            TextStyle(color: AppColors.navySoft, height: 1.6)),
+                            TextStyle(color: AppColors.inkSoft, height: 1.6)),
                   )
                 : ListView.separated(
                     padding: const EdgeInsets.fromLTRB(20, 8, 20, 96),
@@ -48,7 +48,7 @@ class NotificationsScreen extends ConsumerWidget {
                         },
                         child: ShadCard(
                           backgroundColor:
-                              n.read ? AppColors.white : AppColors.yellowSoft,
+                              n.read ? AppColors.white : AppColors.orangeSoft,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 12),
                           child: Column(
@@ -63,13 +63,13 @@ class NotificationsScreen extends ConsumerWidget {
                               Text(
                                 n.body,
                                 style: const TextStyle(
-                                    fontSize: 13, color: AppColors.navySoft),
+                                    fontSize: 13, color: AppColors.inkSoft),
                               ),
                               const SizedBox(height: 2),
                               Text(
                                 DateFormat('MM/dd HH:mm').format(n.createdAt),
                                 style: const TextStyle(
-                                    fontSize: 12, color: AppColors.navySoft),
+                                    fontSize: 12, color: AppColors.inkSoft),
                               ),
                             ],
                           ),

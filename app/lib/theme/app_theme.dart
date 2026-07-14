@@ -13,27 +13,27 @@ abstract final class AppTheme {
     final base = ThemeData(
       useMaterial3: true,
       colorScheme: ColorScheme.fromSeed(
-        seedColor: AppColors.pink,
-        primary: AppColors.pink,
-        secondary: AppColors.yellow,
-        surface: AppColors.cream,
-        onSurface: AppColors.navy,
+        seedColor: AppColors.main,
+        primary: AppColors.main,
+        secondary: AppColors.orange,
+        surface: AppColors.bg,
+        onSurface: AppColors.ink,
       ),
-      scaffoldBackgroundColor: AppColors.cream,
+      scaffoldBackgroundColor: AppColors.bg,
     );
 
     final textTheme = base.textTheme.apply(
       fontFamily: _fontFamily,
       fontFamilyFallback: _fontFallback,
-      bodyColor: AppColors.navy,
-      displayColor: AppColors.navy,
+      bodyColor: AppColors.ink,
+      displayColor: AppColors.ink,
     );
 
     return base.copyWith(
       textTheme: textTheme,
       appBarTheme: AppBarTheme(
-        backgroundColor: AppColors.cream,
-        foregroundColor: AppColors.navy,
+        backgroundColor: AppColors.bg,
+        foregroundColor: AppColors.ink,
         elevation: 0,
         centerTitle: true,
         titleTextStyle: textTheme.titleLarge?.copyWith(

@@ -27,7 +27,7 @@ class StarProgress extends StatelessWidget {
             style: TextStyle(
               fontSize: size * 0.75,
               fontWeight: FontWeight.w700,
-              color: AppColors.navySoft,
+              color: AppColors.inkSoft,
             ),
           )
         : null;
@@ -41,7 +41,7 @@ class StarProgress extends StatelessWidget {
             child: ShadProgress(
               value: (confirmed / required).clamp(0.0, 1.0),
               minHeight: size * 0.45,
-              color: AppColors.yellow,
+              color: AppColors.orange,
               backgroundColor: AppColors.lightGray,
             ),
           ),
@@ -57,7 +57,7 @@ class StarProgress extends StatelessWidget {
           Icon(
             i < confirmed ? Icons.star_rounded : Icons.star_outline_rounded,
             size: size,
-            color: i < confirmed ? AppColors.yellow : AppColors.starEmpty,
+            color: i < confirmed ? AppColors.orange : AppColors.starEmpty,
           ),
         if (countText != null) ...[const SizedBox(width: 6), countText],
       ],

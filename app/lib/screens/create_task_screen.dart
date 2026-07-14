@@ -80,7 +80,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           trailing: const Text('元',
-              style: TextStyle(fontSize: 13, color: AppColors.navySoft)),
+              style: TextStyle(fontSize: 13, color: AppColors.inkSoft)),
           validator: (v) {
             final n = int.tryParse(v.trim());
             if (n == null || n < 1) return '請輸入獎勵金額';
@@ -177,7 +177,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                       ],
                       trailing: const Text('次',
                           style: TextStyle(
-                              fontSize: 13, color: AppColors.navySoft)),
+                              fontSize: 13, color: AppColors.inkSoft)),
                       validator: (v) {
                         final n = int.tryParse(v);
                         if (n == null || n < 1) return '至少 1 次';
@@ -284,7 +284,7 @@ class _FieldLabel extends StatelessWidget {
         style: const TextStyle(
           fontSize: 14,
           fontWeight: FontWeight.w700,
-          color: AppColors.navySoft,
+          color: AppColors.inkSoft,
         ),
       ),
     );

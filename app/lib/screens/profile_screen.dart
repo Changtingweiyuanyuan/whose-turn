@@ -47,7 +47,7 @@ class ProfileScreen extends ConsumerWidget {
                         style: TextStyle(
                           fontSize: 13,
                           color:
-                              me.isGuest ? AppColors.pink : AppColors.navySoft,
+                              me.isGuest ? AppColors.pink : AppColors.inkSoft,
                         ),
                       ),
                     ],
@@ -64,7 +64,7 @@ class ProfileScreen extends ConsumerWidget {
           if (me.isGuest) ...[
             const SizedBox(height: 12),
             ShadCard(
-              backgroundColor: AppColors.yellowSoft,
+              backgroundColor: AppColors.orangeSoft,
               padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
@@ -114,7 +114,7 @@ class ProfileScreen extends ConsumerWidget {
                                 fontSize: 18, fontWeight: FontWeight.w700)),
                       ),
                       Text('${group.memberUids.length} 人',
-                          style: const TextStyle(color: AppColors.navySoft)),
+                          style: const TextStyle(color: AppColors.inkSoft)),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -182,7 +182,7 @@ class ProfileScreen extends ConsumerWidget {
           const SizedBox(height: 4),
           const Text(
             '雛形限定：切換身分同時體驗發起人與接單人',
-            style: TextStyle(fontSize: 13, color: AppColors.navySoft),
+            style: TextStyle(fontSize: 13, color: AppColors.inkSoft),
           ),
           const SizedBox(height: 8),
           ShadCard(
@@ -338,12 +338,12 @@ class _ActionCard extends StatelessWidget {
                       style: const TextStyle(fontWeight: FontWeight.w700)),
                   Text(subtitle,
                       style: const TextStyle(
-                          fontSize: 13, color: AppColors.navySoft)),
+                          fontSize: 13, color: AppColors.inkSoft)),
                 ],
               ),
             ),
             const Icon(Iconsax.arrow_right_3_copy,
-                size: 18, color: AppColors.navySoft),
+                size: 18, color: AppColors.inkSoft),
           ],
         ),
       ),

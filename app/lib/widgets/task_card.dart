@@ -60,7 +60,7 @@ class TaskCard extends StatelessWidget {
                     '發起人：${creator.displayName}',
                     style: const TextStyle(
                       fontSize: 13,
-                      color: AppColors.navySoft,
+                      color: AppColors.inkSoft,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -102,7 +102,7 @@ class _TaskEmoji extends StatelessWidget {
       width: 52,
       height: 52,
       decoration: const BoxDecoration(
-        color: AppColors.cream,
+        color: AppColors.bg,
         shape: BoxShape.circle,
       ),
       alignment: Alignment.center,
@@ -120,14 +120,14 @@ class _StatusChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (label, color) = switch (task.status) {
-      TaskStatus.open when task.createdBy == viewerUid => ('等人接單', AppColors.navySoft),
-      TaskStatus.open => ('指定任務', AppColors.navySoft),
+      TaskStatus.open when task.createdBy == viewerUid => ('等人接單', AppColors.inkSoft),
+      TaskStatus.open => ('指定任務', AppColors.inkSoft),
       TaskStatus.claimed when task.claimedBy == viewerUid => ('進行中', AppColors.pink),
-      TaskStatus.claimed => ('已被接走', AppColors.navySoft),
-      TaskStatus.completed => ('已完成', AppColors.yellow),
-      TaskStatus.rewardClaimed => ('獎勵已領', AppColors.navySoft),
-      TaskStatus.expired => ('已截止', AppColors.navySoft),
-      TaskStatus.cancelled => ('已取消', AppColors.navySoft),
+      TaskStatus.claimed => ('已被接走', AppColors.inkSoft),
+      TaskStatus.completed => ('已完成', AppColors.orange),
+      TaskStatus.rewardClaimed => ('獎勵已領', AppColors.inkSoft),
+      TaskStatus.expired => ('已截止', AppColors.inkSoft),
+      TaskStatus.cancelled => ('已取消', AppColors.inkSoft),
     };
     return Text(
       label,

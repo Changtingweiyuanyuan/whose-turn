@@ -18,8 +18,8 @@ class RewardBadge extends StatelessWidget {
     final text = task.isMystery && label == '???' ? '神秘禮物' : label;
     final (bg, fg) = switch (task.rewardType) {
       RewardType.mystery => (AppColors.pink, AppColors.white),
-      RewardType.money => (AppColors.yellow, AppColors.navy),
-      _ => (AppColors.pinkSoft, AppColors.pink),
+      RewardType.money => (AppColors.orange, AppColors.ink),
+      _ => (AppColors.main, AppColors.ink),
     };
 
     return ShadBadge(

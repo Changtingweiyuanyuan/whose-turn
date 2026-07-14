@@ -117,7 +117,7 @@ class _TaskList extends ConsumerWidget {
           child: Text(
             emptyText,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: AppColors.navySoft, height: 1.6),
+            style: const TextStyle(color: AppColors.inkSoft, height: 1.6),
           ),
         ),
       );
@@ -158,7 +158,7 @@ class _ConfirmList extends ConsumerWidget {
         padding: EdgeInsets.symmetric(vertical: 48),
         child: Center(
           child: Text('沒有待確認的完成紀錄',
-              style: TextStyle(color: AppColors.navySoft)),
+              style: TextStyle(color: AppColors.inkSoft)),
         ),
       );
     }
@@ -192,7 +192,7 @@ class _ConfirmList extends ConsumerWidget {
                         Text(
                           DateFormat('今天 HH:mm').format(completion.submittedAt),
                           style: const TextStyle(
-                              fontSize: 12, color: AppColors.navySoft),
+                              fontSize: 12, color: AppColors.inkSoft),
                         ),
                       ],
                     ),

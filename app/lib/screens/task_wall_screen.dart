@@ -84,7 +84,7 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const Icon(Iconsax.sort_copy,
-                          size: 14, color: AppColors.navySoft),
+                          size: 14, color: AppColors.inkSoft),
                       const SizedBox(width: 6),
                       Text(_sortLabels[value]!),
                     ],
@@ -199,7 +199,7 @@ class _EmptyWall extends StatelessWidget {
           Text(
             '目前沒有任務\n發起一個，看看今天換誰？',
             textAlign: TextAlign.center,
-            style: TextStyle(color: AppColors.navySoft, height: 1.6),
+            style: TextStyle(color: AppColors.inkSoft, height: 1.6),
           ),
         ],
       ),

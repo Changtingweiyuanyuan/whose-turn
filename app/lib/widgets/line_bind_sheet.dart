@@ -28,7 +28,7 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
           const Text(
             '建立群組和發起任務需要綁定帳號，\n你的星星和紀錄也會永久保存、不怕換手機。',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14, color: AppColors.navySoft),
+            style: TextStyle(fontSize: 14, color: AppColors.inkSoft),
           ),
           const SizedBox(height: 24),
           ShadButton(
