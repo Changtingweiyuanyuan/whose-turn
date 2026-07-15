@@ -5,6 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../models/app_user.dart';
 import '../models/task.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_fonts.dart';
 import '../theme/app_tokens.dart';
 import 'reward_badge.dart';
 
@@ -57,9 +58,9 @@ class TaskCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           task.title,
-                          style: const TextStyle(
-                            fontSize: AppType.cardTitle,
-                            fontWeight: FontWeight.w800,
+                          style: AppFonts.brush(
+                            fontSize: AppType.cardTitle + 2,
+                            color: AppColors.ink,
                             height: 1.1,
                           ),
                         ),

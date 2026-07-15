@@ -60,16 +60,21 @@ class _HomeShellState extends ConsumerState<HomeShell> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomAppBar(
-        color: AppColors.white,
-        shape: const CircularNotchedRectangle(),
-        notchMargin: 8,
-        height: 62 + MediaQuery.of(context).padding.bottom,
-        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
-        child: Row(
-          children: [
-            _NavItem(
-              icon: Iconsax.home_2_copy,
+      bottomNavigationBar: DecoratedBox(
+        decoration: const BoxDecoration(
+          border: Border(top: BorderSide(color: AppColors.inkSoft, width: 0.5)),
+        ),
+        child: BottomAppBar(
+          color: AppColors.ink,
+          shape: const CircularNotchedRectangle(),
+          notchMargin: 8,
+          height: 62 + MediaQuery.of(context).padding.bottom,
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+          child: Row(
+            children: [
+              _NavItem(
+                icon: Iconsax.home_2_copy,
               label: '任務牆',
               selected: _index == 0,
               onTap: () => setState(() => _index = 0),
@@ -94,7 +99,8 @@ class _HomeShellState extends ConsumerState<HomeShell> {
               selected: _index == 3,
               onTap: () => setState(() => _index = 3),
             ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -118,7 +124,7 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = selected ? AppColors.pink : AppColors.inkSoft;
+    final color = selected ? AppColors.pink : Colors.white54;
     return Expanded(
       child: InkWell(
         onTap: onTap,
