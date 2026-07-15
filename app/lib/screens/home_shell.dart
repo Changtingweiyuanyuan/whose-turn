@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
-import '../theme/app_tokens.dart';
-
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../widgets/line_bind_sheet.dart';
@@ -48,15 +46,15 @@ class _HomeShellState extends ConsumerState<HomeShell> {
           ProfileScreen(),
         ],
       ),
-      // 中央建立鍵：墨黑 squircle 大鍵，非預設圓形 FAB
+      // 中央建立鍵：粉色圓形大鍵，坐落在圓弧 notch 上
       floatingActionButton: GestureDetector(
         onTap: _startCreateTask,
         child: Container(
-          width: 58,
-          height: 58,
-          decoration: BoxDecoration(
-            color: AppColors.ink,
-            borderRadius: BorderRadius.circular(AppRadius.squircle),
+          width: 60,
+          height: 60,
+          decoration: const BoxDecoration(
+            color: AppColors.pink,
+            shape: BoxShape.circle,
           ),
           child: const Icon(Iconsax.add_copy, size: 30, color: AppColors.white),
         ),
@@ -120,7 +118,7 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = selected ? AppColors.ink : AppColors.inkSoft;
+    final color = selected ? AppColors.pink : AppColors.inkSoft;
     return Expanded(
       child: InkWell(
         onTap: onTap,

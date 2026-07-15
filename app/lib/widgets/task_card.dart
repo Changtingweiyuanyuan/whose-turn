@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../models/app_user.dart';
@@ -6,15 +7,15 @@ import '../models/task.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
 import 'reward_badge.dart';
-import 'star_progress.dart';
 
-/// 任務卡 —— 編輯海報式：非對稱、大字級、獎勵權重高、超大 emoji 當主視覺。
+/// 任務卡 —— 黑底雜誌風：藍/白輪替底色、次數右上角、動作右下角。
 class TaskCard extends StatelessWidget {
   const TaskCard({
     super.key,
     required this.task,
     required this.viewer,
     required this.creator,
+    this.backgroundColor = AppColors.white,
     this.onTap,
     this.onClaim,
   });
@@ -22,6 +23,7 @@ class TaskCard extends StatelessWidget {
   final Task task;
   final AppUser viewer;
   final AppUser creator;
+  final Color backgroundColor;
   final VoidCallback? onTap;
   final VoidCallback? onClaim;
 
@@ -32,62 +34,101 @@ class TaskCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: ShadCard(
+        backgroundColor: backgroundColor,
+        radius: BorderRadius.circular(18),
+        border: ShadBorder.none,
         padding: const EdgeInsets.all(AppSpacing.md),
-        child: Column(
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 上緣：獎勵標籤壓在最醒目位置 + 超大 emoji
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(task.emoji,
-                    style: const TextStyle(fontSize: 40, height: 1)),
-                const Spacer(),
-                RewardBadge(task: task, viewerUid: viewer.uid, large: true),
-              ],
+            // 左側插圖（emoji 放大）
+            Padding(
+              padding: const EdgeInsets.only(top: 2, right: AppSpacing.md),
+              child: Text(task.emoji, style: const TextStyle(fontSize: 44)),
             ),
-            const SizedBox(height: AppSpacing.sm),
-            // 任務名：大字，海報主標
-            Text(
-              task.title,
-              style: const TextStyle(
-                fontSize: AppType.cardTitle,
-                fontWeight: FontWeight.w800,
-                height: 1.1,
-              ),
-            ),
-            const SizedBox(height: AppSpacing.xs),
-            Text(
-              '發起人 ${creator.displayName}',
-              style: const TextStyle(
-                  fontSize: AppType.label, color: AppColors.inkSoft),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            // 底列：進度（集章）＋ 動作
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: StarProgress(
-                    confirmed: task.confirmedCount,
-                    required: task.requiredCount,
-                    active: task.status == TaskStatus.claimed,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 標題 + 次數（右上角）
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          task.title,
+                          style: const TextStyle(
+                            fontSize: AppType.cardTitle,
+                            fontWeight: FontWeight.w800,
+                            height: 1.1,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: AppSpacing.sm),
+                      _CountLabel(
+                        confirmed: task.confirmedCount,
+                        required: task.requiredCount,
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(width: AppSpacing.sm),
-                if (canClaim)
-                  ShadButton(
-                    size: ShadButtonSize.sm,
-                    onPressed: onClaim,
-                    child: const Text('我要接'),
-                  )
-                else
-                  _StatusChip(task: task, viewerUid: viewer.uid),
-              ],
+                  const SizedBox(height: 2),
+                  Text(
+                    '發起人 ${creator.displayName}',
+                    style: const TextStyle(
+                        fontSize: AppType.label, color: AppColors.inkSoft),
+                  ),
+                  const SizedBox(height: AppSpacing.sm),
+                  RewardBadge(task: task, viewerUid: viewer.uid),
+                  const SizedBox(height: AppSpacing.md),
+                  // 動作（右下角）
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: canClaim
+                        ? ShadButton(
+                            size: ShadButtonSize.sm,
+                            onPressed: onClaim,
+                            trailing:
+                                const Icon(Iconsax.arrow_right_3_copy, size: 15),
+                            child: const Text('我要接'),
+                          )
+                        : _StatusChip(task: task, viewerUid: viewer.uid),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+/// 大號次數：3 大 / 5 小
+class _CountLabel extends StatelessWidget {
+  const _CountLabel({required this.confirmed, required this.required});
+
+  final int confirmed;
+  final int required;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text(
+          '$confirmed',
+          style: const TextStyle(
+              fontSize: 26, fontWeight: FontWeight.w800, height: 1),
+        ),
+        Text(
+          '/$required',
+          style: const TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+              color: AppColors.inkSoft),
+        ),
+      ],
     );
   }
 }

@@ -26,9 +26,9 @@ void main() {
     GoogleFonts.config.allowRuntimeFetching = false;
   });
 
-  testWidgets('App 開啟顯示任務牆與品牌標題', (tester) async {
+  testWidgets('App 開啟顯示任務牆與品牌刊頭', (tester) async {
     await tester.pumpWidget(const ProviderScope(child: WhoseTurnApp()));
-    expect(find.text('今天換誰？'), findsOneWidget);
+    expect(find.text('HOUSEHOLD\nWEEKLY'), findsOneWidget); // 雜誌刊頭
     expect(find.text('我要接'), findsWidgets); // 至少一張可接卡片
   });
 
@@ -57,6 +57,6 @@ void main() {
     expect(find.text('進行中'), findsWidgets);
     expect(find.text('等待確認'), findsOneWidget);
     expect(find.text('已完成'), findsOneWidget);
-    expect(find.text('3 / 5'), findsOneWidget); // seed：洗碗 3/5
+    expect(find.text('/5'), findsOneWidget); // seed：洗碗 3/5 大號次數
   });
 }
