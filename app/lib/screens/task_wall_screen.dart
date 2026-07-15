@@ -7,7 +7,6 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../models/task.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
-import '../theme/app_fonts.dart';
 import '../theme/app_tokens.dart';
 import '../widgets/task_card.dart';
 
@@ -201,15 +200,16 @@ class _Masthead extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           Container(height: 2, color: AppColors.pink),
           const SizedBox(height: AppSpacing.md),
-          // 大標，毛筆手寫感，誰=粉色
+          // 大標，粗黑無襯線，誰=粉色
           RichText(
-            text: TextSpan(
-              style: AppFonts.brush(
-                fontSize: 66,
+            text: const TextSpan(
+              style: TextStyle(
+                fontSize: 64,
                 height: 1.0,
+                fontWeight: FontWeight.w900,
                 color: AppColors.white,
               ),
-              children: const [
+              children: [
                 TextSpan(text: '今天換'),
                 TextSpan(text: '誰', style: TextStyle(color: AppColors.pink)),
                 TextSpan(text: '？'),
@@ -353,7 +353,7 @@ class _SortControlState extends State<_SortControl> {
             '排序 · ${_sortLabels[widget.value]} ▾',
             style: const TextStyle(
               fontSize: AppType.label,
-              fontWeight: FontWeight.w700,
+              fontWeight: FontWeight.w400,
               color: Colors.white70,
             ),
           ),
