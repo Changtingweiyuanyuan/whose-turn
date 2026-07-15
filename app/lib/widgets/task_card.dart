@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../models/app_user.dart';
@@ -36,7 +35,7 @@ class TaskCard extends StatelessWidget {
       onTap: onTap,
       child: ShadCard(
         backgroundColor: backgroundColor,
-        radius: BorderRadius.circular(18),
+        radius: BorderRadius.circular(AppRadius.card),
         border: ShadBorder.none,
         padding: const EdgeInsets.all(AppSpacing.md),
         child: Row(
@@ -89,7 +88,7 @@ class TaskCard extends StatelessWidget {
                             size: ShadButtonSize.sm,
                             onPressed: onClaim,
                             trailing:
-                                const Icon(Iconsax.arrow_right_3_copy, size: 15),
+                                const Icon(Icons.arrow_right_alt, size: 18),
                             child: const Text('我要接'),
                           )
                         : _StatusChip(task: task, viewerUid: viewer.uid),
@@ -125,9 +124,7 @@ class _CountLabel extends StatelessWidget {
         Text(
           '/$required',
           style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-              color: AppColors.inkSoft),
+              fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.ink),
         ),
       ],
     );

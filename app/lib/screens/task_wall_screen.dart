@@ -88,16 +88,22 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: AppSpacing.pagePadding),
+                // spaceBetween（無 flex widget）避免干擾分頁的 IntrinsicWidth
                 child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    for (final f in TaskWallFilter.values)
-                      _TabLabel(
-                        label: _filterLabels[f]!,
-                        selected: _filter == f,
-                        onTap: () => setState(() => _filter = f),
-                      ),
-                    const Spacer(),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        for (final f in TaskWallFilter.values)
+                          _TabLabel(
+                            label: _filterLabels[f]!,
+                            selected: _filter == f,
+                            onTap: () => setState(() => _filter = f),
+                          ),
+                      ],
+                    ),
                     _SortControl(
                       value: _sort,
                       onChanged: (v) => setState(() => _sort = v),
@@ -247,27 +253,38 @@ class _TabLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 底線用圓角色塊墊在文字後面（Stack），寬度貼合文字、可加圓角。
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: Padding(
-        padding: const EdgeInsets.only(right: AppSpacing.md, bottom: 6),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
+        padding: const EdgeInsets.only(right: AppSpacing.lg, bottom: 4),
+        child: Stack(
+          alignment: Alignment.bottomCenter,
           children: [
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: AppType.body,
-                fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
-                color: selected ? AppColors.white : Colors.white38,
+            // 底線：粉色圓角粗線，Positioned 貼齊文字寬度
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                height: 6,
+                decoration: BoxDecoration(
+                  color: selected ? AppColors.pink : Colors.transparent,
+                  borderRadius: BorderRadius.circular(3),
+                ),
               ),
             ),
-            const SizedBox(height: 6),
-            Container(
-              height: 3,
-              width: selected ? 24 : 0,
-              color: AppColors.pink,
+            Padding(
+              padding: const EdgeInsets.only(bottom: 2),
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: AppType.body,
+                  fontWeight: FontWeight.w500,
+                  color: selected ? AppColors.white : AppColors.main,
+                ),
+              ),
             ),
           ],
         ),
@@ -299,7 +316,8 @@ class _SortControlState extends State<_SortControl> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 6),
+      // 對齊分頁文字（分頁文字下方還有 7+4 的底線空間）
+      padding: const EdgeInsets.only(top: 1),
       child: ShadPopover(
         controller: _controller,
         popover: (context) => SizedBox(

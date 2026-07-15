@@ -26,7 +26,7 @@ class RewardBadge extends StatelessWidget {
         text,
         style: const TextStyle(
           fontSize: 13,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.w500,
           color: AppColors.white,
         ),
       ),
