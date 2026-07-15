@@ -1,17 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../models/task.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_tokens.dart';
+import '../widgets/brand_eye.dart';
 import '../widgets/task_card.dart';
 
 enum TaskWallFilter { all, mine, claimed }
 
 enum TaskWallSort { newest, deadline, mystery, reward }
+
+const _filterLabels = {
+  TaskWallFilter.all: '全部任務',
+  TaskWallFilter.mine: '我發起的',
+  TaskWallFilter.claimed: '我接的',
+};
 
 const _sortLabels = {
   TaskWallSort.newest: '最新',
@@ -20,7 +27,7 @@ const _sortLabels = {
   TaskWallSort.reward: '高獎勵',
 };
 
-/// 任務牆（首頁）—— App 最重要畫面。
+/// 任務牆（首頁）—— App 最重要畫面，編輯排版風。
 class TaskWallScreen extends ConsumerStatefulWidget {
   const TaskWallScreen({super.key});
 
@@ -35,7 +42,7 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
   List<Task> _visibleTasks() {
     final repo = ref.watch(repositoryProvider);
     final me = repo.currentUser.uid;
-    var list = repo.tasks
+    final list = repo.tasks
         .where((t) =>
             t.status != TaskStatus.cancelled &&
             t.status != TaskStatus.rewardClaimed)
@@ -63,71 +70,82 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
     final tasks = _visibleTasks();
 
     return SafeArea(
+      bottom: false,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // ---- 刊頭 ----
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
-            child: Row(
+            padding: const EdgeInsets.fromLTRB(
+                AppSpacing.pagePadding, AppSpacing.lg, AppSpacing.pagePadding, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Expanded(
-                  child: Text(
-                    '👀 今天換誰？',
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800),
-                    overflow: TextOverflow.ellipsis,
+                const Text(
+                  'TASK BOARD ／ 今天的任務牆',
+                  style: TextStyle(
+                    fontSize: AppType.kicker,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.5,
+                    color: AppColors.inkSoft,
                   ),
                 ),
-                ShadSelect<TaskWallSort>(
-                  initialValue: _sort,
-                  onChanged: (v) => setState(() => _sort = v ?? _sort),
-                  selectedOptionBuilder: (context, value) => Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Iconsax.sort_copy,
-                          size: 14, color: AppColors.inkSoft),
-                      const SizedBox(width: 6),
-                      Text(_sortLabels[value]!),
-                    ],
-                  ),
-                  options: [
-                    for (final entry in _sortLabels.entries)
-                      ShadOption(value: entry.key, child: Text(entry.value)),
+                const SizedBox(height: AppSpacing.xs),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Expanded(
+                      child: Text(
+                        '今天換誰？',
+                        style: TextStyle(
+                          fontSize: AppType.display,
+                          fontWeight: FontWeight.w800,
+                          height: 1.0,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: AppSpacing.sm),
+                    const BrandEye(size: 30),
                   ],
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: AppSpacing.lg),
+          // ---- 排版式分頁導覽 + 行內排序 ----
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.pagePadding),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                _FilterPill(
-                  label: '全部任務',
-                  selected: _filter == TaskWallFilter.all,
-                  onTap: () => setState(() => _filter = TaskWallFilter.all),
-                ),
-                _FilterPill(
-                  label: '我發起的',
-                  selected: _filter == TaskWallFilter.mine,
-                  onTap: () => setState(() => _filter = TaskWallFilter.mine),
-                ),
-                _FilterPill(
-                  label: '我接的',
-                  selected: _filter == TaskWallFilter.claimed,
-                  onTap: () => setState(() => _filter = TaskWallFilter.claimed),
+                for (final f in TaskWallFilter.values)
+                  _TabLabel(
+                    label: _filterLabels[f]!,
+                    selected: _filter == f,
+                    onTap: () => setState(() => _filter = f),
+                  ),
+                const Spacer(),
+                _SortControl(
+                  value: _sort,
+                  onChanged: (v) => setState(() => _sort = v),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 4),
+          const Divider(height: 1, thickness: 1, color: AppColors.lightGray),
           Expanded(
             child: tasks.isEmpty
                 ? const _EmptyWall()
                 : ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(20, 12, 20, 96),
+                    padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.pagePadding,
+                        AppSpacing.md,
+                        AppSpacing.pagePadding,
+                        AppSpacing.bottomNavClearance),
                     itemCount: tasks.length,
-                    separatorBuilder: (_, _) => const SizedBox(height: 12),
+                    separatorBuilder: (_, _) =>
+                        const SizedBox(height: AppSpacing.md),
                     itemBuilder: (context, i) {
                       final task = tasks[i];
                       return TaskCard(
@@ -155,8 +173,9 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
   }
 }
 
-class _FilterPill extends StatelessWidget {
-  const _FilterPill({
+/// 排版式分頁：選中者墨黑粗字 + 橘色底線；未選中淺灰。
+class _TabLabel extends StatelessWidget {
+  const _TabLabel({
     required this.label,
     required this.selected,
     required this.onTap,
@@ -168,19 +187,100 @@ class _FilterPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 8),
-      child: selected
-          ? ShadButton(
-              size: ShadButtonSize.sm,
-              onPressed: onTap,
-              child: Text(label),
-            )
-          : ShadButton.ghost(
-              size: ShadButtonSize.sm,
-              onPressed: onTap,
-              child: Text(label),
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Padding(
+        padding: const EdgeInsets.only(right: AppSpacing.md, bottom: 10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: AppType.body,
+                fontWeight: selected ? FontWeight.w800 : FontWeight.w600,
+                color: selected ? AppColors.ink : AppColors.inkSoft,
+              ),
             ),
+            const SizedBox(height: 6),
+            Container(
+              height: 3,
+              width: selected ? 24 : 0,
+              color: AppColors.orange,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// 行內排序：像刊物欄位標籤而非 SaaS 下拉。
+class _SortControl extends StatefulWidget {
+  const _SortControl({required this.value, required this.onChanged});
+
+  final TaskWallSort value;
+  final ValueChanged<TaskWallSort> onChanged;
+
+  @override
+  State<_SortControl> createState() => _SortControlState();
+}
+
+class _SortControlState extends State<_SortControl> {
+  final _controller = ShadPopoverController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: ShadPopover(
+        controller: _controller,
+        popover: (context) => SizedBox(
+          width: 120,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              for (final entry in _sortLabels.entries)
+                ShadButton.ghost(
+                  onPressed: () {
+                    widget.onChanged(entry.key);
+                    _controller.hide();
+                  },
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(entry.value,
+                        style: TextStyle(
+                          color: AppColors.ink,
+                          fontWeight: entry.key == widget.value
+                              ? FontWeight.w800
+                              : FontWeight.w500,
+                        )),
+                  ),
+                ),
+            ],
+          ),
+        ),
+        child: GestureDetector(
+          onTap: _controller.toggle,
+          behavior: HitTestBehavior.opaque,
+          child: Text(
+            '排序 · ${_sortLabels[widget.value]} ▾',
+            style: const TextStyle(
+              fontSize: AppType.label,
+              fontWeight: FontWeight.w700,
+              color: AppColors.inkSoft,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -195,7 +295,7 @@ class _EmptyWall extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text('🫧', style: TextStyle(fontSize: 52)),
-          SizedBox(height: 12),
+          SizedBox(height: AppSpacing.md),
           Text(
             '目前沒有任務\n發起一個，看看今天換誰？',
             textAlign: TextAlign.center,

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:iconsax_flutter/iconsax_flutter.dart';
 
+import '../theme/app_tokens.dart';
+
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../widgets/line_bind_sheet.dart';
@@ -46,19 +48,26 @@ class _HomeShellState extends ConsumerState<HomeShell> {
           ProfileScreen(),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.ink,
-        foregroundColor: AppColors.white,
-        shape: const CircleBorder(),
-        onPressed: _startCreateTask,
-        child: const Icon(Iconsax.add_copy, size: 28),
+      // 中央建立鍵：墨黑 squircle 大鍵，非預設圓形 FAB
+      floatingActionButton: GestureDetector(
+        onTap: _startCreateTask,
+        child: Container(
+          width: 58,
+          height: 58,
+          decoration: BoxDecoration(
+            color: AppColors.ink,
+            borderRadius: BorderRadius.circular(AppRadius.squircle),
+          ),
+          child: const Icon(Iconsax.add_copy, size: 30, color: AppColors.white),
+        ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         color: AppColors.white,
         shape: const CircularNotchedRectangle(),
         notchMargin: 8,
-        padding: EdgeInsets.zero,
+        height: 62 + MediaQuery.of(context).padding.bottom,
+        padding: EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
         child: Row(
           children: [
             _NavItem(
