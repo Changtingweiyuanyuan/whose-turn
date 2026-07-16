@@ -327,51 +327,73 @@ class _SortControl extends StatefulWidget {
 }
 
 class _SortControlState extends State<_SortControl> {
-  final _controller = ShadPopoverController();
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  final _link = LayerLink();
+  final _portal = OverlayPortalController();
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      // 對齊分頁文字（分頁文字下方還有 7+4 的底線空間）
-      padding: const EdgeInsets.only(top: 1),
-      child: ShadPopover(
-        controller: _controller,
-        padding: const EdgeInsets.symmetric(vertical: 8),
-        // diluteInk 深色底 + 細邊框
-        decoration: ShadDecoration(
-          color: AppColors.diluteInk,
-          border: ShadBorder.all(
-            color: AppColors.inkSoft,
-            width: 1,
-            radius: BorderRadius.circular(6),
-          ),
-        ),
-        popover: (context) => SizedBox(
-          width: 150,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              for (final entry in _sortLabels.entries)
-                _SortItem(
-                  label: entry.value,
-                  selected: entry.key == widget.value,
-                  onTap: () {
-                    widget.onChanged(entry.key);
-                    _controller.hide();
-                  },
-                ),
-            ],
-          ),
-        ),
+    return OverlayPortal(
+      controller: _portal,
+      overlayChildBuilder: (context) {
+        return Stack(
+          children: [
+            // 點外面關閉
+            Positioned.fill(
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: _portal.hide,
+              ),
+            ),
+            // 選單：右緣對齊觸發點右緣（＝距螢幕 20px），往下開
+            CompositedTransformFollower(
+              link: _link,
+              targetAnchor: Alignment.bottomRight,
+              followerAnchor: Alignment.topRight,
+              offset: const Offset(0, 8),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  // 尖角（對齊觸發點的箭頭位置）
+                  const Padding(
+                    padding: EdgeInsets.only(right: 16),
+                    child: CustomPaint(size: Size(16, 8), painter: _Caret()),
+                  ),
+                  // 選單本體
+                  Container(
+                    width: 150,
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    decoration: BoxDecoration(
+                      color: AppColors.diluteInk,
+                      borderRadius: BorderRadius.circular(6),
+                      border: Border.all(color: AppColors.inkSoft, width: 1),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        for (final entry in _sortLabels.entries)
+                          _SortItem(
+                            label: entry.value,
+                            selected: entry.key == widget.value,
+                            onTap: () {
+                              widget.onChanged(entry.key);
+                              _portal.hide();
+                            },
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+      child: CompositedTransformTarget(
+        link: _link,
         child: GestureDetector(
-          onTap: _controller.toggle,
+          onTap: _portal.toggle,
           behavior: HitTestBehavior.opaque,
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -398,6 +420,36 @@ class _SortControlState extends State<_SortControl> {
       ),
     );
   }
+}
+
+/// 選單上方的尖角（朝上，diluteInk 底 + 兩斜邊 inkSoft 描邊）。
+class _Caret extends CustomPainter {
+  const _Caret();
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final w = size.width, h = size.height;
+    final fill = Path()
+      ..moveTo(w / 2, 0)
+      ..lineTo(w, h)
+      ..lineTo(0, h)
+      ..close();
+    canvas.drawPath(fill, Paint()..color = AppColors.diluteInk);
+    final stroke = Path()
+      ..moveTo(0, h)
+      ..lineTo(w / 2, 0)
+      ..lineTo(w, h);
+    canvas.drawPath(
+      stroke,
+      Paint()
+        ..color = AppColors.inkSoft
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant _Caret oldDelegate) => false;
 }
 
 /// 排序選項：左對齊，選中前方帶粉色短線（高度同分頁底線 4px）。
