@@ -11,11 +11,18 @@ import '../theme/app_colors.dart';
 import '../widgets/task_icon.dart';
 import '../widgets/app_back_button.dart';
 
-// 手繪線稿（asset:xxx）優先，其餘暫用 emoji，之後陸續換成線稿
+// 全套手繪線稿圖示
 const _emojiChoices = [
   'asset:plate', // 洗碗
   'asset:trash', // 倒垃圾
-  '🐶', '🧺', '🧹', '🛒', '🍱', '🎁', '📚', '🚗',
+  'asset:broom', // 掃地
+  'asset:basket', // 洗衣
+  'asset:cart', // 採買
+  'asset:bento', // 備餐
+  'asset:dog', // 遛狗
+  'asset:books', // 讀書
+  'asset:gift', // 禮物
+  'asset:car', // 接送
 ];
 
 /// v1.0 只開放三種獎勵類型
