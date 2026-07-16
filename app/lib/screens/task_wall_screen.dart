@@ -334,7 +334,13 @@ class _SortControlState extends State<_SortControl> {
       padding: const EdgeInsets.only(top: 1),
       child: ShadPopover(
         controller: _controller,
-        padding: const EdgeInsets.all(6),
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        // popover 靠右對齊觸發點（右緣＝觸發點右緣＝距螢幕 20px），向左展開
+        anchor: const ShadAnchor(
+          childAlignment: Alignment.bottomRight,
+          overlayAlignment: Alignment.topRight,
+          offset: Offset(0, 8),
+        ),
         // diluteInk 深色底 + 細邊框
         decoration: ShadDecoration(
           color: AppColors.diluteInk,
@@ -345,32 +351,19 @@ class _SortControlState extends State<_SortControl> {
           ),
         ),
         popover: (context) => SizedBox(
-          width: 128,
+          width: 150,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               for (final entry in _sortLabels.entries)
-                ShadButton.ghost(
-                  size: ShadButtonSize.sm,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-                  onPressed: () {
+                _SortItem(
+                  label: entry.value,
+                  selected: entry.key == widget.value,
+                  onTap: () {
                     widget.onChanged(entry.key);
                     _controller.hide();
                   },
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(entry.value,
-                        style: TextStyle(
-                          color: entry.key == widget.value
-                              ? AppColors.pink
-                              : AppColors.white,
-                          fontWeight: entry.key == widget.value
-                              ? FontWeight.w800
-                              : FontWeight.w500,
-                        )),
-                  ),
                 ),
             ],
           ),
@@ -390,10 +383,56 @@ class _SortControlState extends State<_SortControl> {
                 ),
               ),
               const SizedBox(width: 4),
-              const Icon(Iconsax.arrow_down_2_copy,
+              const Icon(Iconsax.arrow_down_2,
                   size: 14, color: Colors.white70),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+/// 排序選項：左對齊，選中前方帶粉色短線（高度同分頁底線 4px）。
+class _SortItem extends StatelessWidget {
+  const _SortItem({
+    required this.label,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String label;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      behavior: HitTestBehavior.opaque,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+        child: Row(
+          children: [
+            // 粉色短線指示器（選中才顯示；未選中留同寬空位讓文字對齊）
+            Container(
+              width: 16,
+              height: 4,
+              decoration: BoxDecoration(
+                color: selected ? AppColors.pink : Colors.transparent,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: AppType.body,
+                color: selected ? AppColors.pink : AppColors.white,
+                fontWeight: selected ? FontWeight.w800 : FontWeight.w500,
+              ),
+            ),
+          ],
         ),
       ),
     );
