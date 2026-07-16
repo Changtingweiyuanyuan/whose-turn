@@ -335,12 +335,6 @@ class _SortControlState extends State<_SortControl> {
       child: ShadPopover(
         controller: _controller,
         padding: const EdgeInsets.symmetric(vertical: 8),
-        // popover 靠右對齊觸發點（右緣＝觸發點右緣＝距螢幕 20px），向左展開
-        anchor: const ShadAnchor(
-          childAlignment: Alignment.bottomRight,
-          overlayAlignment: Alignment.topRight,
-          offset: Offset(0, 8),
-        ),
         // diluteInk 深色底 + 細邊框
         decoration: ShadDecoration(
           color: AppColors.diluteInk,
