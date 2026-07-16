@@ -488,7 +488,7 @@ class _SortItem extends StatelessWidget {
               style: TextStyle(
                 fontSize: AppType.body,
                 color: selected ? AppColors.pink : AppColors.white,
-                fontWeight: selected ? FontWeight.w800 : FontWeight.w500,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ],
