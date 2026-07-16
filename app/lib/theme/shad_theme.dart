@@ -45,11 +45,11 @@ abstract final class AppShadTheme {
         // Toast：diluteInk 深色底 + 細邊框 + 白字（與排序選單一致）
         primaryToastTheme: ShadToastTheme(
           backgroundColor: AppColors.diluteInk,
-          radius: BorderRadius.circular(14),
+          radius: BorderRadius.circular(6),
           border: ShadBorder.all(
             color: AppColors.inkSoft,
             width: 1,
-            radius: BorderRadius.circular(14),
+            radius: BorderRadius.circular(6),
           ),
           descriptionStyle: const TextStyle(color: AppColors.white),
           shadows: const [],

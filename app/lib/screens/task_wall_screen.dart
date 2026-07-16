@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../models/task.dart';
@@ -29,6 +28,15 @@ const _sortLabels = {
 };
 
 const _weekdays = ['一', '二', '三', '四', '五', '六', '日'];
+
+// Iconsax arrow-down2（broken 樣式）—— 直接用官方 SVG，最精準
+const _sortArrowSvg =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" '
+    'viewBox="0 0 24 24" fill="none"><path d="M6.31017 11.22C4.66017 8.35 '
+    '6.01017 6 9.33017 6H12.0002H14.6702C17.9802 6 19.3402 8.35 17.6802 '
+    '11.22L16.3402 13.53L15.0002 15.84C13.3402 18.71 10.6302 18.71 8.97017 '
+    '15.84" stroke="#ffffff" stroke-width="1.5" stroke-miterlimit="10" '
+    'stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 /// 任務牆（首頁）—— 黑底雜誌刊頭風。
 class TaskWallScreen extends ConsumerStatefulWidget {
@@ -341,7 +349,7 @@ class _SortControlState extends State<_SortControl> {
           border: ShadBorder.all(
             color: AppColors.inkSoft,
             width: 1,
-            radius: BorderRadius.circular(14),
+            radius: BorderRadius.circular(6),
           ),
         ),
         popover: (context) => SizedBox(
@@ -377,8 +385,13 @@ class _SortControlState extends State<_SortControl> {
                 ),
               ),
               const SizedBox(width: 4),
-              const Icon(Iconsax.arrow_down_2,
-                  size: 14, color: Colors.white70),
+              SvgPicture.string(
+                _sortArrowSvg,
+                width: 16,
+                height: 16,
+                colorFilter:
+                    const ColorFilter.mode(Colors.white70, BlendMode.srcIn),
+              ),
             ],
           ),
         ),
