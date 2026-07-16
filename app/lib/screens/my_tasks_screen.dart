@@ -6,14 +6,22 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../models/task.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_tokens.dart';
 import '../widgets/task_card.dart';
 
 /// 我的任務：進行中（我接的）／等待確認（我發起、待我確認）／已完成。
-class MyTasksScreen extends ConsumerWidget {
+class MyTasksScreen extends ConsumerStatefulWidget {
   const MyTasksScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MyTasksScreen> createState() => _MyTasksScreenState();
+}
+
+class _MyTasksScreenState extends ConsumerState<MyTasksScreen> {
+  int _tab = 0;
+
+  @override
+  Widget build(BuildContext context) {
     final repo = ref.watch(repositoryProvider);
     final me = repo.currentUser;
 
@@ -34,74 +42,214 @@ class MyTasksScreen extends ConsumerWidget {
         .expand((t) => t.completions)
         .where((c) => c.status == CompletionStatus.pending)
         .length;
+    final userNo =
+        (repo.currentGroup?.memberUids.indexOf(me.uid) ?? -1) + 1;
 
     return SafeArea(
+      bottom: false,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          _MyTasksMasthead(userNo: userNo, starTotal: me.starTotal),
+          const SizedBox(height: AppSpacing.md),
           Padding(
-            padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-            child: Row(
-              children: [
-                const Text(
-                  '我的任務',
-                  style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.white),
-                ),
-                const Spacer(),
-                Text(
-                  '⭐ ${me.starTotal}',
-                  style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w800,
-                      color: AppColors.white),
-                ),
-              ],
+            padding:
+                const EdgeInsets.symmetric(horizontal: AppSpacing.pagePadding),
+            child: _SlidingTabs(
+              labels: const ['進行中', '等待確認', '已完成'],
+              selected: _tab,
+              onChanged: (i) => setState(() => _tab = i),
+              badgeIndex: 1,
+              badgeCount: pendingCount,
             ),
           ),
+          const SizedBox(height: AppSpacing.md),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: ShadTabs<int>(
-                value: 0,
-                tabs: [
-                  ShadTab(
-                    value: 0,
-                    content: _TaskList(
-                        tasks: inProgress, emptyText: '還沒接任務\n去任務牆看看今天換誰？'),
-                    child: const Text('進行中'),
-                  ),
-                  ShadTab(
-                    value: 1,
-                    content: _ConfirmList(tasks: toConfirm),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Text('等待確認'),
-                        if (pendingCount > 0) ...[
-                          const SizedBox(width: 4),
-                          ShadBadge(
-                            child: Text('$pendingCount',
-                                style: const TextStyle(fontSize: 11)),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                  ShadTab(
-                    value: 2,
-                    content:
-                        _TaskList(tasks: done, emptyText: '完成的任務會出現在這裡'),
-                    child: const Text('已完成'),
-                  ),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.pagePadding),
+              child: IndexedStack(
+                index: _tab,
+                children: [
+                  _TaskList(
+                      tasks: inProgress, emptyText: '還沒接任務\n去任務牆看看今天換誰？'),
+                  _ConfirmList(tasks: toConfirm),
+                  _TaskList(tasks: done, emptyText: '完成的任務會出現在這裡'),
                 ],
               ),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+/// 我的任務刊頭：沿用圖三雜誌刊頭，標題改「我的任務」（字較小）。
+class _MyTasksMasthead extends StatelessWidget {
+  const _MyTasksMasthead({required this.userNo, required this.starTotal});
+
+  final int userNo;
+  final int starTotal;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+          AppSpacing.pagePadding, AppSpacing.md, AppSpacing.pagePadding, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Expanded(
+                child: Text(
+                  'WHOSE TURN TODAY',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: 3,
+                    color: AppColors.white,
+                  ),
+                ),
+              ),
+              Text(
+                'NO.${userNo.toString().padLeft(2, '0')}',
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 2,
+                  color: AppColors.pink,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Container(height: 2, color: AppColors.pink),
+          const SizedBox(height: AppSpacing.md),
+          // 標題與星星同一排，星星靠最右
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              const Expanded(
+                child: Text(
+                  '我的任務',
+                  style: TextStyle(
+                    fontSize: 40,
+                    height: 1.0,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.white,
+                  ),
+                ),
+              ),
+              Text(
+                '⭐ $starTotal',
+                style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.white),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// 滑動底線分頁（圖二）：三格平均分佈，選中底線在整條基線上滑動。
+class _SlidingTabs extends StatelessWidget {
+  const _SlidingTabs({
+    required this.labels,
+    required this.selected,
+    required this.onChanged,
+    this.badgeIndex = -1,
+    this.badgeCount = 0,
+  });
+
+  final List<String> labels;
+  final int selected;
+  final ValueChanged<int> onChanged;
+  final int badgeIndex;
+  final int badgeCount;
+
+  @override
+  Widget build(BuildContext context) {
+    final n = labels.length;
+    // 選中格中心的對齊 x：0→-1, 中→0, 末→1
+    final x = n == 1 ? 0.0 : -1.0 + 2.0 * selected / (n - 1);
+
+    return Column(
+      children: [
+        Row(
+          children: [
+            for (var i = 0; i < n; i++)
+              Expanded(
+                child: GestureDetector(
+                  onTap: () => onChanged(i),
+                  behavior: HitTestBehavior.opaque,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          labels[i],
+                          style: TextStyle(
+                            fontSize: AppType.body,
+                            fontWeight: i == selected
+                                ? FontWeight.w800
+                                : FontWeight.w600,
+                            color:
+                                i == selected ? AppColors.white : Colors.white54,
+                          ),
+                        ),
+                        if (i == badgeIndex && badgeCount > 0) ...[
+                          const SizedBox(width: 4),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 1),
+                            decoration: const BoxDecoration(
+                              color: AppColors.pink,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Text('$badgeCount',
+                                style: const TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.w800,
+                                    color: AppColors.white)),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: 4),
+        // 基線 + 滑動的粉色底線
+        Stack(
+          children: [
+            Container(height: 1, color: Colors.white24),
+            AnimatedAlign(
+              duration: const Duration(milliseconds: 240),
+              curve: Curves.easeOutCubic,
+              alignment: Alignment(x, 0),
+              child: FractionallySizedBox(
+                widthFactor: 1 / n,
+                child: Container(
+                  height: 3,
+                  decoration: BoxDecoration(
+                    color: AppColors.pink,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
@@ -192,7 +340,7 @@ class _ConfirmList extends ConsumerWidget {
                       children: [
                         Text(
                           '${doer.displayName} 完成了 ${task.title}',
-                          style: const TextStyle(fontWeight: FontWeight.w700),
+                          style: const TextStyle(fontWeight: FontWeight.w600),
                         ),
                         Text(
                           DateFormat('今天 HH:mm').format(completion.submittedAt),

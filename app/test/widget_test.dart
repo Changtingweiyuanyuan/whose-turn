@@ -28,14 +28,14 @@ void main() {
 
   testWidgets('App 開啟顯示任務牆與品牌刊頭', (tester) async {
     await tester.pumpWidget(const ProviderScope(child: WhoseTurnApp()));
-    expect(find.text('HOUSEHOLD\nWEEKLY'), findsOneWidget); // 雜誌刊頭
+    expect(find.text('WHOSE TURN TODAY'), findsOneWidget); // 雜誌刊頭
     expect(find.text('我要接'), findsWidgets); // 至少一張可接卡片
   });
 
   testWidgets('任務牆卡片顯示任務、發起人與獎勵', (tester) async {
     await tester.pumpWidget(wrap(const TaskWallScreen()));
     expect(find.text('倒垃圾'), findsOneWidget);
-    expect(find.text('發起人 媽媽'), findsWidgets);
+    expect(find.text('發起人：媽媽'), findsWidgets); // Text.rich 合併純文字
     expect(find.text('50 元'), findsOneWidget);
   });
 

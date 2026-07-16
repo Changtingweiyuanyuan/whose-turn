@@ -121,7 +121,7 @@ class TaskDetailScreen extends ConsumerWidget {
           // ---- 完成紀錄（待確認可操作 + 歷史保留）----
           if (history.isNotEmpty) ...[
             const Text('完成紀錄',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
             const SizedBox(height: 8),
             for (final c in history)
               Padding(
@@ -285,7 +285,7 @@ class _CompletionStatusLabel extends StatelessWidget {
     };
     return Text(
       label,
-      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: color),
+      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: color),
     );
   }
 }

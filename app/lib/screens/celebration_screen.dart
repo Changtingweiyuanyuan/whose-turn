@@ -63,7 +63,7 @@ class CelebrationScreen extends ConsumerWidget {
                   '獎勵已解鎖：${task.rewardLabel}',
                   style: const TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
               ),

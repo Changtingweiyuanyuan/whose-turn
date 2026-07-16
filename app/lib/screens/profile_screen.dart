@@ -43,7 +43,7 @@ class ProfileScreen extends ConsumerWidget {
                     children: [
                       Text(me.displayName,
                           style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w700)),
+                              fontSize: 18, fontWeight: FontWeight.w600)),
                       const SizedBox(height: 2),
                       Text(
                         me.isGuest ? '訪客帳號' : 'LINE 已綁定 ✅',
@@ -78,7 +78,7 @@ class ProfileScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('資料尚未備份',
-                            style: TextStyle(fontWeight: FontWeight.w700)),
+                            style: TextStyle(fontWeight: FontWeight.w600)),
                         Text('綁定 LINE 保存星星與紀錄，換手機也不會消失',
                             style: TextStyle(fontSize: 13)),
                       ],
@@ -98,7 +98,7 @@ class ProfileScreen extends ConsumerWidget {
           const Text('我的群組',
               style: TextStyle(
                   fontSize: 17,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w600,
                   color: AppColors.white)),
           const SizedBox(height: 8),
 
@@ -117,7 +117,7 @@ class ProfileScreen extends ConsumerWidget {
                       Expanded(
                         child: Text(group.name,
                             style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w700)),
+                                fontSize: 18, fontWeight: FontWeight.w600)),
                       ),
                       Text('${group.memberUids.length} 人',
                           style: const TextStyle(color: AppColors.inkSoft)),
@@ -186,7 +186,7 @@ class ProfileScreen extends ConsumerWidget {
           const Text('Demo 視角切換',
               style: TextStyle(
                   fontSize: 17,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: FontWeight.w600,
                   color: AppColors.white)),
           const SizedBox(height: 4),
           const Text(
@@ -344,7 +344,7 @@ class _ActionCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title,
-                      style: const TextStyle(fontWeight: FontWeight.w700)),
+                      style: const TextStyle(fontWeight: FontWeight.w600)),
                   Text(subtitle,
                       style: const TextStyle(
                           fontSize: 13, color: AppColors.inkSoft)),

@@ -179,11 +179,10 @@ class _Masthead extends StatelessWidget {
             children: [
               const Expanded(
                 child: Text(
-                  'WHOSE TURN\nTODAY',
+                  'WHOSE TURN TODAY',
                   style: TextStyle(
                     fontSize: 13,
-                    height: 1.15,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                     letterSpacing: 3,
                     color: AppColors.white,
                   ),
@@ -265,16 +264,26 @@ class _TabLabel extends StatelessWidget {
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
-            // 底線：粉色圓角粗線，Positioned 貼齊文字寬度
+            // 底線：粉色圓角粗線，切換時從左側滑入 / 滑出（scaleX 動畫）
             Positioned(
               left: 0,
               right: 0,
               bottom: 0,
-              child: Container(
-                height: 4,
-                decoration: BoxDecoration(
-                  color: selected ? AppColors.pink : Colors.transparent,
-                  borderRadius: BorderRadius.circular(2),
+              child: TweenAnimationBuilder<double>(
+                duration: const Duration(milliseconds: 240),
+                curve: Curves.easeOutCubic,
+                tween: Tween(begin: 0, end: selected ? 1.0 : 0.0),
+                builder: (context, t, child) => Transform.scale(
+                  scaleX: t,
+                  alignment: Alignment.centerLeft,
+                  child: child,
+                ),
+                child: Container(
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: AppColors.pink,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
                 ),
               ),
             ),
@@ -360,7 +369,7 @@ class _SortControlState extends State<_SortControl> {
             '排序 · ${_sortLabels[widget.value]} ▾',
             style: const TextStyle(
               fontSize: AppType.label,
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w500,
               color: Colors.white70,
             ),
           ),

@@ -22,7 +22,7 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
           const SizedBox(height: 12),
           const Text(
             '先綁定 LINE 再繼續',
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 8),
           const Text(

@@ -40,9 +40,9 @@ class TaskCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 左側插圖（emoji 放大）
+            // 左側插圖（emoji 放大）；與內容間距 12
             Padding(
-              padding: const EdgeInsets.only(top: 2, right: AppSpacing.md),
+              padding: const EdgeInsets.only(top: 2, right: 12),
               child: Text(task.emoji, style: const TextStyle(fontSize: 44)),
             ),
             Expanded(
@@ -71,7 +71,7 @@ class TaskCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: AppSpacing.xs), // 標題↔發起人 4
                   Text.rich(
                     TextSpan(
                       style: const TextStyle(
@@ -87,9 +87,9 @@ class TaskCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.sm),
+                  const SizedBox(height: AppSpacing.sm), // 發起人↔獎勵 8
                   RewardBadge(task: task, viewerUid: viewer.uid),
-                  const SizedBox(height: AppSpacing.md),
+                  const SizedBox(height: AppSpacing.sm), // 獎勵↔動作 8
                   // 動作（右下角）
                   Align(
                     alignment: Alignment.centerRight,
@@ -134,7 +134,7 @@ class _CountLabel extends StatelessWidget {
         Text(
           '/$required',
           style: const TextStyle(
-              fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.ink),
+              fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.ink),
         ),
       ],
     );
@@ -164,7 +164,7 @@ class _StatusChip extends StatelessWidget {
     return Text(
       label,
       style: TextStyle(
-          fontSize: AppType.label, fontWeight: FontWeight.w800, color: color),
+          fontSize: AppType.label, fontWeight: FontWeight.w600, color: color),
     );
   }
 }
