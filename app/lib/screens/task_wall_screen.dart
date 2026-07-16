@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../models/task.dart';
@@ -23,8 +24,8 @@ const _filterLabels = {
 const _sortLabels = {
   TaskWallSort.newest: '最新',
   TaskWallSort.deadline: '快截止',
-  TaskWallSort.mystery: '神秘',
-  TaskWallSort.reward: '高獎勵',
+  TaskWallSort.mystery: '神秘獎勵',
+  TaskWallSort.reward: '現金',
 };
 
 const _weekdays = ['一', '二', '三', '四', '五', '六', '日'];
@@ -139,7 +140,7 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
                               if (context.mounted) {
                                 ShadToaster.of(context).show(
                                   ShadToast(
-                                    description: Text('接下「${task.title}」！加油 💪'),
+                                    description: Text('接下「${task.title}」！加油 💪🏻'),
                                   ),
                                 );
                               }
@@ -333,9 +334,18 @@ class _SortControlState extends State<_SortControl> {
       padding: const EdgeInsets.only(top: 1),
       child: ShadPopover(
         controller: _controller,
-        padding: const EdgeInsets.all(4),
+        padding: const EdgeInsets.all(6),
+        // diluteInk 深色底 + 細邊框
+        decoration: ShadDecoration(
+          color: AppColors.diluteInk,
+          border: ShadBorder.all(
+            color: AppColors.inkSoft,
+            width: 1,
+            radius: BorderRadius.circular(14),
+          ),
+        ),
         popover: (context) => SizedBox(
-          width: 120,
+          width: 128,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -343,7 +353,8 @@ class _SortControlState extends State<_SortControl> {
               for (final entry in _sortLabels.entries)
                 ShadButton.ghost(
                   size: ShadButtonSize.sm,
-                  padding: const EdgeInsets.all(4),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                   onPressed: () {
                     widget.onChanged(entry.key);
                     _controller.hide();
@@ -352,7 +363,9 @@ class _SortControlState extends State<_SortControl> {
                     alignment: Alignment.centerLeft,
                     child: Text(entry.value,
                         style: TextStyle(
-                          color: AppColors.ink,
+                          color: entry.key == widget.value
+                              ? AppColors.pink
+                              : AppColors.white,
                           fontWeight: entry.key == widget.value
                               ? FontWeight.w800
                               : FontWeight.w500,
@@ -365,13 +378,21 @@ class _SortControlState extends State<_SortControl> {
         child: GestureDetector(
           onTap: _controller.toggle,
           behavior: HitTestBehavior.opaque,
-          child: Text(
-            '排序 · ${_sortLabels[widget.value]} ▾',
-            style: const TextStyle(
-              fontSize: AppType.label,
-              fontWeight: FontWeight.w500,
-              color: Colors.white70,
-            ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '排序・${_sortLabels[widget.value]}',
+                style: const TextStyle(
+                  fontSize: AppType.label,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.white70,
+                ),
+              ),
+              const SizedBox(width: 4),
+              const Icon(Iconsax.arrow_down_2_copy,
+                  size: 14, color: Colors.white70),
+            ],
           ),
         ),
       ),

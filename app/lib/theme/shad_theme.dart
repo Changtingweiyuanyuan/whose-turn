@@ -42,6 +42,18 @@ abstract final class AppShadTheme {
           radius: BorderRadius.circular(8),
           border: ShadBorder.all(color: AppColors.lightGray, width: 1),
         ),
+        // Toast：diluteInk 深色底 + 細邊框 + 白字（與排序選單一致）
+        primaryToastTheme: ShadToastTheme(
+          backgroundColor: AppColors.diluteInk,
+          radius: BorderRadius.circular(14),
+          border: ShadBorder.all(
+            color: AppColors.inkSoft,
+            width: 1,
+            radius: BorderRadius.circular(14),
+          ),
+          descriptionStyle: const TextStyle(color: AppColors.white),
+          shadows: const [],
+        ),
         textTheme: ShadTextTheme(
           family: GoogleFonts.robotoCondensed().fontFamily!,
         ),
