@@ -34,11 +34,12 @@ abstract final class AppShadTheme {
   static ShadThemeData get light => ShadThemeData(
         brightness: Brightness.light,
         colorScheme: _colorScheme,
-        // 銳利不膠囊：全域圓角 8
-        radius: BorderRadius.circular(8),
-        // 細線不陰影：卡片 1px 邊框、無 shadow
+        // 按鈕類（含 input）圓角 6
+        radius: BorderRadius.circular(6),
+        // 卡片：圓角 8、1px 邊框、無 shadow
         cardTheme: ShadCardTheme(
           shadows: const [],
+          radius: BorderRadius.circular(8),
           border: ShadBorder.all(color: AppColors.lightGray, width: 1),
         ),
         textTheme: ShadTextTheme(

@@ -24,7 +24,10 @@ class ProfileScreen extends ConsumerWidget {
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 96),
         children: [
           const Text('我的',
-              style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800)),
+              style: TextStyle(
+                  fontSize: 26,
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.white)),
           const SizedBox(height: 16),
 
           // ---- 個人卡 ----
@@ -93,7 +96,10 @@ class ProfileScreen extends ConsumerWidget {
 
           const SizedBox(height: 24),
           const Text('我的群組',
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
+              style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.white)),
           const SizedBox(height: 8),
 
           // ---- 群組卡（F1）----
@@ -178,11 +184,14 @@ class ProfileScreen extends ConsumerWidget {
 
           const SizedBox(height: 24),
           const Text('Demo 視角切換',
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700)),
+              style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.white)),
           const SizedBox(height: 4),
           const Text(
             '雛形限定：切換身分同時體驗發起人與接單人',
-            style: TextStyle(fontSize: 13, color: AppColors.inkSoft),
+            style: TextStyle(fontSize: 13, color: Colors.white70),
           ),
           const SizedBox(height: 8),
           ShadCard(

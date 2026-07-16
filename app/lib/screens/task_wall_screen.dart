@@ -71,17 +71,18 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
     final repo = ref.watch(repositoryProvider);
     final tasks = _visibleTasks();
     final openCount = repo.tasks.where((t) => t.status == TaskStatus.open).length;
+    // 目前使用者是群組裡第幾位（1-based）
+    final userNo =
+        (repo.currentGroup?.memberUids.indexOf(repo.currentUser.uid) ?? -1) + 1;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
-      child: ColoredBox(
-        color: AppColors.ink,
-        child: SafeArea(
-          bottom: false,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _Masthead(openCount: openCount),
+      child: SafeArea(
+        bottom: false,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _Masthead(openCount: openCount, userNo: userNo),
               const SizedBox(height: AppSpacing.md),
               // 排版式分頁 + 行內排序
               Padding(
@@ -150,16 +151,18 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
             ],
           ),
         ),
-      ),
     );
   }
 }
 
-/// 雜誌刊頭：HOUSEHOLD WEEKLY / NO.07 + 大標「今天換誰？」+ 副標。
+/// 雜誌刊頭：WHOSE TURN TODAY / NO.xx + 大標「今天換誰？」+ 副標。
 class _Masthead extends StatelessWidget {
-  const _Masthead({required this.openCount});
+  const _Masthead({required this.openCount, required this.userNo});
 
   final int openCount;
+
+  /// 目前使用者是第幾位（最少兩位數、不足補 0）
+  final int userNo;
 
   @override
   Widget build(BuildContext context) {
@@ -176,7 +179,7 @@ class _Masthead extends StatelessWidget {
             children: [
               const Expanded(
                 child: Text(
-                  'HOUSEHOLD\nWEEKLY',
+                  'WHOSE TURN\nTODAY',
                   style: TextStyle(
                     fontSize: 13,
                     height: 1.15,
@@ -187,7 +190,7 @@ class _Masthead extends StatelessWidget {
                 ),
               ),
               Text(
-                'NO.07',
+                'NO.${userNo.toString().padLeft(2, '0')}',
                 style: TextStyle(
                   fontSize: 15,
                   fontWeight: FontWeight.w800,
@@ -268,15 +271,16 @@ class _TabLabel extends StatelessWidget {
               right: 0,
               bottom: 0,
               child: Container(
-                height: 6,
+                height: 4,
                 decoration: BoxDecoration(
                   color: selected ? AppColors.pink : Colors.transparent,
-                  borderRadius: BorderRadius.circular(3),
+                  borderRadius: BorderRadius.circular(2),
                 ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(bottom: 2),
+              // 文字與底線間留 4px（底線 4 + 間距 4）
+              padding: const EdgeInsets.only(bottom: 8),
               child: Text(
                 label,
                 style: TextStyle(
@@ -320,6 +324,7 @@ class _SortControlState extends State<_SortControl> {
       padding: const EdgeInsets.only(top: 1),
       child: ShadPopover(
         controller: _controller,
+        padding: const EdgeInsets.all(4),
         popover: (context) => SizedBox(
           width: 120,
           child: Column(
@@ -328,6 +333,8 @@ class _SortControlState extends State<_SortControl> {
             children: [
               for (final entry in _sortLabels.entries)
                 ShadButton.ghost(
+                  size: ShadButtonSize.sm,
+                  padding: const EdgeInsets.all(4),
                   onPressed: () {
                     widget.onChanged(entry.key);
                     _controller.hide();

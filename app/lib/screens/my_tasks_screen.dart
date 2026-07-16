@@ -45,13 +45,18 @@ class MyTasksScreen extends ConsumerWidget {
               children: [
                 const Text(
                   '我的任務',
-                  style: TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
+                  style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.white),
                 ),
                 const Spacer(),
                 Text(
                   '⭐ ${me.starTotal}',
                   style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.w800),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.white),
                 ),
               ],
             ),
@@ -117,7 +122,7 @@ class _TaskList extends ConsumerWidget {
           child: Text(
             emptyText,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: AppColors.inkSoft, height: 1.6),
+            style: const TextStyle(color: Colors.white70, height: 1.6),
           ),
         ),
       );
@@ -158,7 +163,7 @@ class _ConfirmList extends ConsumerWidget {
         padding: EdgeInsets.symmetric(vertical: 48),
         child: Center(
           child: Text('沒有待確認的完成紀錄',
-              style: TextStyle(color: AppColors.inkSoft)),
+              style: TextStyle(color: Colors.white70)),
         ),
       );
     }

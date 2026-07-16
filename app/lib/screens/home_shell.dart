@@ -6,6 +6,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../widgets/line_bind_sheet.dart';
+import '../widgets/noise_background.dart';
 import 'my_tasks_screen.dart';
 import 'notifications_screen.dart';
 import 'profile_screen.dart';
@@ -37,14 +38,19 @@ class _HomeShellState extends ConsumerState<HomeShell> {
     final unread = ref.watch(repositoryProvider).unreadCount;
 
     return Scaffold(
-      body: IndexedStack(
-        index: _index,
-        children: const [
-          TaskWallScreen(),
-          MyTasksScreen(),
-          NotificationsScreen(),
-          ProfileScreen(),
-        ],
+      // 讓頁面內容延伸到導覽列後方，缺口才會露出黑底而非淺色
+      extendBody: true,
+      // 全站共用黑底顆粒背景
+      body: NoiseBackground(
+        child: IndexedStack(
+          index: _index,
+          children: const [
+            TaskWallScreen(),
+            MyTasksScreen(),
+            NotificationsScreen(),
+            ProfileScreen(),
+          ],
+        ),
       ),
       // 中央建立鍵：粉色圓形大鍵，坐落在圓弧 notch 上
       floatingActionButton: GestureDetector(
@@ -62,10 +68,10 @@ class _HomeShellState extends ConsumerState<HomeShell> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: DecoratedBox(
         decoration: const BoxDecoration(
-          border: Border(top: BorderSide(color: AppColors.inkSoft, width: 0.5)),
+          //border: Border(top: BorderSide(color: AppColors.inkSoft, width: 0.5)),
         ),
         child: BottomAppBar(
-          color: AppColors.ink,
+          color: AppColors.diluteInk,
           shape: const CircularNotchedRectangle(),
           notchMargin: 8,
           height: 62 + MediaQuery.of(context).padding.bottom,

@@ -72,10 +72,20 @@ class TaskCard extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 2),
-                  Text(
-                    '發起人 ${creator.displayName}',
-                    style: const TextStyle(
-                        fontSize: AppType.label, color: AppColors.inkSoft),
+                  Text.rich(
+                    TextSpan(
+                      style: const TextStyle(
+                          fontSize: AppType.label, color: AppColors.inkSoft),
+                      children: [
+                        const TextSpan(text: '發起人'),
+                        TextSpan(
+                          text: '：',
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w800, color: AppColors.inkSoft),
+                        ),
+                        TextSpan(text: creator.displayName),
+                      ],
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.sm),
                   RewardBadge(task: task, viewerUid: viewer.uid),

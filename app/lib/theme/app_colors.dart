@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 /// 背景 #F7F7F7、墨黑 #010101、主色 #C2D1D3、橘 #FF8B04、粉 #CF729B。
 abstract final class AppColors {
   static const ink = Color(0xFF010101);
+  static const diluteInk = Color(0xFF222222);
   static const main = Color(0xFFC2D1D3);
   static const orange = Color(0xFFFF8B04);
   static const pink = Color(0xFFCF729B);
