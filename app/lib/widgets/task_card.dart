@@ -6,6 +6,7 @@ import '../models/task.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
 import 'reward_badge.dart';
+import 'task_icon.dart';
 
 /// 任務卡 —— 黑底雜誌風：藍/白輪替底色、次數右上角、動作右下角。
 class TaskCard extends StatelessWidget {
@@ -40,10 +41,10 @@ class TaskCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 左側插圖（emoji 放大）；與內容間距 12
+            // 左側插圖（emoji 或手繪圖）；與內容間距 12
             Padding(
               padding: const EdgeInsets.only(top: 2, right: 12),
-              child: Text(task.emoji, style: const TextStyle(fontSize: 44)),
+              child: TaskIcon(icon: task.emoji, size: 44),
             ),
             Expanded(
               child: Column(

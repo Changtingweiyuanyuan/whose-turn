@@ -9,6 +9,7 @@ import '../widgets/app_back_button.dart';
 import '../theme/app_colors.dart';
 import '../widgets/reward_badge.dart';
 import '../widgets/star_progress.dart';
+import '../widgets/task_icon.dart';
 
 class TaskDetailScreen extends ConsumerWidget {
   const TaskDetailScreen({super.key, required this.taskId});
@@ -53,7 +54,7 @@ class TaskDetailScreen extends ConsumerWidget {
                 shape: BoxShape.circle,
               ),
               alignment: Alignment.center,
-              child: Text(task.emoji, style: const TextStyle(fontSize: 56)),
+              child: TaskIcon(icon: task.emoji, size: 72),
             ),
           ),
           const SizedBox(height: 16),

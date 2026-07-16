@@ -8,9 +8,15 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../models/task.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
+import '../widgets/task_icon.dart';
 import '../widgets/app_back_button.dart';
 
-const _emojiChoices = ['🍵', '🗑️', '🐶', '🧺', '🧹', '🛒', '🍱', '🎁', '📚', '🚗'];
+// 手繪線稿（asset:xxx）優先，其餘暫用 emoji，之後陸續換成線稿
+const _emojiChoices = [
+  'asset:plate', // 洗碗
+  'asset:trash', // 倒垃圾
+  '🐶', '🧺', '🧹', '🛒', '🍱', '🎁', '📚', '🚗',
+];
 
 /// v1.0 只開放三種獎勵類型
 const _rewardTypeLabels = {
@@ -147,7 +153,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                           width: _emoji == e ? 2 : 1,
                         ),
                       ),
-                      child: Text(e, style: const TextStyle(fontSize: 22)),
+                      child: TaskIcon(icon: e, size: 26),
                     ),
                   ),
               ],
