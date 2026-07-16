@@ -350,41 +350,47 @@ class _SortControlState extends State<_SortControl> {
               targetAnchor: Alignment.bottomRight,
               followerAnchor: Alignment.topRight,
               offset: const Offset(0, 8),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  // 尖角（對齊觸發點的箭頭位置）
-                  const Padding(
-                    padding: EdgeInsets.only(right: 16),
-                    child: CustomPaint(size: Size(16, 8), painter: _Caret()),
-                  ),
-                  // 選單本體
-                  Container(
-                    width: 150,
-                    padding: const EdgeInsets.symmetric(vertical: 8),
-                    decoration: BoxDecoration(
-                      color: AppColors.diluteInk,
-                      borderRadius: BorderRadius.circular(6),
-                      border: Border.all(color: AppColors.inkSoft, width: 1),
+              child: SizedBox(
+                width: 150,
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    // 選單本體（往下推 8px 讓尖角覆蓋在上邊框上）
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        decoration: BoxDecoration(
+                          color: AppColors.diluteInk,
+                          borderRadius: BorderRadius.circular(6),
+                          border:
+                              Border.all(color: AppColors.inkSoft, width: 1),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            for (final entry in _sortLabels.entries)
+                              _SortItem(
+                                label: entry.value,
+                                selected: entry.key == widget.value,
+                                onTap: () {
+                                  widget.onChanged(entry.key);
+                                  _portal.hide();
+                                },
+                              ),
+                          ],
+                        ),
+                      ),
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        for (final entry in _sortLabels.entries)
-                          _SortItem(
-                            label: entry.value,
-                            selected: entry.key == widget.value,
-                            onTap: () {
-                              widget.onChanged(entry.key);
-                              _portal.hide();
-                            },
-                          ),
-                      ],
+                    // 尖角疊在最上層（覆蓋選單上邊框、消除白線），對齊箭頭位置
+                    const Positioned(
+                      top: 0,
+                      right: 18,
+                      child: CustomPaint(size: Size(18, 9), painter: _Caret()),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -429,23 +435,40 @@ class _Caret extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final w = size.width, h = size.height;
-    final fill = Path()
-      ..moveTo(w / 2, 0)
-      ..lineTo(w, h)
-      ..lineTo(0, h)
-      ..close();
+    const r = 4.0; // 頂點圓角
+    final apex = Offset(w / 2, 0);
+    const bl = Offset(0, 0); // 下方左右頂點（用 h 覆寫）
+    final left = Offset(0, h);
+    final right = Offset(w, h);
+
+    Offset along(Offset from, Offset to, double d) {
+      final v = to - from;
+      return from + v / v.distance * d;
+    }
+
+    final p1 = along(apex, left, r);
+    final p2 = along(apex, right, r);
+
+    // 只描兩斜邊 + 圓角頂點（不描底邊，讓它融入選單）
+    final edge = Path()
+      ..moveTo(left.dx, left.dy)
+      ..lineTo(p1.dx, p1.dy)
+      ..quadraticBezierTo(apex.dx, apex.dy, p2.dx, p2.dy)
+      ..lineTo(right.dx, right.dy);
+    // 填色（含底邊，蓋住選單上邊框）
+    final fill = Path.from(edge)..close();
     canvas.drawPath(fill, Paint()..color = AppColors.diluteInk);
-    final stroke = Path()
-      ..moveTo(0, h)
-      ..lineTo(w / 2, 0)
-      ..lineTo(w, h);
     canvas.drawPath(
-      stroke,
+      edge,
       Paint()
         ..color = AppColors.inkSoft
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 1,
+        ..strokeWidth = 1
+        ..strokeJoin = StrokeJoin.round
+        ..strokeCap = StrokeCap.round,
     );
+    // bl 只是保留避免 lint（未使用變數）
+    assert(bl.dx == 0);
   }
 
   @override
