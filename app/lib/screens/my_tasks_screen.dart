@@ -197,11 +197,9 @@ class _SlidingTabs extends StatelessWidget {
                           labels[i],
                           style: TextStyle(
                             fontSize: AppType.body,
-                            fontWeight: i == selected
-                                ? FontWeight.w800
-                                : FontWeight.w600,
+                            fontWeight: FontWeight.w500,
                             color:
-                                i == selected ? AppColors.white : Colors.white54,
+                                i == selected ? AppColors.white : AppColors.main,
                           ),
                         ),
                         if (i == badgeIndex && badgeCount > 0) ...[
