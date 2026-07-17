@@ -6,6 +6,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../widgets/line_bind_sheet.dart';
+import '../widgets/message_bubble_icon.dart';
 import '../widgets/noise_background.dart';
 import 'my_tasks_screen.dart';
 import 'notifications_screen.dart';
@@ -93,7 +94,8 @@ class _HomeShellState extends ConsumerState<HomeShell> {
             ),
             const Expanded(child: SizedBox()), // FAB 缺口
             _NavItem(
-              icon: Iconsax.message_copy,
+              iconBuilder: (color) =>
+                  MessageBubbleIcon(color: color, size: 24),
               label: '訊息',
               selected: _index == 2,
               badgeCount: unread,
@@ -115,14 +117,19 @@ class _HomeShellState extends ConsumerState<HomeShell> {
 
 class _NavItem extends StatelessWidget {
   const _NavItem({
-    required this.icon,
     required this.label,
     required this.selected,
     required this.onTap,
+    this.icon,
+    this.iconBuilder,
     this.badgeCount = 0,
-  });
+  }) : assert(icon != null || iconBuilder != null);
 
-  final IconData icon;
+  /// 一般 Iconsax icon；與 [iconBuilder] 二選一。
+  final IconData? icon;
+
+  /// 自訂 icon（會收到目前的顏色，供 SVG 上色）；優先於 [icon]。
+  final Widget Function(Color color)? iconBuilder;
   final String label;
   final bool selected;
   final VoidCallback onTap;
@@ -143,7 +150,7 @@ class _NavItem extends StatelessWidget {
                 count: badgeCount,
                 isLabelVisible: badgeCount > 0,
                 backgroundColor: AppColors.pink,
-                child: Icon(icon, color: color),
+                child: iconBuilder?.call(color) ?? Icon(icon, color: color),
               ),
               const SizedBox(height: 2),
               Text(
