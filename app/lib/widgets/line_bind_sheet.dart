@@ -1,11 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import 'app_close_icon.dart';
+
+// Iconsax message-bubble（broken 樣式）—— 直接用官方 SVG，最精準
+const _bubbleSvg =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" '
+    'viewBox="0 0 24 24" fill="none">'
+    '<path d="M8.5 10.5H15.5" stroke="#ffffff" stroke-width="1.5" '
+    'stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>'
+    '<path d="M2 11.5597V13.4297C2 16.4297 4 18.4297 7 18.4297H11L15.45 '
+    '21.3897C16.11 21.8297 17 21.3597 17 20.5597V18.4297C20 18.4297 22 16.4297 '
+    '22 13.4297V7.42969C22 4.42969 20 2.42969 17 2.42969H7C4 2.42969 2 4.42969 '
+    '2 7.42969" stroke="#ffffff" stroke-width="1.5" stroke-miterlimit="10" '
+    'stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 /// 訪客 gate：建立群組 / 發起任務前必須綁定 LINE。
 /// 回傳 true 表示已完成綁定，呼叫端可繼續原本的動作。
@@ -70,7 +81,13 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
             width: double.infinity,
             backgroundColor: AppColors.pink,
             foregroundColor: AppColors.white,
-            leading: const Icon(Iconsax.message_copy, size: 18),
+            leading: SvgPicture.string(
+              _bubbleSvg,
+              width: 20,
+              height: 20,
+              colorFilter:
+                  const ColorFilter.mode(AppColors.white, BlendMode.srcIn),
+            ),
             onPressed: () async {
               await ref.read(repositoryProvider).bindLine();
               if (sheetContext.mounted) {

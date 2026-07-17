@@ -405,7 +405,7 @@ class _SortControlState extends State<_SortControl> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                '排序・${_sortLabels[widget.value]}',
+                '排序 · ${_sortLabels[widget.value]}',
                 style: const TextStyle(
                   fontSize: AppType.label,
                   fontWeight: FontWeight.w500,
