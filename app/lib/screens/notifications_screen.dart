@@ -44,31 +44,46 @@ class NotificationsScreen extends ConsumerWidget {
                             context.push('/task/${n.taskId}');
                           }
                         },
-                        child: ShadCard(
-                          backgroundColor:
-                              n.read ? AppColors.white : AppColors.orangeSoft,
+                        child: Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 12),
+                          decoration: BoxDecoration(
+                            // 未讀：淡藍底；已讀：diluteInk 深底 + 淡白邊（同完成紀錄）
+                            color: n.read ? AppColors.diluteInk : AppColors.main,
+                            borderRadius: BorderRadius.circular(8),
+                            border: n.read
+                                ? Border.all(color: AppColors.inkSoft, width: 1)
+                                : null,
+                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 n.title,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: AppType.body,
-                                    fontWeight: FontWeight.w500),
+                                    fontWeight: FontWeight.w500,
+                                    color: n.read
+                                        ? AppColors.white
+                                        : AppColors.ink),
                               ),
                               const SizedBox(height: 4),
                               Text(
                                 n.body,
-                                style: const TextStyle(
-                                    fontSize: 13, color: AppColors.inkSoft),
+                                style: TextStyle(
+                                    fontSize: 13,
+                                    color: n.read
+                                        ? Colors.white70
+                                        : AppColors.inkSoft),
                               ),
                               const SizedBox(height: 2),
                               Text(
                                 DateFormat('MM/dd HH:mm').format(n.createdAt),
-                                style: const TextStyle(
-                                    fontSize: 12, color: AppColors.inkSoft),
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: n.read
+                                        ? Colors.white54
+                                        : AppColors.inkSoft),
                               ),
                             ],
                           ),
