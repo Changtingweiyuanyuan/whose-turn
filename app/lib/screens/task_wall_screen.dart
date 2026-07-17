@@ -353,7 +353,7 @@ class _SortControlState extends State<_SortControl> {
               offset: const Offset(0, 4),
               child: Container(
                 width: 150,
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
                   color: AppColors.diluteInk,
                   borderRadius: BorderRadius.circular(6),

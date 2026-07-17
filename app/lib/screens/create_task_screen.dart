@@ -225,7 +225,8 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               // 分段控制：容器同 input（diluteInk 底 + lightGray 1px 框），
               // 選中格只加粉色細框、微內縮、無填色
               Container(
-                padding: const EdgeInsets.all(4), // 選項距容器 4px
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 12, vertical: 6), // 距容器 上下6/左右12
                 decoration: BoxDecoration(
                   color: AppColors.diluteInk,
                   borderRadius: BorderRadius.circular(6),
