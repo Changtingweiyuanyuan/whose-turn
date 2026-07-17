@@ -289,6 +289,8 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                 width: double.infinity,
                 backgroundColor: AppColors.diluteInk,
                 foregroundColor: AppColors.white,
+                hoverBackgroundColor: AppColors.diluteInk,
+                hoverForegroundColor: AppColors.white,
               ),
               const SizedBox(height: 16),
               Row(
