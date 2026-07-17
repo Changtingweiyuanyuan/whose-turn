@@ -65,7 +65,7 @@ class NotificationsScreen extends ConsumerWidget {
                                     fontWeight: FontWeight.w600,
                                     color: AppColors.white),
                               ),
-                              const SizedBox(height: 4),
+                              const SizedBox(height: AppSpacing.sm), // 標題↔內文 8
                               Text(
                                 n.body,
                                 style: const TextStyle(
