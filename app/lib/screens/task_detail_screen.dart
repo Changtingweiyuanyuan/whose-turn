@@ -227,15 +227,14 @@ class TaskDetailScreen extends ConsumerWidget {
     final repo = ref.read(repositoryProvider);
     final me = repo.currentUser;
 
+    // 與 LINE 綁定按鈕一致：粉底白字、預設尺寸與字級、預設 hover
     Widget primary(String label, Future<void> Function() onPressed) {
       return ShadButton(
         width: double.infinity,
-        size: ShadButtonSize.lg,
-        // 深色雜訊底上，白底黑字才看得清楚（原本 ink 底會融進背景）
-        backgroundColor: AppColors.white,
-        foregroundColor: AppColors.ink,
+        backgroundColor: AppColors.pink,
+        foregroundColor: AppColors.white,
         onPressed: () => onPressed(),
-        child: Text(label, style: const TextStyle(fontSize: 17)),
+        child: Text(label),
       );
     }
 
@@ -249,7 +248,7 @@ class TaskDetailScreen extends ConsumerWidget {
 
     if (isClaimant && task.status == TaskStatus.claimed) {
       return [
-        primary('我完成一次', () async {
+        primary('完成一次', () async {
           await repo.submitCompletion(task.id);
           if (context.mounted) {
             ShadToaster.of(context).show(
@@ -266,12 +265,14 @@ class TaskDetailScreen extends ConsumerWidget {
             ),
           ),
         const SizedBox(height: 8),
-        Center(
-          child: ShadButton.link(
-            foregroundColor: AppColors.orange,
-            onPressed: () => repo.abandonTask(task.id),
-            child: const Text('放棄任務（回到任務牆）'),
-          ),
+        // 與「下次再說」一致：整條 ghost、白字、淡白 hover
+        ShadButton.ghost(
+          width: double.infinity,
+          foregroundColor: AppColors.white,
+          hoverForegroundColor: AppColors.white,
+          hoverBackgroundColor: AppColors.white.withValues(alpha: 0.08),
+          onPressed: () => repo.abandonTask(task.id),
+          child: const Text('放棄任務'),
         ),
       ];
     }
