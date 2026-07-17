@@ -15,8 +15,8 @@ abstract final class AppShadTheme {
     // 彈出層（select 選項、日曆）深底白字
     popover: AppColors.diluteInk,
     popoverForeground: AppColors.white,
-    // 編輯排版風：主要按鈕墨黑白字，main 作為選中/次要 surface
-    primary: AppColors.ink,
+    // 主色粉紅（主要按鈕、日曆選中日）
+    primary: AppColors.pink,
     primaryForeground: AppColors.white,
     secondary: AppColors.main,
     secondaryForeground: AppColors.ink,
@@ -74,7 +74,7 @@ abstract final class AppShadTheme {
         switchTheme: const ShadSwitchTheme(
           thumbColor: AppColors.white,
           checkedTrackColor: AppColors.pink,
-          uncheckedTrackColor: AppColors.pinkSoft,
+          uncheckedTrackColor: AppColors.main,
         ),
         // 日曆：深底白字（配合 popover 深色）
         calendarTheme: const ShadCalendarTheme(

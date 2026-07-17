@@ -79,7 +79,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
     if (mounted) {
       context.pop();
       ShadToaster.of(context).show(
-        const ShadToast(description: Text('🍿 任務已發佈到任務牆！')),
+        const ShadToast(description: Text('任務已發佈到任務牆！')),
       );
     }
   }
@@ -309,9 +309,12 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               if (!_anyoneCanClaim) ...[
                 const SizedBox(height: 8),
                 const _FieldLabel('指定給'),
-                ShadSelectFormField<String>(
-                  id: 'assignee',
-                  placeholder: const Text('選擇成員'),
+                SizedBox(
+                  width: double.infinity,
+                  child: ShadSelectFormField<String>(
+                    id: 'assignee',
+                    decoration: const ShadDecoration(color: AppColors.diluteInk),
+                    placeholder: const Text('選擇成員'),
                   options: [
                     for (final m in members)
                       ShadOption(
@@ -323,8 +326,9 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                     final m = repo.userOf(value);
                     return Text('${m.avatarEmoji} ${m.displayName}');
                   },
-                  validator: (v) =>
-                      !_anyoneCanClaim && v == null ? '請選擇成員' : null,
+                    validator: (v) =>
+                        !_anyoneCanClaim && v == null ? '請選擇成員' : null,
+                  ),
                 ),
               ],
               const SizedBox(height: 28),
