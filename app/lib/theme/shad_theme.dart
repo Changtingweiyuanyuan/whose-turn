@@ -12,8 +12,9 @@ abstract final class AppShadTheme {
     foreground: AppColors.ink,
     card: AppColors.white,
     cardForeground: AppColors.ink,
-    popover: AppColors.white,
-    popoverForeground: AppColors.ink,
+    // 彈出層（select 選項、日曆）深底白字
+    popover: AppColors.diluteInk,
+    popoverForeground: AppColors.white,
     // 編輯排版風：主要按鈕墨黑白字，main 作為選中/次要 surface
     primary: AppColors.ink,
     primaryForeground: AppColors.white,
@@ -75,9 +76,14 @@ abstract final class AppShadTheme {
           checkedTrackColor: AppColors.pink,
           uncheckedTrackColor: AppColors.pinkSoft,
         ),
-        // 日曆：選中日期文字白色（hover 已由 accent=pinkSoft 提供）
+        // 日曆：深底白字（配合 popover 深色）
         calendarTheme: const ShadCalendarTheme(
           selectedDayButtonTextStyle: TextStyle(color: AppColors.white),
+          dayButtonTextStyle: TextStyle(color: AppColors.white),
+          dayButtonOutsideMonthTextStyle: TextStyle(color: Colors.white38),
+          weekdaysTextStyle: TextStyle(color: Colors.white70),
+          headerTextStyle: TextStyle(
+              color: AppColors.white, fontWeight: FontWeight.w600),
         ),
         textTheme: ShadTextTheme(
           family: GoogleFonts.robotoCondensed().fontFamily!,
