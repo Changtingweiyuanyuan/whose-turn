@@ -235,17 +235,27 @@ class ProfileScreen extends ConsumerWidget {
     final confirmed = await showShadDialog<bool>(
       context: context,
       builder: (ctx) => ShadDialog.alert(
-        closeIcon: const AppCloseIcon(color: AppColors.ink, size: 22),
+        backgroundColor: AppColors.diluteInk,
+        gap: 12,
+        closeIcon: const AppCloseIcon(color: AppColors.white, size: 22),
         closeIconPosition: const ShadPosition(top: 20, right: 20),
-        title: const Text('離開群組？'),
-        description: const Text('離開後看不到群組的任務牆。'),
+        title: const Text('離開群組？',
+            style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: AppColors.white)),
+        description: const Text('離開後看不到群組的任務牆。',
+            style: TextStyle(color: Colors.white70)),
         actions: [
-          ShadButton.outline(
-            foregroundColor: AppColors.ink,
+          ShadButton(
+            backgroundColor: AppColors.ink,
+            foregroundColor: AppColors.white,
             onPressed: () => Navigator.pop(ctx, false),
             child: const Text('取消'),
           ),
           ShadButton(
+            backgroundColor: AppColors.pink,
+            foregroundColor: AppColors.white,
             onPressed: () => Navigator.pop(ctx, true),
             child: const Text('離開'),
           ),

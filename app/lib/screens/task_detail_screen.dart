@@ -301,12 +301,11 @@ class TaskDetailScreen extends ConsumerWidget {
           }
         }),
         const SizedBox(height: 8),
-        // 與「下次再說」一致：整條 ghost、白字、淡白 hover
-        ShadButton.ghost(
+        // 次要 CTA：ink 底白字（不透明、無邊框）
+        ShadButton(
           width: double.infinity,
+          backgroundColor: AppColors.ink,
           foregroundColor: AppColors.white,
-          hoverForegroundColor: AppColors.white,
-          hoverBackgroundColor: AppColors.white.withValues(alpha: 0.08),
           onPressed: () => repo.abandonTask(task.id),
           child: const Text('放棄任務'),
         ),
@@ -324,15 +323,15 @@ class TaskDetailScreen extends ConsumerWidget {
 
     if (isCreator && task.status == TaskStatus.open) {
       return [
-        Center(
-          child: ShadButton.link(
-            foregroundColor: AppColors.orange,
-            onPressed: () async {
-              await repo.cancelTask(task.id);
-              if (context.mounted) context.pop();
-            },
-            child: const Text('取消任務'),
-          ),
+        ShadButton(
+          width: double.infinity,
+          backgroundColor: AppColors.ink,
+          foregroundColor: AppColors.white,
+          onPressed: () async {
+            await repo.cancelTask(task.id);
+            if (context.mounted) context.pop();
+          },
+          child: const Text('取消任務'),
         ),
       ];
     }

@@ -80,11 +80,11 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
             child: const Text('用 LINE 綁定'),
           ),
           const SizedBox(height: 8),
-          ShadButton.ghost(
+          // 次要 CTA：ink 底白字（不透明、無邊框）
+          ShadButton(
             width: double.infinity,
+            backgroundColor: AppColors.ink,
             foregroundColor: AppColors.white,
-            hoverForegroundColor: AppColors.white,
-            hoverBackgroundColor: AppColors.white.withValues(alpha: 0.08),
             onPressed: () => Navigator.of(sheetContext).pop(false),
             child: const Text('下次再說'),
           ),
