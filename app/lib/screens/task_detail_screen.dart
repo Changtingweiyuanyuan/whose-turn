@@ -125,7 +125,7 @@ class TaskDetailScreen extends ConsumerWidget {
                                 color: AppColors.ink, size: 16),
                             SizedBox(width: 4),
                             Flexible(
-                              child: Text('完成才揭曉',
+                              child: Text('完成才知道',
                                   style:
                                       TextStyle(fontWeight: FontWeight.w600)),
                             ),
