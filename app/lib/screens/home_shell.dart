@@ -5,6 +5,7 @@ import 'package:iconsax_flutter/iconsax_flutter.dart';
 
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
+import '../widgets/app_svg_icons.dart';
 import '../widgets/line_bind_sheet.dart';
 import '../widgets/message_bubble_icon.dart';
 import '../widgets/noise_background.dart';
@@ -87,7 +88,7 @@ class _HomeShellState extends ConsumerState<HomeShell> {
               onTap: () => setState(() => _index = 0),
             ),
             _NavItem(
-              icon: Iconsax.task_square_copy,
+              iconBuilder: (color) => AppSvgIcon(kTaskListSvg, color: color),
               label: '我的任務',
               selected: _index == 1,
               onTap: () => setState(() => _index = 1),
@@ -102,7 +103,7 @@ class _HomeShellState extends ConsumerState<HomeShell> {
               onTap: () => setState(() => _index = 2),
             ),
             _NavItem(
-              icon: Iconsax.user_copy,
+              iconBuilder: (color) => AppSvgIcon(kSettingsSvg, color: color),
               label: '個人設定',
               selected: _index == 3,
               onTap: () => setState(() => _index = 3),
