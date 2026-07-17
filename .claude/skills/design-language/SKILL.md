@@ -10,7 +10,7 @@ description: 「今天換誰？」的設計語言規範。任何 UI 修改（畫
 ## 核心原則
 
 1. **雜誌刊物感**：像每週出刊的家事週刊，不是 SaaS App。
-2. **黑底顆粒為主**：全站底 `ink` #010101 + `NoiseBackground` 顆粒。任務牆/我的任務/通知/個人設定/任務詳情/發起任務**全部深色**。
+2. **黑底顆粒為主**：全站底 `ink` #010101 + `NoiseBackground` 顆粒。任務看板/我的任務/通知/個人設定/任務詳情/發起任務**全部深色**。
 3. **大字刊頭**：每頁上方是雜誌刊頭（見下），共用 `AppMasthead`。
 4. **卡片浮在黑底上**：任務卡 = `main`(藍灰)/`white` 輪替、圓角 8、無框無影。深色資訊塊 = `diluteInk` + `inkSoft` 1px 邊框、圓角 8。
 5. **重點色克制**：`pink` 是主 accent 與**主要 CTA 底色**；`ink` 是**次要 CTA 底色**；`main` 淡藍用於次要資訊/時間/未選分頁。
@@ -72,7 +72,7 @@ description: 「今天換誰？」的設計語言規範。任何 UI 修改（畫
 - `colorScheme`：primary=**pink**（主要按鈕/日曆選中日）、secondary=**ink**（日曆今天）、accent=**8% 白**（hover）、popover=**diluteInk**（下拉/日曆底）、popoverForeground=white、border/input=lightGray。
 - `inputTheme`：底 diluteInk、字白、placeholder white54、游標白 **1px**。
 - `switchTheme`：開=pink、關=main、把手白。
-- `outlineButtonTheme` 前景=**白**（日曆左右導覽箭頭）；**淺底上的 `ShadButton.outline` 必須個別指定 `foregroundColor: ink`**（邀請好友/取消/退回/回任務牆）。
+- `outlineButtonTheme` 前景=**白**（日曆左右導覽箭頭）；**淺底上的 `ShadButton.outline` 必須個別指定 `foregroundColor: ink`**（邀請好友/取消/退回/回任務看板）。
 - `calendarTheme`：日期字白、選中日 pink（primary）、今天 ink（secondary）、hover 8% 白、非本月 white38。
 - `toast / dialog / alert` 邊框 = **pink**（popover 已改回無粉框）。
 

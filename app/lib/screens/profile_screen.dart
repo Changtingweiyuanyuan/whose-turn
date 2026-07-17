@@ -305,7 +305,7 @@ class ProfileScreen extends ConsumerWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: AppColors.white)),
-        description: const Text('離開後看不到群組的任務牆。',
+        description: const Text('離開後看不到群組的任務看板。',
             style: TextStyle(color: Colors.white70)),
         actions: [
           ShadButton(

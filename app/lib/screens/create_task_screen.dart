@@ -80,7 +80,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
     if (mounted) {
       context.pop();
       ShadToaster.of(context).show(
-        const ShadToast(description: Text('任務已發佈到任務牆！')),
+        const ShadToast(description: Text('任務已發佈到任務看板！')),
       );
     }
   }

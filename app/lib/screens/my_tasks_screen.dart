@@ -74,7 +74,7 @@ class _MyTasksScreenState extends ConsumerState<MyTasksScreen> {
                 index: _tab,
                 children: [
                   _TaskList(
-                      tasks: inProgress, emptyText: '還沒接任務\n去任務牆看看今天換誰？'),
+                      tasks: inProgress, emptyText: '還沒接任務\n去任務看板看看今天換誰？'),
                   _ConfirmList(tasks: toConfirm),
                   _TaskList(tasks: done, emptyText: '完成的任務會出現在這裡'),
                 ],

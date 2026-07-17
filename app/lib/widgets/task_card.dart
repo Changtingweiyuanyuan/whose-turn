@@ -99,6 +99,8 @@ class TaskCard extends StatelessWidget {
                             size: ShadButtonSize.sm,
                             backgroundColor: AppColors.ink,
                             foregroundColor: AppColors.white,
+                            hoverBackgroundColor: AppColors.inkHover,
+                            hoverForegroundColor: AppColors.white,
                             onPressed: onClaim,
                             child: const Row(
                               mainAxisSize: MainAxisSize.min,

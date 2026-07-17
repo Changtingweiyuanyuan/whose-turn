@@ -38,7 +38,7 @@ const _sortArrowSvg =
     '15.84" stroke="#ffffff" stroke-width="1.5" stroke-miterlimit="10" '
     'stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
-/// 任務牆（首頁）—— 黑底雜誌刊頭風。
+/// 任務看板（首頁）—— 黑底雜誌刊頭風。
 class TaskWallScreen extends ConsumerStatefulWidget {
   const TaskWallScreen({super.key});
 

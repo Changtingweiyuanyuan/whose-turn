@@ -343,8 +343,8 @@ class FakeAppRepository extends AppRepository {
     _notify(
       recipientUid: task.createdBy,
       type: NotificationType.claimed,
-      title: '👀 有人接下你的任務了！',
-      body: '${_currentUser.displayName}接下了「${task.title}」',
+      title: '有人接下你的任務了！',
+      body: '${_currentUser.displayName} 接下了「${task.title}」',
       taskId: taskId,
     );
     notifyListeners();
@@ -353,7 +353,7 @@ class FakeAppRepository extends AppRepository {
   @override
   Future<void> abandonTask(String taskId) async {
     final task = _task(taskId);
-    // 放棄後任務回到任務牆；已確認的 ⭐ 保留（永遠不能扣）
+    // 放棄後任務回到任務看板；已確認的 ⭐ 保留（永遠不能扣）
     _replaceTask(task.copyWith(clearClaimedBy: true, status: TaskStatus.open));
     notifyListeners();
   }

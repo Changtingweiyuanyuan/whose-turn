@@ -43,7 +43,7 @@ uid 規則：LINE 帳號為 `line:{LINE userId}`（Worker 鑄造），訪客為 
 | rewardType | `'normal' \| 'mystery' \| 'money' \| 'privilege' \| 'experience'` | |
 | rewardLabel | string | 珍奶一杯／500 元；mystery 時對接單人顯示 `???` |
 | requiredCount | number | 完成次數（預設 1） |
-| confirmedCount | number | 已確認次數（denormalized，方便任務牆顯示 3/5） |
+| confirmedCount | number | 已確認次數（denormalized，方便任務看板顯示 3/5） |
 | deadline | timestamp? | 截止日期（可不填） |
 | createdBy | string | 發起人 uid（**不可為訪客**） |
 | assigneeUid | string? | 指定某人；null = 誰都可以接 |
@@ -76,7 +76,7 @@ uid 規則：LINE 帳號為 `line:{LINE userId}`（Worker 鑄造），訪客為 
                  發起人取消（僅未被接單時）
        open ──────────────────────────────▶ cancelled
         │ ▲
-  我要接 │ │ 接單人放棄 → 任務回到任務牆
+  我要接 │ │ 接單人放棄 → 任務回到任務看板
         ▼ │
       claimed ──「我完成一次」──▶ completion: pending
         │                            │            │

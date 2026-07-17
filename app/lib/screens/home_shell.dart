@@ -13,7 +13,7 @@ import 'notifications_screen.dart';
 import 'profile_screen.dart';
 import 'task_wall_screen.dart';
 
-/// 底部導覽外殼：任務牆／我的任務／(+)／訊息／我的。
+/// 底部導覽外殼：任務看板／我的任務／(+)／訊息／我的。
 class HomeShell extends ConsumerStatefulWidget {
   const HomeShell({super.key});
 
