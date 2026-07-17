@@ -6,7 +6,9 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_tokens.dart';
 import '../widgets/app_close_icon.dart';
+import '../widgets/app_masthead.dart';
 import '../widgets/app_svg_icons.dart';
 import '../widgets/line_bind_sheet.dart';
 
@@ -20,19 +22,19 @@ class ProfileScreen extends ConsumerWidget {
     final me = repo.currentUser;
     final group = repo.currentGroup;
     final isMember = group?.memberUids.contains(me.uid) ?? false;
+    final userNo =
+        (repo.currentGroup?.memberUids.indexOf(repo.currentUser.uid) ?? -1) + 1;
 
     return SafeArea(
-      child: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 16, 20, 96),
+      child: Column(
         children: [
-          const Text('我的',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.white)),
-          const SizedBox(height: 16),
-
-          // ---- 個人卡 ----
+          AppMasthead(title: '個人設定', userNo: userNo),
+          const SizedBox(height: AppSpacing.md),
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 96),
+              children: [
+                // ---- 個人卡 ----
           ShadCard(
             padding: const EdgeInsets.all(20),
             child: Row(
@@ -217,6 +219,9 @@ class ProfileScreen extends ConsumerWidget {
                     label: Text(
                         '${u.avatarEmoji} ${u.displayName}（${u.isGuest ? '訪客' : 'LINE'}）'),
                   ),
+              ],
+            ),
+          ),
               ],
             ),
           ),

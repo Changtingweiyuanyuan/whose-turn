@@ -5,6 +5,8 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_tokens.dart';
+import '../widgets/app_masthead.dart';
 
 class NotificationsScreen extends ConsumerWidget {
   const NotificationsScreen({super.key});
@@ -13,21 +15,15 @@ class NotificationsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final repo = ref.watch(repositoryProvider);
     final items = repo.notifications;
+    final userNo =
+        (repo.currentGroup?.memberUids.indexOf(repo.currentUser.uid) ?? -1) + 1;
 
     return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.fromLTRB(20, 16, 20, 8),
-            child: Text(
-              '訊息',
-              style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w800,
-                  color: AppColors.white),
-            ),
-          ),
+          AppMasthead(title: '通知', userNo: userNo),
+          const SizedBox(height: AppSpacing.md),
           Expanded(
             child: items.isEmpty
                 ? const Center(

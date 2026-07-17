@@ -61,10 +61,11 @@ abstract final class AppShadTheme {
         alertDialogTheme: ShadDialogTheme(
           border: Border.all(color: AppColors.pink, width: 1),
         ),
-        popoverTheme: ShadPopoverTheme(
-          decoration: ShadDecoration(
-            border: ShadBorder.all(color: AppColors.pink, width: 1),
-          ),
+        // Input：diluteInk 深底 + 白字（深色頁面上一致）
+        inputTheme: const ShadInputTheme(
+          decoration: ShadDecoration(color: AppColors.diluteInk),
+          style: TextStyle(color: AppColors.white),
+          placeholderStyle: TextStyle(color: Colors.white54),
         ),
         textTheme: ShadTextTheme(
           family: GoogleFonts.robotoCondensed().fontFamily!,

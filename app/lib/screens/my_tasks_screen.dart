@@ -7,7 +7,7 @@ import '../models/task.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
-import '../widgets/app_svg_icons.dart';
+import '../widgets/app_masthead.dart';
 import '../widgets/task_card.dart';
 
 /// 我的任務：進行中（我接的）／等待確認（我發起、待我確認）／已完成。
@@ -51,7 +51,8 @@ class _MyTasksScreenState extends ConsumerState<MyTasksScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _MyTasksMasthead(userNo: userNo, starTotal: me.starTotal),
+          AppMasthead(
+              title: '我的任務', userNo: userNo, starTotal: me.starTotal),
           const SizedBox(height: AppSpacing.md),
           Padding(
             padding:
@@ -86,84 +87,6 @@ class _MyTasksScreenState extends ConsumerState<MyTasksScreen> {
   }
 }
 
-/// 我的任務刊頭：沿用圖三雜誌刊頭，標題改「我的任務」（字較小）。
-class _MyTasksMasthead extends StatelessWidget {
-  const _MyTasksMasthead({required this.userNo, required this.starTotal});
-
-  final int userNo;
-  final int starTotal;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(
-          AppSpacing.pagePadding, AppSpacing.md, AppSpacing.pagePadding, 0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Expanded(
-                child: Text(
-                  'WHOSE TURN TODAY',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 3,
-                    color: AppColors.white,
-                  ),
-                ),
-              ),
-              Text(
-                'NO.${userNo.toString().padLeft(2, '0')}',
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 2,
-                  color: AppColors.pink,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: AppSpacing.sm),
-          Container(height: 2, color: AppColors.pink),
-          const SizedBox(height: AppSpacing.md),
-          // 標題與星星同一排，星星靠最右
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              const Expanded(
-                child: Text(
-                  '我的任務',
-                  style: TextStyle(
-                    fontSize: 20,
-                    height: 1.0,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.white,
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const AppSvgIcon(kStarSvg, color: AppColors.pink, size: 20),
-                  const SizedBox(width: 6),
-                  Text(
-                    '$starTotal',
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.white),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 /// 滑動底線分頁（圖二）：三格平均分佈，選中底線在整條基線上滑動。
 class _SlidingTabs extends StatelessWidget {
