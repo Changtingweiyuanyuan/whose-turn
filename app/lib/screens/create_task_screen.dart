@@ -47,6 +47,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
 
   String _emoji = _emojiChoices.first;
   RewardType _rewardType = RewardType.normal;
+  RewardType? _hoveredReward;
   bool _anyoneCanClaim = true;
 
   @override
@@ -241,36 +242,44 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               // 分段控制：容器同 input（diluteInk 底 + lightGray 1px 框），
               // 選中格只加粉色細框、微內縮、無填色
               Container(
+                padding: const EdgeInsets.all(2), // 選項距容器 2px
                 decoration: BoxDecoration(
                   color: AppColors.diluteInk,
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(color: AppColors.lightGray, width: 1),
                 ),
                 child: Row(
+                  spacing: 2, // 選項之間 gap 2px
                   children: [
                     for (final entry in _rewardTypeLabels.entries)
                       Expanded(
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: () => setState(() => _rewardType = entry.key),
-                          child: Container(
-                            // 與 input 同高：padding v8（不加 margin）
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(
+                        child: MouseRegion(
+                          onEnter: (_) =>
+                              setState(() => _hoveredReward = entry.key),
+                          onExit: (_) =>
+                              setState(() => _hoveredReward = null),
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () =>
+                                setState(() => _rewardType = entry.key),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(6),
+                                // 選中=pink 底、hover=半透明白、其餘透明
                                 color: _rewardType == entry.key
                                     ? AppColors.pink
-                                    : Colors.transparent,
-                                width: 1.5,
+                                    : (_hoveredReward == entry.key
+                                        ? const Color(0x14FFFFFF)
+                                        : Colors.transparent),
                               ),
-                            ),
-                            child: Text(
-                              entry.value,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.white,
+                              child: Text(
+                                entry.value,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.white,
+                                ),
                               ),
                             ),
                           ),

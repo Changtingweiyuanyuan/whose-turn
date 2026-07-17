@@ -72,6 +72,7 @@ class NotificationsScreen extends ConsumerWidget {
                                 n.body,
                                 style: TextStyle(
                                     fontSize: 13,
+                                    fontWeight: FontWeight.w600,
                                     color: n.read
                                         ? Colors.white70
                                         : AppColors.inkSoft),
