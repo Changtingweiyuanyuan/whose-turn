@@ -225,14 +225,14 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               // 分段控制：容器同 input（diluteInk 底 + lightGray 1px 框），
               // 選中格只加粉色細框、微內縮、無填色
               Container(
-                padding: const EdgeInsets.all(2), // 選項距容器 2px
+                padding: const EdgeInsets.all(4), // 選項距容器 4px
                 decoration: BoxDecoration(
                   color: AppColors.diluteInk,
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(color: AppColors.lightGray, width: 1),
                 ),
                 child: Row(
-                  spacing: 2, // 選項之間 gap 2px
+                  spacing: 4, // 選項之間 gap 4px
                   children: [
                     for (final entry in _rewardTypeLabels.entries)
                       Expanded(
@@ -348,39 +348,28 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
   }
 }
 
-/// 數量 stepper 的 +/- 按鈕：對齊日曆導覽鈕（透明底、白 icon、hover 半透明白）、
+/// 數量 stepper 的 +/- 按鈕：diluteInk 底（hover 不變色）、白 icon、
 /// 邊框對齊次數框（lightGray）。在 IntrinsicHeight Row 中會自動撐到輸入框高度。
-class _StepButton extends StatefulWidget {
+class _StepButton extends StatelessWidget {
   const _StepButton({required this.svg, required this.onTap});
 
   final String svg;
   final VoidCallback onTap;
 
   @override
-  State<_StepButton> createState() => _StepButtonState();
-}
-
-class _StepButtonState extends State<_StepButton> {
-  bool _hover = false;
-
-  @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _hover = true),
-      onExit: (_) => setState(() => _hover = false),
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: widget.onTap,
-        child: Container(
-          width: 48,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: _hover ? const Color(0x14FFFFFF) : Colors.transparent,
-            borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: AppColors.lightGray, width: 1),
-          ),
-          child: AppSvgIcon(widget.svg, color: AppColors.white, size: 20),
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: onTap,
+      child: Container(
+        width: 48,
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          color: AppColors.diluteInk,
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(color: AppColors.lightGray, width: 1),
         ),
+        child: AppSvgIcon(svg, color: AppColors.white, size: 20),
       ),
     );
   }
