@@ -51,7 +51,13 @@ class AppMasthead extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
-          Container(height: 2, color: AppColors.pink),
+          Container(
+            height: 2,
+            decoration: BoxDecoration(
+              color: AppColors.pink,
+              borderRadius: BorderRadius.circular(2), // 對齊選中 tab 底線
+            ),
+          ),
           const SizedBox(height: AppSpacing.md),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,

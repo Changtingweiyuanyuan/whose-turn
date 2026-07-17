@@ -51,9 +51,9 @@ class TaskCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 標題 + 次數（右上角）
+                  // 標題 + 次數（右上角）：標題底部對齊次數底部
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Expanded(
                         child: Text(
@@ -72,7 +72,7 @@ class TaskCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: AppSpacing.xs), // 標題↔發起人 4
+                  const SizedBox(height: AppSpacing.sm), // 標題↔發起人 8
                   Text.rich(
                     TextSpan(
                       style: const TextStyle(
@@ -90,7 +90,7 @@ class TaskCard extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.sm), // 發起人↔獎勵 8
                   RewardBadge(task: task, viewerUid: viewer.uid),
-                  const SizedBox(height: AppSpacing.xs), // 獎勵↔動作 8
+                  const SizedBox(height: AppSpacing.sm), // 獎勵↔動作 8
                   // 動作（右下角）
                   Align(
                     alignment: Alignment.centerRight,
