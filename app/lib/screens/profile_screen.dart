@@ -6,6 +6,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
+import '../widgets/app_close_icon.dart';
 import '../widgets/line_bind_sheet.dart';
 
 /// 我的：個人資訊、群組管理（F1）、綁定 LINE、demo 視角切換。
@@ -220,6 +221,8 @@ class ProfileScreen extends ConsumerWidget {
     final confirmed = await showShadDialog<bool>(
       context: context,
       builder: (ctx) => ShadDialog.alert(
+        closeIcon: const AppCloseIcon(color: AppColors.ink, size: 22),
+        closeIconPosition: const ShadPosition(top: 20, right: 20),
         title: const Text('離開群組？'),
         description: const Text('離開後看不到群組的任務牆。'),
         actions: [
@@ -292,6 +295,8 @@ class ProfileScreen extends ConsumerWidget {
     return showShadDialog<String>(
       context: context,
       builder: (ctx) => ShadDialog(
+        closeIcon: const AppCloseIcon(color: AppColors.ink, size: 22),
+        closeIconPosition: const ShadPosition(top: 20, right: 20),
         title: Text(title),
         actions: [
           ShadButton.outline(

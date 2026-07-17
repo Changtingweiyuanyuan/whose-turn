@@ -5,6 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
+import 'app_close_icon.dart';
 
 /// 訪客 gate：建立群組 / 發起任務前必須綁定 LINE。
 /// 回傳 true 表示已完成綁定，呼叫端可繼續原本的動作。
@@ -18,8 +19,9 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
       border: const Border(
         top: BorderSide(color: AppColors.pink, width: 1),
       ),
-      closeIcon: const Icon(Icons.close, size: 24, color: AppColors.white),
-      padding: const EdgeInsets.fromLTRB(24, 28, 24, 32),
+      closeIcon: const AppCloseIcon(color: AppColors.white, size: 22),
+      closeIconPosition: const ShadPosition(top: 20, right: 20),
+      padding: const EdgeInsets.fromLTRB(24, 32, 24, 32),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -115,7 +117,7 @@ class _DashedPainter extends CustomPainter {
     const dash = 6.0, gap = 4.0;
     final paint = Paint()
       ..color = AppColors.pink
-      ..strokeWidth = 2
+      ..strokeWidth = 1
       ..strokeCap = StrokeCap.round;
     double x = 0;
     final y = size.height / 2;

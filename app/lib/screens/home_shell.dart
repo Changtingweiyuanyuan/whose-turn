@@ -93,7 +93,7 @@ class _HomeShellState extends ConsumerState<HomeShell> {
             ),
             const Expanded(child: SizedBox()), // FAB 缺口
             _NavItem(
-              icon: Iconsax.message_copy,
+              icon: Iconsax.message_bubble,
               label: '訊息',
               selected: _index == 2,
               badgeCount: unread,

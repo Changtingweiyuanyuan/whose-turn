@@ -44,7 +44,13 @@ class WhoseTurnApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: AppTheme.light,
         routerConfig: _router,
-        builder: (context, child) => ShadAppBuilder(child: child),
+        // 全站文字加一點字距，緩解 Roboto Condensed 的擁擠感
+        builder: (context, child) => ShadAppBuilder(
+          child: DefaultTextStyle.merge(
+            style: const TextStyle(letterSpacing: 0.2),
+            child: child ?? const SizedBox.shrink(),
+          ),
+        ),
       ),
     );
   }
