@@ -21,6 +21,17 @@ class AppSvgIcon extends StatelessWidget {
   }
 }
 
+/// Iconsax `add`（broken）—— 加號，用於中央 FAB。
+const kAddSvg =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" '
+    'viewBox="0 0 24 24" fill="none">'
+    '<path d="M12 18V6" stroke="#ffffff" stroke-width="1.5" '
+    'stroke-linecap="round" stroke-linejoin="round"/>'
+    '<path d="M16 12H18" stroke="#ffffff" stroke-width="1.5" '
+    'stroke-linecap="round" stroke-linejoin="round"/>'
+    '<path d="M6 12H11.66" stroke="#ffffff" stroke-width="1.5" '
+    'stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
 /// Iconsax `task`（broken）—— 清單打勾，用於「我的任務」。
 const kTaskListSvg =
     '<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">'
