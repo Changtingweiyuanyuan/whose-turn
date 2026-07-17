@@ -41,6 +41,26 @@ const kGiftSlashSvg =
     '11.9995 6.26" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" '
     'stroke-linejoin="round"/></svg>';
 
+/// Iconsax `calendar`—— 截止日期欄位前的日曆圖示。
+const kCalendarSvg =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" '
+    'viewBox="0 0 24 24" fill="none">'
+    '<path d="M8 2V5" stroke="#ffffff" stroke-width="1.5" '
+    'stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>'
+    '<path d="M16 2V5" stroke="#ffffff" stroke-width="1.5" '
+    'stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>'
+    '<path d="M3.5 9.08984H20.5" stroke="#ffffff" stroke-width="1.5" '
+    'stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>'
+    '<path d="M3 13.01V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5V17C21 '
+    '20 19.5 22 16 22H8C4.5 22 3 20 3 17" stroke="#ffffff" stroke-width="1.5" '
+    'stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>'
+    '<path d="M11.9955 13.6992H12.0045" stroke="#ffffff" stroke-width="2" '
+    'stroke-linecap="round" stroke-linejoin="round"/>'
+    '<path d="M8.29431 13.6992H8.30329" stroke="#ffffff" stroke-width="2" '
+    'stroke-linecap="round" stroke-linejoin="round"/>'
+    '<path d="M8.29431 16.6992H8.30329" stroke="#ffffff" stroke-width="2" '
+    'stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
 /// Iconsax `arrow-right`—— 用於「我要接」按鈕。
 const kArrowRightSvg =
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" '

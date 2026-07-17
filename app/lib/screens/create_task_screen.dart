@@ -291,6 +291,8 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                 foregroundColor: AppColors.white,
                 hoverBackgroundColor: AppColors.diluteInk,
                 hoverForegroundColor: AppColors.white,
+                leading: const AppSvgIcon(kCalendarSvg,
+                    color: AppColors.white, size: 18),
               ),
               const SizedBox(height: 16),
               Row(

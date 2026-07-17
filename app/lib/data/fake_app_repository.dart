@@ -41,7 +41,7 @@ class FakeAppRepository extends AppRepository {
     );
     final me = AppUser(
       uid: 'anon-me',
-      displayName: '我（訪客）',
+      displayName: '我(訪客)',
       provider: AuthProvider.anonymous,
       avatarEmoji: '🐱',
       starTotal: 3,
@@ -378,8 +378,8 @@ class FakeAppRepository extends AppRepository {
     _notify(
       recipientUid: task.createdBy,
       type: NotificationType.pendingConfirm,
-      title: '✅ 有一筆完成等你確認',
-      body: '${_currentUser.displayName}完成了「${task.title}」',
+      title: '有一筆完成等你確認',
+      body: '${_currentUser.displayName} 完成了「${task.title}」',
       taskId: taskId,
     );
     notifyListeners();
@@ -409,7 +409,7 @@ class FakeAppRepository extends AppRepository {
       _notify(
         recipientUid: doneUid,
         type: NotificationType.taskCompleted,
-        title: '🎉 今天換你拿獎勵！',
+        title: '今天換你拿獎勵！',
         body: '「${task.title}」全部完成，獎勵：${task.rewardLabel}',
         taskId: taskId,
       );
@@ -417,7 +417,7 @@ class FakeAppRepository extends AppRepository {
       _notify(
         recipientUid: doneUid,
         type: NotificationType.starEarned,
-        title: '⭐ 又進一步！',
+        title: '又進一步！',
         body: '「${task.title}」${updated.confirmedCount} / ${updated.requiredCount}',
         taskId: taskId,
       );
@@ -440,7 +440,7 @@ class FakeAppRepository extends AppRepository {
     _notify(
       recipientUid: doneUid,
       type: NotificationType.pendingConfirm,
-      title: '🔁 有一筆完成被退回',
+      title: '有一筆完成被退回',
       body: '「${task.title}」的完成紀錄被退回，再試一次！',
       taskId: taskId,
     );
@@ -472,7 +472,7 @@ class FakeAppRepository extends AppRepository {
     // Fake 版：直接把訪客升級成 LINE 帳號（星星與紀錄自動保留 = 合併政策）。
     final upgraded = AppUser(
       uid: _currentUser.uid,
-      displayName: _currentUser.displayName.replaceAll('（訪客）', ''),
+      displayName: _currentUser.displayName.replaceAll('(訪客)', ''),
       provider: AuthProvider.line,
       avatarEmoji: _currentUser.avatarEmoji,
       starTotal: _currentUser.starTotal,

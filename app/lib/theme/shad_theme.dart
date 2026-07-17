@@ -18,8 +18,9 @@ abstract final class AppShadTheme {
     // 主色粉紅（主要按鈕、日曆選中日）
     primary: AppColors.pink,
     primaryForeground: AppColors.white,
-    secondary: AppColors.main,
-    secondaryForeground: AppColors.ink,
+    // secondary＝日曆「今天」底色（ink），文字白
+    secondary: AppColors.ink,
+    secondaryForeground: AppColors.white,
     muted: AppColors.lightGray,
     mutedForeground: AppColors.inkSoft,
     // hover surface 用半透明白（與「放棄任務」ghost hover 一致）
