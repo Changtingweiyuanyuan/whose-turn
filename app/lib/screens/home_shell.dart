@@ -82,7 +82,7 @@ class _HomeShellState extends ConsumerState<HomeShell> {
             children: [
               _NavItem(
                 icon: Iconsax.home_2_copy,
-              label: '任務牆',
+              label: '任務看板',
               selected: _index == 0,
               onTap: () => setState(() => _index = 0),
             ),
@@ -96,14 +96,14 @@ class _HomeShellState extends ConsumerState<HomeShell> {
             _NavItem(
               iconBuilder: (color) =>
                   MessageBubbleIcon(color: color, size: 24),
-              label: '訊息',
+              label: '通知',
               selected: _index == 2,
               badgeCount: unread,
               onTap: () => setState(() => _index = 2),
             ),
             _NavItem(
               icon: Iconsax.user_copy,
-              label: '我的',
+              label: '個人設定',
               selected: _index == 3,
               onTap: () => setState(() => _index = 3),
             ),
