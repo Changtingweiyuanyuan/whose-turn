@@ -109,7 +109,7 @@ class ProfileScreen extends ConsumerWidget {
           const Text('我的群組',
               style: TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                   color: AppColors.white)),
           const SizedBox(height: 8),
 
@@ -147,18 +147,18 @@ class ProfileScreen extends ConsumerWidget {
                     runSpacing: 8,
                     children: [
                       for (final uid in group.memberUids)
-                        // 家人 tag：對齊任務卡片獎勵 tag（白膠囊 + diluteInk 1.5 邊框 + ink 字）
+                        // 家人 tag：白膠囊 + 黑(ink) 1.5 邊框 + ink 字（無 emoji）
                         Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
                             color: AppColors.white,
                             borderRadius: BorderRadius.circular(999),
-                            border: Border.all(
-                                color: AppColors.diluteInk, width: 1.5),
+                            border:
+                                Border.all(color: AppColors.ink, width: 1.5),
                           ),
                           child: Text(
-                            '${repo.userOf(uid).avatarEmoji} ${repo.userOf(uid).displayName}',
+                            repo.userOf(uid).displayName,
                             style: const TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
@@ -168,31 +168,37 @@ class ProfileScreen extends ConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  // 邀請好友 = pink（完成一次）、離開 = ink（放棄任務），全寬堆疊
-                  ShadButton(
-                    width: double.infinity,
-                    backgroundColor: AppColors.pink,
-                    foregroundColor: AppColors.white,
-                    leading: const Icon(Iconsax.link_copy, size: 16),
-                    onPressed: () {
-                      Clipboard.setData(ClipboardData(text: group.inviteLink));
-                      ShadToaster.of(context).show(
-                        ShadToast(
-                          description: Text('邀請連結已複製：${group.inviteLink}'),
+                  // 邀請好友 = pink 佔滿；離開 = ink 只佔文字寬；gap 8
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ShadButton(
+                          backgroundColor: AppColors.pink,
+                          foregroundColor: AppColors.white,
+                          leading: const Icon(Iconsax.link_copy, size: 16),
+                          onPressed: () {
+                            Clipboard.setData(
+                                ClipboardData(text: group.inviteLink));
+                            ShadToaster.of(context).show(
+                              ShadToast(
+                                description:
+                                    Text('邀請連結已複製：${group.inviteLink}'),
+                              ),
+                            );
+                          },
+                          child: const Text('邀請好友'),
                         ),
-                      );
-                    },
-                    child: const Text('邀請好友'),
-                  ),
-                  const SizedBox(height: 8),
-                  ShadButton(
-                    width: double.infinity,
-                    backgroundColor: AppColors.ink,
-                    foregroundColor: AppColors.white,
-                    hoverBackgroundColor: AppColors.inkHover,
-                    hoverForegroundColor: AppColors.white,
-                    onPressed: () => _confirmLeave(context, ref),
-                    child: const Text('離開'),
+                      ),
+                      const SizedBox(width: 8),
+                      ShadButton(
+                        backgroundColor: AppColors.ink,
+                        foregroundColor: AppColors.white,
+                        hoverBackgroundColor: AppColors.inkHover,
+                        hoverForegroundColor: AppColors.white,
+                        onPressed: () => _confirmLeave(context, ref),
+                        child: const Text('離開'),
+                      ),
+                    ],
                   ),
                 ],
               ),
