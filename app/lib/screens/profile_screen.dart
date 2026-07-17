@@ -200,8 +200,10 @@ class ProfileScreen extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: ShadButton(
-                          backgroundColor: AppColors.pink,
-                          foregroundColor: AppColors.white,
+                          backgroundColor: AppColors.main,
+                          foregroundColor: AppColors.ink,
+                          hoverBackgroundColor: AppColors.mainDark,
+                          hoverForegroundColor: AppColors.ink,
                           leading: const Icon(Iconsax.link_copy, size: 16),
                           onPressed: () {
                             Clipboard.setData(

@@ -10,6 +10,8 @@ abstract final class AppColors {
   static const inkHover = Color(0xFF151515);
   static const diluteInk = Color(0xFF222222);
   static const main = Color(0xFFC2D1D3);
+  /// main 壓深版：藍色按鈕（邀請好友）的 hover 色
+  static const mainDark = Color(0xFFA5B2B3);
   static const orange = Color(0xFFFF8B04);
   static const pink = Color(0xFFCF729B);
   static const bg = Color(0xFFF7F7F7);
