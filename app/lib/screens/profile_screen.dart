@@ -296,6 +296,8 @@ class ProfileScreen extends ConsumerWidget {
   Future<void> _confirmLeave(BuildContext context, WidgetRef ref) async {
     final confirmed = await showShadDialog<bool>(
       context: context,
+      // opaque 預設 true 會遮蔽背後頁面（底層變白畫布）；設 false 才看得到原頁
+      opaque: false,
       // 套件預設 barrier 0xcc000000 太濃，改回正常半透明遮罩
       barrierColor: Colors.black54,
       builder: (ctx) => ShadDialog.alert(
@@ -405,6 +407,7 @@ class ProfileScreen extends ConsumerWidget {
     final controller = TextEditingController();
     return showShadDialog<String>(
       context: context,
+      opaque: false,
       barrierColor: Colors.black54,
       builder: (ctx) => ShadDialog(
         closeIcon: const AppCloseIcon(color: AppColors.ink, size: 22),
