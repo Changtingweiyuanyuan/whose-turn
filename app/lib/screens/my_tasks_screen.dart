@@ -291,6 +291,8 @@ class _TaskList extends ConsumerWidget {
         task: tasks[i],
         viewer: repo.currentUser,
         creator: repo.userOf(tasks[i].createdBy),
+        // 藍/白輪替，與首頁一致
+        backgroundColor: i.isEven ? AppColors.main : AppColors.white,
         onTap: () => context.push('/task/${tasks[i].id}'),
       ),
     );

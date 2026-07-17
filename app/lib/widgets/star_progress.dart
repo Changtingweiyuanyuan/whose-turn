@@ -39,7 +39,7 @@ class StarProgress extends StatelessWidget {
       return _SegmentBar(
         confirmed: confirmed,
         required: required,
-        height: size * 0.5,
+        height: 8,
         trailing: countText,
       );
     }
@@ -86,11 +86,11 @@ class _SegmentBar extends StatelessWidget {
               children: [
                 Expanded(
                   flex: confirmed,
-                  child: Container(height: height, color: AppColors.orange),
+                  child: Container(height: height, color: AppColors.pink),
                 ),
                 Expanded(
                   flex: (required - confirmed).clamp(0, required),
-                  child: Container(height: height, color: AppColors.lightGray),
+                  child: Container(height: height, color: AppColors.pinkSoft),
                 ),
               ],
             ),
