@@ -119,7 +119,7 @@ class TaskDetailScreen extends ConsumerWidget {
                         valueChild: Row(
                           children: [
                             Text('神秘禮物',
-                                style: TextStyle(fontWeight: FontWeight.w500)),
+                                style: TextStyle(fontWeight: FontWeight.w600)),
                             SizedBox(width: 4),
                             AppSvgIcon(kGiftSlashSvg,
                                 color: AppColors.ink, size: 16),
@@ -127,12 +127,16 @@ class TaskDetailScreen extends ConsumerWidget {
                             Flexible(
                               child: Text('完成才揭曉',
                                   style:
-                                      TextStyle(fontWeight: FontWeight.w500)),
+                                      TextStyle(fontWeight: FontWeight.w600)),
                             ),
                           ],
                         ),
                       )
-                    : _InfoRow(label: '獎勵內容', value: task.rewardLabel),
+                    : _InfoRow(
+											label: '獎勵內容', 
+											value: task.rewardLabel,
+											style: TextStyle(fontWeight: FontWeight.w600)),
+										),
                 if (task.deadline != null) ...[
                   const SizedBox(height: 8),
                   _InfoRow(

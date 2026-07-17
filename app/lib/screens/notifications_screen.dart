@@ -81,8 +81,9 @@ class NotificationsScreen extends ConsumerWidget {
                                 DateFormat('MM/dd HH:mm').format(n.createdAt),
                                 style: TextStyle(
                                     fontSize: 12,
+                                    // 已讀（深底）用淡藍；未讀（淡藍底）用 inkSoft 免同色
                                     color: n.read
-                                        ? Colors.white54
+                                        ? AppColors.main
                                         : AppColors.inkSoft),
                               ),
                             ],
