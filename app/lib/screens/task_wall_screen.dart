@@ -530,8 +530,6 @@ class _EmptyWall extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('🫧', style: TextStyle(fontSize: 52)),
-          SizedBox(height: AppSpacing.md),
           Text(
             '目前沒有任務\n發起一個，看看今天換誰？',
             textAlign: TextAlign.center,
