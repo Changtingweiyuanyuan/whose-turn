@@ -286,7 +286,7 @@ class _CompletionStatusLabel extends StatelessWidget {
     };
     return Text(
       label,
-      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: color),
+      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: color),
     );
   }
 }
