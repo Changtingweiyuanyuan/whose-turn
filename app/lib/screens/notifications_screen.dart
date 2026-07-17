@@ -49,24 +49,22 @@ class NotificationsScreen extends ConsumerWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 12),
                           decoration: BoxDecoration(
-                            // 未讀：淡藍底；已讀：diluteInk 深底 + 淡白邊（同完成紀錄）
-                            color: n.read ? AppColors.diluteInk : AppColors.main,
+                            // 讀取狀態同款深底；未讀僅差在粉色 2px 邊框
+                            color: AppColors.diluteInk,
                             borderRadius: BorderRadius.circular(8),
                             border: n.read
                                 ? Border.all(color: AppColors.inkSoft, width: 1)
-                                : null,
+                                : Border.all(color: AppColors.pink, width: 2),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 n.title,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: AppType.body,
                                     fontWeight: FontWeight.w600,
-                                    color: n.read
-                                        ? AppColors.white
-                                        : AppColors.ink),
+                                    color: AppColors.white),
                               ),
                               const SizedBox(height: 4),
                               Text(
@@ -78,19 +76,13 @@ class NotificationsScreen extends ConsumerWidget {
                                         n.type == NotificationType.taskCompleted
                                             ? FontWeight.w600
                                             : FontWeight.w500,
-                                    color: n.read
-                                        ? Colors.white70
-                                        : AppColors.inkSoft),
+                                    color: Colors.white70),
                               ),
                               const SizedBox(height: 2),
                               Text(
                                 DateFormat('MM/dd HH:mm').format(n.createdAt),
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    // 已讀（深底）用淡藍；未讀（淡藍底）用 inkSoft 免同色
-                                    color: n.read
-                                        ? AppColors.main
-                                        : AppColors.inkSoft),
+                                style: const TextStyle(
+                                    fontSize: 12, color: AppColors.main),
                               ),
                             ],
                           ),
