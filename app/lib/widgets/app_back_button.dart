@@ -14,6 +14,9 @@ class AppBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ShadButton.ghost(
       foregroundColor: color,
+      hoverForegroundColor: color,
+      hoverBackgroundColor: Colors.transparent,
+      pressedBackgroundColor: Colors.transparent,
       onPressed: () {
         if (context.canPop()) {
           context.pop();

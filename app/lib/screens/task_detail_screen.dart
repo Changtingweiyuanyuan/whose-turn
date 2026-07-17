@@ -7,6 +7,7 @@ import '../models/task.dart';
 import '../state/providers.dart';
 import '../widgets/app_back_button.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_tokens.dart';
 import '../widgets/app_svg_icons.dart';
 import '../widgets/noise_background.dart';
 import '../widgets/star_progress.dart';
@@ -40,11 +41,11 @@ class TaskDetailScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.ink,
-      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         foregroundColor: AppColors.white,
         elevation: 0,
+        centerTitle: true,
         leading: const AppBackButton(color: AppColors.white),
         title: const Text('任務詳情', style: TextStyle(color: AppColors.white)),
       ),
@@ -79,11 +80,14 @@ class TaskDetailScreen extends ConsumerWidget {
           Center(
             child: Text.rich(
               TextSpan(
-                style: const TextStyle(color: AppColors.white),
+                style: const TextStyle(
+                    fontSize: AppType.label, color: AppColors.inkSoft),
                 children: [
+                  const TextSpan(text: '發起人'),
                   const TextSpan(
-                    text: '發起人：',
-                    style: TextStyle(fontWeight: FontWeight.w800),
+                    text: '：',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w800, color: AppColors.inkSoft),
                   ),
                   TextSpan(text: creator.displayName),
                 ],
@@ -92,44 +96,48 @@ class TaskDetailScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 24),
           ShadCard(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            padding: const EdgeInsets.all(AppSpacing.md),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _InfoRow(
                     label: '完成條件',
                     value: '${task.title} ${task.requiredCount} 次'),
+                const SizedBox(height: 12),
                 _InfoRow(
                   label: '獎勵內容',
                   value: task.rewardLabelFor(me.uid) == '???'
-                      ? '🎁 完成才揭曉'
+                      ? '神秘禮物，完成才揭曉'
                       : task.rewardLabel,
                 ),
-                if (task.deadline != null)
+                if (task.deadline != null) ...[
+                  const SizedBox(height: 12),
                   _InfoRow(
                     label: '截止日期',
                     value: DateFormat('yyyy/MM/dd HH:mm').format(task.deadline!),
                   ),
-                if (task.assigneeUid != null)
+                ],
+                if (task.assigneeUid != null) ...[
+                  const SizedBox(height: 12),
                   _InfoRow(
                     label: '指定給',
                     value: repo.userOf(task.assigneeUid!).displayName,
                   ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: Row(
-                    children: [
-                      const SizedBox(
-                        width: 88,
-                        child: Text('進度',
-                            style: TextStyle(color: AppColors.inkSoft)),
-                      ),
-                      StarProgress(
-                        confirmed: task.confirmedCount,
-                        required: task.requiredCount,
-                        size: 24,
-                      ),
-                    ],
-                  ),
+                ],
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    const SizedBox(
+                      width: 88,
+                      child: Text('進度',
+                          style: TextStyle(color: AppColors.inkSoft)),
+                    ),
+                    StarProgress(
+                      confirmed: task.confirmedCount,
+                      required: task.requiredCount,
+                      size: 24,
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -332,21 +340,18 @@ class _InfoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 88,
-            child: Text(label, style: const TextStyle(color: AppColors.inkSoft)),
-          ),
-          Expanded(
-            child: Text(value,
-                style: const TextStyle(fontWeight: FontWeight.w600)),
-          ),
-        ],
-      ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          width: 88,
+          child: Text(label, style: const TextStyle(color: AppColors.inkSoft)),
+        ),
+        Expanded(
+          child:
+              Text(value, style: const TextStyle(fontWeight: FontWeight.w600)),
+        ),
+      ],
     );
   }
 }
