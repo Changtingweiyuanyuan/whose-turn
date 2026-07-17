@@ -14,9 +14,11 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
     side: ShadSheetSide.bottom,
     builder: (sheetContext) => ShadSheet(
       backgroundColor: AppColors.diluteInk,
-      radius: const BorderRadius.vertical(top: Radius.circular(24)),
-      border: Border.all(color: AppColors.pink, width: 1),
-      closeIcon: const Icon(Icons.close, size: 22, color: AppColors.white),
+      radius: BorderRadius.zero,
+      border: const Border(
+        top: BorderSide(color: AppColors.pink, width: 1),
+      ),
+      closeIcon: const Icon(Icons.close, size: 24, color: AppColors.white),
       padding: const EdgeInsets.fromLTRB(24, 28, 24, 32),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -27,8 +29,8 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
           const Text.rich(
             TextSpan(
               style: TextStyle(
-                fontSize: 22,
-                fontWeight: FontWeight.w800,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
                 color: AppColors.white,
                 height: 1.2,
               ),
@@ -96,7 +98,7 @@ class _DashedRule extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SizedBox(
-      height: 2,
+      height: 1,
       width: double.infinity,
       child: CustomPaint(painter: _DashedPainter()),
     );
