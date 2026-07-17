@@ -157,8 +157,8 @@ class TaskDetailScreen extends ConsumerWidget {
           if (history.isNotEmpty) ...[
             const Text('完成紀錄',
                 style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    fontSize: AppType.body,
+                    fontWeight: FontWeight.w500,
                     color: AppColors.white)),
             const SizedBox(height: 8),
             for (final c in history)
@@ -272,14 +272,6 @@ class TaskDetailScreen extends ConsumerWidget {
             );
           }
         }),
-        if (task.hasPendingCompletion)
-          const Padding(
-            padding: EdgeInsets.only(top: 12),
-            child: Center(
-              child: Text('已完成一次・等待確認中',
-                  style: TextStyle(color: Colors.white70)),
-            ),
-          ),
         const SizedBox(height: 8),
         // 與「下次再說」一致：整條 ghost、白字、淡白 hover
         ShadButton.ghost(
