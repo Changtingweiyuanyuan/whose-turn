@@ -7,6 +7,7 @@ import '../models/task.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
+import '../widgets/app_svg_icons.dart';
 import '../widgets/task_card.dart';
 
 /// 我的任務：進行中（我接的）／等待確認（我發起、待我確認）／已完成。
@@ -142,12 +143,19 @@ class _MyTasksMasthead extends StatelessWidget {
                   ),
                 ),
               ),
-              Text(
-                '⭐ $starTotal',
-                style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.white),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const AppSvgIcon(kStarSvg, color: AppColors.pink, size: 20),
+                  const SizedBox(width: 6),
+                  Text(
+                    '$starTotal',
+                    style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                        color: AppColors.white),
+                  ),
+                ],
               ),
             ],
           ),

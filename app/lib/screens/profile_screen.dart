@@ -7,6 +7,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../widgets/app_close_icon.dart';
+import '../widgets/app_svg_icons.dart';
 import '../widgets/line_bind_sheet.dart';
 
 /// 我的：個人資訊、群組管理（F1）、綁定 LINE、demo 視角切換。
@@ -57,9 +58,16 @@ class ProfileScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
-                Text('⭐ ${me.starTotal}',
-                    style: const TextStyle(
-                        fontSize: 22, fontWeight: FontWeight.w800)),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const AppSvgIcon(kStarSvg, color: AppColors.pink, size: 22),
+                    const SizedBox(width: 6),
+                    Text('${me.starTotal}',
+                        style: const TextStyle(
+                            fontSize: 22, fontWeight: FontWeight.w800)),
+                  ],
+                ),
               ],
             ),
           ),

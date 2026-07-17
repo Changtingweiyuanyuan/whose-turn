@@ -7,6 +7,7 @@ import '../models/task.dart';
 import '../state/providers.dart';
 import '../widgets/app_back_button.dart';
 import '../theme/app_colors.dart';
+import '../widgets/app_svg_icons.dart';
 import '../widgets/noise_background.dart';
 import '../widgets/star_progress.dart';
 import '../widgets/task_icon.dart';
@@ -304,12 +305,21 @@ class _CompletionStatusLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     final (label, color) = switch (status) {
       CompletionStatus.pending => ('等待確認', AppColors.inkSoft),
-      CompletionStatus.confirmed => ('⭐ 已確認', AppColors.pink),
+      CompletionStatus.confirmed => ('已確認', AppColors.pink),
       CompletionStatus.rejected => ('已退回', AppColors.inkSoft),
     };
-    return Text(
+    final text = Text(
       label,
       style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: color),
+    );
+    if (status != CompletionStatus.confirmed) return text;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const AppSvgIcon(kStarSvg, color: AppColors.pink, size: 15),
+        const SizedBox(width: 4),
+        text,
+      ],
     );
   }
 }
