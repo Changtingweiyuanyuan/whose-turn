@@ -75,10 +75,9 @@ class TaskDetailScreen extends ConsumerWidget {
           Center(
             child: Text(
               task.title,
-              // 白字在黑底會有 halation 光暈顯得更粗，降半級 w500 抵消，
-              // 視覺上與首頁卡片的 w600 黑字一致
+              // 詳情大標＝heading（與卡片標題 cardTitle 脫鉤）
               style: const TextStyle(
-                fontSize: AppType.cardTitle,
+                fontSize: AppType.heading,
                 fontWeight: FontWeight.w600,
                 color: AppColors.white,
               ),
