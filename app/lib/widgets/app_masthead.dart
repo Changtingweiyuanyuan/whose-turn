@@ -54,7 +54,7 @@ class AppMasthead extends StatelessWidget {
           Container(height: 2, color: AppColors.pink),
           const SizedBox(height: AppSpacing.md),
           Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: Text(
