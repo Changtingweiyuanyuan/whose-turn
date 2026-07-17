@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import 'screens/celebration_screen.dart';
 import 'screens/create_task_screen.dart';
 import 'screens/home_shell.dart';
 import 'screens/task_detail_screen.dart';
@@ -20,11 +19,6 @@ final _router = GoRouter(
     GoRoute(
       path: '/create-task',
       builder: (context, state) => const CreateTaskScreen(),
-    ),
-    GoRoute(
-      path: '/celebrate/:id',
-      builder: (context, state) =>
-          CelebrationScreen(taskId: state.pathParameters['id']!),
     ),
   ],
 );

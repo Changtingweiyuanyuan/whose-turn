@@ -317,8 +317,27 @@ class TaskDetailScreen extends ConsumerWidget {
       return [
         primary('領取獎勵', () async {
           await repo.claimReward(task.id);
-          if (context.mounted) context.pushReplacement('/celebrate/${task.id}');
+          if (context.mounted) {
+            ShadToaster.of(context).show(
+              ShadToast(
+                description: Text('🎉 恭喜完成！獎勵已解鎖：${task.rewardLabel}'),
+              ),
+            );
+          }
         }),
+      ];
+    }
+
+    if (isClaimant && task.status == TaskStatus.rewardClaimed) {
+      return [
+        ShadButton(
+          width: double.infinity,
+          enabled: false,
+          backgroundColor: AppColors.pink,
+          foregroundColor: AppColors.white,
+          onPressed: () {},
+          child: const Text('已領取獎勵'),
+        ),
       ];
     }
 

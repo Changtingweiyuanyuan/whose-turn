@@ -172,7 +172,7 @@ class _StatusChip extends StatelessWidget {
       TaskStatus.expired => ('已截止', AppColors.inkSoft),
       TaskStatus.cancelled => ('已取消', AppColors.inkSoft),
     };
-    return Text(
+    final text = Text(
       label,
       style: TextStyle(
           fontSize: AppType.label,
@@ -181,5 +181,21 @@ class _StatusChip extends StatelessWidget {
               label == '已被接走' ? FontWeight.w500 : FontWeight.w600,
           color: color),
     );
+
+    // 已領取：文字後帶獎勵 icon（現金 / 禮物），gap 對齊詳情神秘禮物 4px。
+    if (task.status == TaskStatus.rewardClaimed) {
+      final rewardIcon =
+          task.rewardType == RewardType.money ? kCashSvg : kGiftSlashSvg;
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          text,
+          const SizedBox(width: 4),
+          AppSvgIcon(rewardIcon, color: color, size: 16),
+        ],
+      );
+    }
+
+    return text;
   }
 }
