@@ -42,8 +42,8 @@ description: 「今天換誰？」的設計語言規範。任何 UI 修改（畫
 | Token | px | 用途 |
 |---|---|---|
 | display | 40 | 保留 |
-| heading | 26 | 保留（少用） |
-| cardTitle | **16** | 卡片標題、任務詳情大標 |
+| heading | 26 | 任務詳情大標 |
+| cardTitle | **16** | 任務卡標題 |
 | body | **16** | 一般字（分頁、清單、欄位標題、內文） |
 | label | **14** | 次級標籤（發起人、appbar 標題） |
 | kicker | 12 | 刊頭小標 |
@@ -54,7 +54,7 @@ description: 「今天換誰？」的設計語言規範。任何 UI 修改（畫
 
 以 **w500 / w600** 為主，**w800** 保留給數字強調（NO.xx、星星數、次數 `3/5` 的完成數）。避免 w400/w700/w900。
 
-- 頁標題、卡片標題、欄位標題、通知標題 = **w600**
+- 頁標題、卡片標題、欄位標題、通知標題、個人資料姓名 = **w600 / 16px**（任務卡標題、通知標題、個人設定姓名三者一致）
 - 內文、分頁、發起人名、狀態字 = **w500**
 - 完成數字、NO.xx、星星計數 = **w800**
 
@@ -74,7 +74,7 @@ description: 「今天換誰？」的設計語言規範。任何 UI 修改（畫
 - `switchTheme`：開=pink、關=main、把手白。
 - `outlineButtonTheme` 前景=**白**（日曆左右導覽箭頭）；**淺底上的 `ShadButton.outline` 必須個別指定 `foregroundColor: ink`**（邀請好友/取消/退回/回任務看板）。
 - `calendarTheme`：日期字白、選中日 pink（primary）、今天 ink（secondary）、hover 8% 白、非本月 white38。
-- `toast / dialog / alert` 邊框 = **pink**（popover 已改回無粉框）。
+- `toast / dialog / alert` 邊框 = **inkSoft**（popover 無框）。粉色只留給「通知未讀卡片」邊框。
 
 ## 元件規範
 
