@@ -45,24 +45,24 @@ abstract final class AppShadTheme {
           radius: BorderRadius.circular(8),
           border: ShadBorder.all(color: AppColors.lightGray, width: 1),
         ),
-        // Toast：diluteInk 深色底 + 粉色邊框 + 白字
+        // Toast：diluteInk 深色底 + inkSoft 邊框 + 白字
         primaryToastTheme: ShadToastTheme(
           backgroundColor: AppColors.diluteInk,
           radius: BorderRadius.circular(6),
           border: ShadBorder.all(
-            color: AppColors.pink,
+            color: AppColors.inkSoft,
             width: 1,
             radius: BorderRadius.circular(6),
           ),
           descriptionStyle: const TextStyle(color: AppColors.white),
           shadows: const [],
         ),
-        // 全站彈窗（dialog / alert / popover / date picker）統一粉色邊框
+        // 全站彈窗（dialog / alert）統一 inkSoft 邊框
         primaryDialogTheme: ShadDialogTheme(
-          border: Border.all(color: AppColors.pink, width: 1),
+          border: Border.all(color: AppColors.inkSoft, width: 1),
         ),
         alertDialogTheme: ShadDialogTheme(
-          border: Border.all(color: AppColors.pink, width: 1),
+          border: Border.all(color: AppColors.inkSoft, width: 1),
         ),
         // Input：diluteInk 深底 + 白字（深色頁面上一致）
         inputTheme: const ShadInputTheme(
