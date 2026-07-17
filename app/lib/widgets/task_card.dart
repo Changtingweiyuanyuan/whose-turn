@@ -163,7 +163,7 @@ class _StatusChip extends StatelessWidget {
         ('等人接單', AppColors.inkSoft),
       TaskStatus.open => ('指定任務', AppColors.inkSoft),
       TaskStatus.claimed when task.claimedBy == viewerUid =>
-        ('進行中', AppColors.pink),
+        ('進行中', const Color(0xFF8F4D63)),
       TaskStatus.claimed => ('已被接走', AppColors.inkSoft),
       TaskStatus.completed => ('已完成', AppColors.ink),
       TaskStatus.rewardClaimed => ('獎勵已領', AppColors.inkSoft),
