@@ -198,7 +198,7 @@ class TaskDetailScreen extends ConsumerWidget {
                             Text(
                               DateFormat('MM/dd HH:mm').format(c.submittedAt),
                               style: const TextStyle(
-                                  fontSize: 12, color: Colors.white70),
+                                  fontSize: 12, color: AppColors.main),
                             ),
                           ],
                         ),
@@ -207,18 +207,26 @@ class TaskDetailScreen extends ConsumerWidget {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            ShadButton.outline(
+                            // 退回 對齊「放棄任務」：ghost 白字、淡白 hover
+                            ShadButton.ghost(
                               size: ShadButtonSize.sm,
+                              foregroundColor: AppColors.white,
+                              hoverForegroundColor: AppColors.white,
+                              hoverBackgroundColor:
+                                  AppColors.white.withValues(alpha: 0.08),
                               onPressed: () =>
                                   repo.rejectCompletion(task.id, c.id),
                               child: const Text('退回'),
                             ),
                             const SizedBox(width: 8),
+                            // 確認 對齊「完成一次」：粉底白字
                             ShadButton(
                               size: ShadButtonSize.sm,
+                              backgroundColor: AppColors.pink,
+                              foregroundColor: AppColors.white,
                               onPressed: () =>
                                   repo.confirmCompletion(task.id, c.id),
-                              child: const Text('✔ 確認'),
+                              child: const Text('確認'),
                             ),
                           ],
                         )
