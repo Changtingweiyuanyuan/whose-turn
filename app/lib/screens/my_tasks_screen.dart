@@ -197,7 +197,7 @@ class _SlidingTabs extends StatelessWidget {
                   onTap: () => onChanged(i),
                   behavior: HitTestBehavior.opaque,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.only(top: 10, bottom: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -233,7 +233,6 @@ class _SlidingTabs extends StatelessWidget {
               ),
           ],
         ),
-        const SizedBox(height: 4),
         // 基線 + 滑動的粉色底線
         Stack(
           children: [
