@@ -290,6 +290,22 @@ class TaskDetailScreen extends ConsumerWidget {
     }
 
     if (isClaimant && task.status == TaskStatus.claimed) {
+      // 次要 CTA：ink 底白字；hover 維持 ink 疊半透明白
+      final abandon = ShadButton(
+        width: double.infinity,
+        backgroundColor: AppColors.ink,
+        foregroundColor: AppColors.white,
+        hoverBackgroundColor: AppColors.inkHover,
+        hoverForegroundColor: AppColors.white,
+        onPressed: () => repo.abandonTask(task.id),
+        child: const Text('放棄任務'),
+      );
+
+      // 已送出（等待確認＋已確認）達次數上限，不再顯示「完成一次」
+      if (task.activeCount >= task.requiredCount) {
+        return [abandon];
+      }
+
       return [
         primary('完成一次', () async {
           await repo.submitCompletion(task.id);
@@ -300,16 +316,7 @@ class TaskDetailScreen extends ConsumerWidget {
           }
         }),
         const SizedBox(height: 8),
-        // 次要 CTA：ink 底白字；hover 維持 ink 疊半透明白
-        ShadButton(
-          width: double.infinity,
-          backgroundColor: AppColors.ink,
-          foregroundColor: AppColors.white,
-          hoverBackgroundColor: AppColors.inkHover,
-          hoverForegroundColor: AppColors.white,
-          onPressed: () => repo.abandonTask(task.id),
-          child: const Text('放棄任務'),
-        ),
+        abandon,
       ];
     }
 

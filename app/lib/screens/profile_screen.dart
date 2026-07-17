@@ -298,16 +298,30 @@ class ProfileScreen extends ConsumerWidget {
       context: context,
       builder: (ctx) => ShadDialog.alert(
         backgroundColor: AppColors.diluteInk,
-        gap: 12,
+        radius: BorderRadius.circular(AppRadius.card),
+        // content 與 actions 之間 24；標題與內文的間距在 title 欄內自控
+        gap: AppSpacing.lg,
         closeIcon: const AppCloseIcon(color: AppColors.white, size: 22),
         closeIconPosition: const ShadPosition(top: 20, right: 20),
-        title: const Text('離開群組？',
-            style: TextStyle(
-                fontSize: AppType.body,
-                fontWeight: FontWeight.w600,
-                color: AppColors.white)),
-        description: const Text('離開後看不到群組的任務看板。',
-            style: TextStyle(color: Colors.white70)),
+        title: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('離開群組？',
+                style: TextStyle(
+                    fontSize: AppType.body,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.white)),
+            SizedBox(height: 12),
+            Text('離開後看不到群組的任務看板。',
+                style: TextStyle(color: Colors.white70)),
+          ],
+        ),
+        // CTA 橫排靠右、不佔滿寬度、間距對齊其他 CTA
+        expandActionsWhenTiny: false,
+        actionsAxis: Axis.horizontal,
+        actionsMainAxisAlignment: MainAxisAlignment.end,
+        actionsGap: AppSpacing.sm,
         actions: [
           ShadButton(
             backgroundColor: AppColors.ink,

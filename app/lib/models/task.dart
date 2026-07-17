@@ -83,6 +83,12 @@ class Task {
   bool get hasPendingCompletion =>
       completions.any((c) => c.status == CompletionStatus.pending);
 
+  int get pendingCount =>
+      completions.where((c) => c.status == CompletionStatus.pending).length;
+
+  /// 已送出且未被退回的次數（等待確認 + 已確認），用來擋住超額送出。
+  int get activeCount => confirmedCount + pendingCount;
+
   /// 對接單人顯示的獎勵文字：神秘任務完成前只看得到 ???
   String rewardLabelFor(String viewerUid) {
     if (!isMystery) return rewardLabel;
