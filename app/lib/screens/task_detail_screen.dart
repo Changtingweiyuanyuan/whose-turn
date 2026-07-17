@@ -104,7 +104,7 @@ class TaskDetailScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 24),
           ShadCard(
-            padding: const EdgeInsets.all(AppSpacing.md),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             border: ShadBorder.none,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

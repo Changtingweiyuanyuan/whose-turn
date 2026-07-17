@@ -27,12 +27,27 @@ class StarProgress extends StatelessWidget {
         height: 8,
         trailing: Padding(
           padding: const EdgeInsets.only(left: 8),
-          child: Text(
-            '$confirmed/$required',
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              color: AppColors.ink,
+          child: Text.rich(
+            TextSpan(
+              children: [
+                // 已完成次數：粗體 16px
+                TextSpan(
+                  text: '$confirmed',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    color: AppColors.ink,
+                  ),
+                ),
+                // /總數：正常字重與大小
+                TextSpan(
+                  text: '/$required',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.ink,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -74,7 +89,7 @@ class _SegmentBar extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         SizedBox(
-          width: height * 10,
+          width: 120,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(3),
             child: Row(
