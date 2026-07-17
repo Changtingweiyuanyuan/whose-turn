@@ -353,7 +353,7 @@ class _SortControlState extends State<_SortControl> {
               offset: const Offset(0, 4),
               child: Container(
                 width: 150,
-                padding: const EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: AppColors.diluteInk,
                   borderRadius: BorderRadius.circular(6),
@@ -362,6 +362,7 @@ class _SortControlState extends State<_SortControl> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
+                  spacing: 4,
                   children: [
                     for (final entry in _sortLabels.entries)
                       _SortItem(
@@ -411,8 +412,8 @@ class _SortControlState extends State<_SortControl> {
   }
 }
 
-/// 排序選項：左對齊，選中前方帶粉色短線（高度同分頁底線 4px）。
-class _SortItem extends StatelessWidget {
+/// 排序選項：左對齊，選中前方帶粉色短線；hover 疊半透明白、圓角 6。
+class _SortItem extends StatefulWidget {
   const _SortItem({
     required this.label,
     required this.selected,
@@ -424,33 +425,48 @@ class _SortItem extends StatelessWidget {
   final VoidCallback onTap;
 
   @override
+  State<_SortItem> createState() => _SortItemState();
+}
+
+class _SortItemState extends State<_SortItem> {
+  bool _hover = false;
+
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      behavior: HitTestBehavior.opaque,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
-        child: Row(
-          children: [
-            // 粉色短線指示器（選中才顯示；未選中留同寬空位讓文字對齊）
-            Container(
-              width: 16,
-              height: 3,
-              decoration: BoxDecoration(
-                color: selected ? AppColors.pink : Colors.transparent,
-                borderRadius: BorderRadius.circular(2),
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hover = true),
+      onExit: (_) => setState(() => _hover = false),
+      child: GestureDetector(
+        onTap: widget.onTap,
+        behavior: HitTestBehavior.opaque,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          decoration: BoxDecoration(
+            color: _hover ? const Color(0x14FFFFFF) : Colors.transparent,
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Row(
+            children: [
+              // 粉色短線指示器（選中才顯示；未選中留同寬空位讓文字對齊）
+              Container(
+                width: 16,
+                height: 3,
+                decoration: BoxDecoration(
+                  color: widget.selected ? AppColors.pink : Colors.transparent,
+                  borderRadius: BorderRadius.circular(2),
+                ),
               ),
-            ),
-            const SizedBox(width: 10),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: AppType.body,
-                color: selected ? AppColors.pink : AppColors.white,
-                fontWeight: FontWeight.w500,
+              const SizedBox(width: 10),
+              Text(
+                widget.label,
+                style: TextStyle(
+                  fontSize: AppType.body,
+                  color: widget.selected ? AppColors.pink : AppColors.white,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
