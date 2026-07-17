@@ -35,7 +35,7 @@ class NotificationsScreen extends ConsumerWidget {
                 : ListView.separated(
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 96),
                     itemCount: items.length,
-                    separatorBuilder: (_, _) => const SizedBox(height: 8),
+                    separatorBuilder: (_, _) => const SizedBox(height: 16),
                     itemBuilder: (context, i) {
                       final n = items[i];
                       return GestureDetector(

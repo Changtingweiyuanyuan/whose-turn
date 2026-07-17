@@ -46,7 +46,7 @@ class ProfileScreen extends ConsumerWidget {
             ),
             child: Row(
               children: [
-                Text(me.avatarEmoji, style: const TextStyle(fontSize: 44)),
+                Text(me.avatarEmoji, style: const TextStyle(fontSize: 20)),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -96,7 +96,7 @@ class ProfileScreen extends ConsumerWidget {
               ),
               child: Row(
                 children: [
-                  const Text('💾', style: TextStyle(fontSize: 26)),
+                  const Text('💾', style: TextStyle(fontSize: 20)),
                   const SizedBox(width: 12),
                   const Expanded(
                     child: Column(

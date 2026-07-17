@@ -208,7 +208,7 @@ class _TaskList extends ConsumerWidget {
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(0, 16, 0, 96),
       itemCount: tasks.length,
-      separatorBuilder: (_, _) => const SizedBox(height: 12),
+      separatorBuilder: (_, _) => const SizedBox(height: 16),
       itemBuilder: (context, i) => TaskCard(
         task: tasks[i],
         viewer: repo.currentUser,
@@ -251,7 +251,7 @@ class _ConfirmList extends ConsumerWidget {
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(0, 16, 0, 96),
       itemCount: entries.length,
-      separatorBuilder: (_, _) => const SizedBox(height: 12),
+      separatorBuilder: (_, _) => const SizedBox(height: 16),
       itemBuilder: (context, i) {
         final (:task, :completion) = entries[i];
         final doer = repo.userOf(completion.userId);
