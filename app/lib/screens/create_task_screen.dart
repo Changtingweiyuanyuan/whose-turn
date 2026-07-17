@@ -238,21 +238,50 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               ),
               const SizedBox(height: 16),
               const _FieldLabel('獎勵類型'),
-              ShadRadioGroupFormField<RewardType>(
-                id: 'rewardType',
-                initialValue: _rewardType,
-                axis: Axis.horizontal,
-                onChanged: (v) {
-                  if (v != null) setState(() => _rewardType = v);
-                },
-                items: [
-                  for (final entry in _rewardTypeLabels.entries)
-                    ShadRadio(
-                      value: entry.key,
-                      label: Text(entry.value,
-                          style: const TextStyle(color: AppColors.white)),
-                    ),
-                ],
+              // 自訂分段控制：選中格 pink 邊框 + pinkSoft 底
+              Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: AppColors.inkSoft, width: 1),
+                ),
+                child: Row(
+                  children: [
+                    for (final entry in _rewardTypeLabels.entries)
+                      Expanded(
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () => setState(() => _rewardType = entry.key),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: _rewardType == entry.key
+                                  ? AppColors.pinkSoft
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: _rewardType == entry.key
+                                    ? AppColors.pink
+                                    : Colors.transparent,
+                                width: 1.5,
+                              ),
+                            ),
+                            child: Text(
+                              entry.value,
+                              style: TextStyle(
+                                fontSize: AppType.body,
+                                fontWeight: FontWeight.w500,
+                                color: _rewardType == entry.key
+                                    ? AppColors.ink
+                                    : AppColors.white,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ),
               const SizedBox(height: 16),
               _FieldLabel(_rewardFieldLabel),
