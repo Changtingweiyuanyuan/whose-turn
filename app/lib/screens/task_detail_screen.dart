@@ -113,16 +113,26 @@ class TaskDetailScreen extends ConsumerWidget {
                     label: '完成條件',
                     value: '${task.title} ${task.requiredCount} 次'),
                 const SizedBox(height: 8),
-                _InfoRow(
-                  label: '獎勵內容',
-                  value: task.rewardLabelFor(me.uid) == '???'
-                      ? '神秘禮物，完成才揭曉'
-                      : task.rewardLabel,
-                  trailing: task.rewardLabelFor(me.uid) == '???'
-                      ? const AppSvgIcon(kGiftSlashSvg,
-                          color: AppColors.ink, size: 16)
-                      : null,
-                ),
+                task.rewardLabelFor(me.uid) == '???'
+                    ? const _InfoRow(
+                        label: '獎勵內容',
+                        valueChild: Row(
+                          children: [
+                            Text('神秘禮物',
+                                style: TextStyle(fontWeight: FontWeight.w500)),
+                            SizedBox(width: 4),
+                            AppSvgIcon(kGiftSlashSvg,
+                                color: AppColors.ink, size: 16),
+                            SizedBox(width: 4),
+                            Flexible(
+                              child: Text('完成才揭曉',
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.w500)),
+                            ),
+                          ],
+                        ),
+                      )
+                    : _InfoRow(label: '獎勵內容', value: task.rewardLabel),
                 if (task.deadline != null) ...[
                   const SizedBox(height: 8),
                   _InfoRow(
@@ -361,13 +371,17 @@ const double _kInfoLabelWidth = 58;
 const double _kInfoLabelGap = 20;
 
 class _InfoRow extends StatelessWidget {
-  const _InfoRow({required this.label, required this.value, this.trailing});
+  const _InfoRow({
+    required this.label,
+    this.value,
+    this.valueChild,
+  }) : assert(value != null || valueChild != null);
 
   final String label;
-  final String value;
+  final String? value;
 
-  /// value 後方的小 icon（如神秘禮物），與文字間距 4px。
-  final Widget? trailing;
+  /// 自訂 value 內容（如神秘禮物：文字+icon+文字），優先於 [value]。
+  final Widget? valueChild;
 
   @override
   Widget build(BuildContext context) {
@@ -382,18 +396,8 @@ class _InfoRow extends StatelessWidget {
         ),
         const SizedBox(width: _kInfoLabelGap),
         Expanded(
-          child: Row(
-            children: [
-              Flexible(
-                child: Text(value,
-                    style: const TextStyle(fontWeight: FontWeight.w500)),
-              ),
-              if (trailing != null) ...[
-                const SizedBox(width: 4),
-                trailing!,
-              ],
-            ],
-          ),
+          child: valueChild ??
+              Text(value!, style: const TextStyle(fontWeight: FontWeight.w500)),
         ),
       ],
     );
