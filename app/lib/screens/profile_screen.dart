@@ -10,6 +10,7 @@ import '../theme/app_tokens.dart';
 import '../widgets/app_close_icon.dart';
 import '../widgets/app_masthead.dart';
 import '../widgets/app_svg_icons.dart';
+import '../widgets/dashed_rule.dart';
 import '../widgets/line_bind_sheet.dart';
 import '../widgets/message_bubble_icon.dart';
 
@@ -56,7 +57,7 @@ class ProfileScreen extends ConsumerWidget {
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
                               color: AppColors.white)),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 8),
                       Text(
                         me.isGuest ? '訪客帳號' : 'LINE 已綁定 ✅',
                         style: TextStyle(
@@ -191,6 +192,8 @@ class ProfileScreen extends ConsumerWidget {
                         ),
                     ],
                   ),
+                  const SizedBox(height: 12),
+                  const DashedRule(color: AppColors.inkSoft),
                   const SizedBox(height: 12),
                   // 邀請好友 = pink 佔滿；離開 = ink 只佔文字寬；gap 8
                   Row(

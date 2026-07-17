@@ -15,7 +15,7 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
     side: ShadSheetSide.bottom,
     builder: (sheetContext) => ShadSheet(
       backgroundColor: AppColors.diluteInk,
-      radius: BorderRadius.zero,
+      radius: const BorderRadius.vertical(top: Radius.circular(8)),
       border: const Border(
         top: BorderSide(color: AppColors.pink, width: 1),
       ),
