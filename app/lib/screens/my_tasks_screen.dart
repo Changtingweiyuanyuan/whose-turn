@@ -136,9 +136,9 @@ class _MyTasksMasthead extends StatelessWidget {
                 child: Text(
                   '我的任務',
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 20,
                     height: 1.0,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w600,
                     color: AppColors.white,
                   ),
                 ),

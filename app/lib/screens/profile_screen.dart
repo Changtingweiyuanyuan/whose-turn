@@ -27,8 +27,8 @@ class ProfileScreen extends ConsumerWidget {
         children: [
           const Text('我的',
               style: TextStyle(
-                  fontSize: 26,
-                  fontWeight: FontWeight.w800,
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
                   color: AppColors.white)),
           const SizedBox(height: 16),
 
@@ -45,7 +45,7 @@ class ProfileScreen extends ConsumerWidget {
                     children: [
                       Text(me.displayName,
                           style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.w600)),
+                              fontSize: 20, fontWeight: FontWeight.w600)),
                       const SizedBox(height: 2),
                       Text(
                         me.isGuest ? '訪客帳號' : 'LINE 已綁定 ✅',
@@ -126,7 +126,7 @@ class ProfileScreen extends ConsumerWidget {
                       Expanded(
                         child: Text(group.name,
                             style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w600)),
+                                fontSize: 20, fontWeight: FontWeight.w600)),
                       ),
                       Text('${group.memberUids.length} 人',
                           style: const TextStyle(color: AppColors.inkSoft)),
