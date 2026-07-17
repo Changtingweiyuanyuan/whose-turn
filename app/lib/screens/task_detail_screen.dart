@@ -52,7 +52,7 @@ class TaskDetailScreen extends ConsumerWidget {
             style: TextStyle(
                 color: AppColors.pink,
                 fontSize: AppType.label,
-                fontWeight: FontWeight.w500)),
+                fontWeight: FontWeight.w600)),
       ),
       body: NoiseBackground(
         child: ListView(
@@ -79,7 +79,7 @@ class TaskDetailScreen extends ConsumerWidget {
               // 視覺上與首頁卡片的 w600 黑字一致
               style: const TextStyle(
                 fontSize: AppType.cardTitle,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
                 color: AppColors.white,
               ),
             ),

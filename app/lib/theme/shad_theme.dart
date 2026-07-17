@@ -42,17 +42,29 @@ abstract final class AppShadTheme {
           radius: BorderRadius.circular(8),
           border: ShadBorder.all(color: AppColors.lightGray, width: 1),
         ),
-        // Toast：diluteInk 深色底 + 細邊框 + 白字（與排序選單一致）
+        // Toast：diluteInk 深色底 + 粉色邊框 + 白字
         primaryToastTheme: ShadToastTheme(
           backgroundColor: AppColors.diluteInk,
           radius: BorderRadius.circular(6),
           border: ShadBorder.all(
-            color: AppColors.inkSoft,
+            color: AppColors.pink,
             width: 1,
             radius: BorderRadius.circular(6),
           ),
           descriptionStyle: const TextStyle(color: AppColors.white),
           shadows: const [],
+        ),
+        // 全站彈窗（dialog / alert / popover / date picker）統一粉色邊框
+        primaryDialogTheme: ShadDialogTheme(
+          border: Border.all(color: AppColors.pink, width: 1),
+        ),
+        alertDialogTheme: ShadDialogTheme(
+          border: Border.all(color: AppColors.pink, width: 1),
+        ),
+        popoverTheme: ShadPopoverTheme(
+          decoration: ShadDecoration(
+            border: ShadBorder.all(color: AppColors.pink, width: 1),
+          ),
         ),
         textTheme: ShadTextTheme(
           family: GoogleFonts.robotoCondensed().fontFamily!,
