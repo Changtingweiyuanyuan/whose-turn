@@ -296,6 +296,8 @@ class ProfileScreen extends ConsumerWidget {
   Future<void> _confirmLeave(BuildContext context, WidgetRef ref) async {
     final confirmed = await showShadDialog<bool>(
       context: context,
+      // 套件預設 barrier 0xcc000000 太濃，改回正常半透明遮罩
+      barrierColor: Colors.black54,
       builder: (ctx) => ShadDialog.alert(
         backgroundColor: AppColors.diluteInk,
         radius: BorderRadius.circular(AppRadius.card),
@@ -403,6 +405,7 @@ class ProfileScreen extends ConsumerWidget {
     final controller = TextEditingController();
     return showShadDialog<String>(
       context: context,
+      barrierColor: Colors.black54,
       builder: (ctx) => ShadDialog(
         closeIcon: const AppCloseIcon(color: AppColors.ink, size: 22),
         closeIconPosition: const ShadPosition(top: 20, right: 20),
