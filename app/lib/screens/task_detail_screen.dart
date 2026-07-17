@@ -219,13 +219,13 @@ class TaskDetailScreen extends ConsumerWidget {
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            // 退回 對齊「放棄任務」：ghost 白字、淡白 hover
-                            ShadButton.ghost(
+                            // 退回 = 次要 CTA：ink 底、hover inkHover
+                            ShadButton(
                               size: ShadButtonSize.sm,
+                              backgroundColor: AppColors.ink,
                               foregroundColor: AppColors.white,
+                              hoverBackgroundColor: AppColors.inkHover,
                               hoverForegroundColor: AppColors.white,
-                              hoverBackgroundColor:
-                                  AppColors.white.withValues(alpha: 0.08),
                               onPressed: () =>
                                   repo.rejectCompletion(task.id, c.id),
                               child: const Text('退回'),
@@ -315,7 +315,7 @@ class TaskDetailScreen extends ConsumerWidget {
 
     if (isClaimant && task.status == TaskStatus.completed) {
       return [
-        primary('🎉 領取獎勵', () async {
+        primary('領取獎勵', () async {
           await repo.claimReward(task.id);
           if (context.mounted) context.pushReplacement('/celebrate/${task.id}');
         }),

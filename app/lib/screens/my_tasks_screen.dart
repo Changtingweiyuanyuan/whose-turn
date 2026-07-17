@@ -134,7 +134,7 @@ class _SlidingTabs extends StatelessWidget {
                           ),
                         ),
                         if (i == badgeIndex && badgeCount > 0) ...[
-                          const SizedBox(width: 4),
+                          const SizedBox(width: 8),
                           Container(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 6, vertical: 1),
@@ -255,52 +255,57 @@ class _ConfirmList extends ConsumerWidget {
       itemBuilder: (context, i) {
         final (:task, :completion) = entries[i];
         final doer = repo.userOf(completion.userId);
-        return ShadCard(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        // 與任務詳情「完成紀錄」dark block 完全一致
+        return Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: AppColors.diluteInk,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: AppColors.inkSoft, width: 1),
+          ),
+          child: Row(
             children: [
-              Row(
-                children: [
-                  Text(doer.avatarEmoji, style: const TextStyle(fontSize: 30)),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '${doer.displayName} 完成了 ${task.title}',
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        Text(
-                          DateFormat('今天 HH:mm').format(completion.submittedAt),
-                          style: const TextStyle(
-                              fontSize: 12, color: AppColors.inkSoft),
-                        ),
-                      ],
+              Text(doer.avatarEmoji, style: const TextStyle(fontSize: 26)),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${doer.displayName} 完成了 ${task.title}',
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.white),
                     ),
-                  ),
-                ],
+                    const SizedBox(height: 2),
+                    Text(
+                      DateFormat('MM/dd HH:mm').format(completion.submittedAt),
+                      style: const TextStyle(
+                          fontSize: 12, color: AppColors.main),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 12),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ShadButton.outline(
-                    size: ShadButtonSize.sm,
-                    foregroundColor: AppColors.ink,
-                    onPressed: () =>
-                        repo.rejectCompletion(task.id, completion.id),
-                    child: const Text('退回'),
-                  ),
-                  const SizedBox(width: 8),
-                  ShadButton(
-                    size: ShadButtonSize.sm,
-                    onPressed: () =>
-                        repo.confirmCompletion(task.id, completion.id),
-                    child: const Text('✔ 確認'),
-                  ),
-                ],
+              // 退回 = 次要 CTA：ink 底、hover inkHover
+              ShadButton(
+                size: ShadButtonSize.sm,
+                backgroundColor: AppColors.ink,
+                foregroundColor: AppColors.white,
+                hoverBackgroundColor: AppColors.inkHover,
+                hoverForegroundColor: AppColors.white,
+                onPressed: () =>
+                    repo.rejectCompletion(task.id, completion.id),
+                child: const Text('退回'),
+              ),
+              const SizedBox(width: 8),
+              // 確認 對齊「完成一次」：粉底白字
+              ShadButton(
+                size: ShadButtonSize.sm,
+                backgroundColor: AppColors.pink,
+                foregroundColor: AppColors.white,
+                onPressed: () =>
+                    repo.confirmCompletion(task.id, completion.id),
+                child: const Text('確認'),
               ),
             ],
           ),
