@@ -57,9 +57,9 @@ class ProfileScreen extends ConsumerWidget {
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
                               color: AppColors.white)),
-                      //const SizedBox(height: 2),
+											const SizedBox(height: AppSpacing.xs),
                       Text(
-                        me.isGuest ? '訪客帳號' : 'LINE 已綁定 ✅',
+                        me.isGuest ? '訪客帳號' : 'LINE 已綁定',
                         style: TextStyle(
                           fontSize: 13,
                           color: AppColors.inkSoft,

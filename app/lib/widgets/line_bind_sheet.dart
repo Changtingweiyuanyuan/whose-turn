@@ -5,6 +5,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import 'app_close_icon.dart';
+import 'dashed_rule.dart';
 import 'message_bubble_icon.dart';
 
 /// 訪客 gate：建立群組 / 發起任務前必須綁定 LINE。
@@ -44,7 +45,7 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
             ),
           ),
           const SizedBox(height: 12),
-          const _DashedRule(),
+          const DashedRule(color: AppColors.pink),
           const SizedBox(height: 12),
           // 內文：永久保存 粉色強調
           const Text.rich(
@@ -95,40 +96,4 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
     ),
   );
   return bound ?? false;
-}
-
-/// 粉色虛線分隔線（與標題同寬）。
-class _DashedRule extends StatelessWidget {
-  const _DashedRule();
-
-  @override
-  Widget build(BuildContext context) {
-    return const SizedBox(
-      height: 1,
-      width: double.infinity,
-      child: CustomPaint(painter: _DashedPainter()),
-    );
-  }
-}
-
-class _DashedPainter extends CustomPainter {
-  const _DashedPainter();
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    const dash = 6.0, gap = 4.0;
-    final paint = Paint()
-      ..color = AppColors.pink
-      ..strokeWidth = 1
-      ..strokeCap = StrokeCap.round;
-    double x = 0;
-    final y = size.height / 2;
-    while (x < size.width) {
-      canvas.drawLine(Offset(x, y), Offset(x + dash, y), paint);
-      x += dash + gap;
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant _DashedPainter oldDelegate) => false;
 }
