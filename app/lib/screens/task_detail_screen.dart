@@ -83,7 +83,7 @@ class TaskDetailScreen extends ConsumerWidget {
               ),
             ),
           ),
-          const SizedBox(height: AppSpacing.xs),
+          const SizedBox(height: AppSpacing.sm), // 標題↔發起人 8
           Center(
             child: Text.rich(
               TextSpan(
