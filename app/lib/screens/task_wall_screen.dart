@@ -460,7 +460,6 @@ class _SortItemState extends State<_SortItem> {
               Text(
                 widget.label,
                 style: TextStyle(
-                  fontSize: AppType.body,
                   color: widget.selected ? AppColors.pink : AppColors.white,
                   fontWeight: FontWeight.w500,
                 ),
