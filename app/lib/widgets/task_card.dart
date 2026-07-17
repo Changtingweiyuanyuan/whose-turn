@@ -4,6 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../models/app_user.dart';
 import '../models/task.dart';
 import '../theme/app_colors.dart';
+import 'app_svg_icons.dart';
 import '../theme/app_tokens.dart';
 import 'reward_badge.dart';
 import 'task_icon.dart';
@@ -97,9 +98,15 @@ class TaskCard extends StatelessWidget {
                         ? ShadButton(
                             size: ShadButtonSize.sm,
                             onPressed: onClaim,
-                            trailing:
-                                const Icon(Icons.arrow_right_alt, size: 18),
-                            child: const Text('我要接'),
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text('我要接'),
+                                SizedBox(width: 8),
+                                AppSvgIcon(kArrowRightSvg,
+                                    color: AppColors.white, size: 20),
+                              ],
+                            ),
                           )
                         : _StatusChip(task: task, viewerUid: viewer.uid),
                   ),

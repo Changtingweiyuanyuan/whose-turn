@@ -153,6 +153,7 @@ class ProfileScreen extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: ShadButton.outline(
+                          foregroundColor: AppColors.ink,
                           leading: const Icon(Iconsax.link_copy, size: 16),
                           onPressed: () {
                             Clipboard.setData(
@@ -240,6 +241,7 @@ class ProfileScreen extends ConsumerWidget {
         description: const Text('離開後看不到群組的任務牆。'),
         actions: [
           ShadButton.outline(
+            foregroundColor: AppColors.ink,
             onPressed: () => Navigator.pop(ctx, false),
             child: const Text('取消'),
           ),
@@ -313,6 +315,7 @@ class ProfileScreen extends ConsumerWidget {
         title: Text(title),
         actions: [
           ShadButton.outline(
+            foregroundColor: AppColors.ink,
             onPressed: () => Navigator.pop(ctx),
             child: const Text('取消'),
           ),

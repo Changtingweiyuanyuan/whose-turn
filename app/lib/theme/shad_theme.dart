@@ -70,6 +70,10 @@ abstract final class AppShadTheme {
           placeholderStyle: TextStyle(color: Colors.white54),
           cursorColor: AppColors.white,
         ),
+        // Outline 前景白（日曆左右導覽箭頭）；白底彈窗上的 outline 按鈕另行指定 ink
+        outlineButtonTheme: const ShadButtonTheme(
+          foregroundColor: AppColors.white,
+        ),
         // 誰都可以接開關：開=pink、關=pinkSoft、把手白
         switchTheme: const ShadSwitchTheme(
           thumbColor: AppColors.white,

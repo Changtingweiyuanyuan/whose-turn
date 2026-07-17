@@ -288,6 +288,7 @@ class _ConfirmList extends ConsumerWidget {
                 children: [
                   ShadButton.outline(
                     size: ShadButtonSize.sm,
+                    foregroundColor: AppColors.ink,
                     onPressed: () =>
                         repo.rejectCompletion(task.id, completion.id),
                     child: const Text('退回'),

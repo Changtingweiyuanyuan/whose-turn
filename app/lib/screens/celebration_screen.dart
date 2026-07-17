@@ -74,6 +74,7 @@ class CelebrationScreen extends ConsumerWidget {
                 children: [
                   Expanded(
                     child: ShadButton.outline(
+                      foregroundColor: AppColors.ink,
                       onPressed: () => context.go('/'),
                       child: const Text('回任務牆'),
                     ),
