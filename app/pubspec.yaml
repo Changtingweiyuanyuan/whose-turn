@@ -66,6 +66,12 @@ flutter:
   assets:
     - assets/images/
 
+  fonts:
+    # 何某手寫體（免費可商用），子集化只含「今天換誰？」，僅用於首頁大標
+    - family: HeMouTitle
+      fonts:
+        - asset: assets/fonts/HeMouTitle.ttf
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
