@@ -61,21 +61,21 @@ class NotificationsScreen extends ConsumerWidget {
                             children: [
                               Text(
                                 n.title,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontSize: AppType.body,
                                     fontWeight: FontWeight.w600,
-                                    color: AppColors.white),
+                                    // 任務完成的標題用 main 強調，其餘白色
+                                    color: n.type ==
+                                            NotificationType.taskCompleted
+                                        ? AppColors.main
+                                        : AppColors.white),
                               ),
                               const SizedBox(height: 4),
                               Text(
                                 n.body,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: AppType.kicker,
-                                    // 任務完成（獎勵揭曉）粗體強調，其餘 w500
-                                    fontWeight:
-                                        n.type == NotificationType.taskCompleted
-                                            ? FontWeight.w600
-                                            : FontWeight.w500,
+                                    fontWeight: FontWeight.w500,
                                     color: Colors.white70),
                               ),
                               const SizedBox(height: 2),
