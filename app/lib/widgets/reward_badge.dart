@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/task.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_tokens.dart';
 
 /// 獎勵標籤 —— 帶邊框的圓角膠囊（邊框 diluteInk）。
 /// 神秘獎勵未揭曉時顯示「神秘禮物」。hover 不變色。
@@ -26,7 +27,7 @@ class RewardBadge extends StatelessWidget {
       child: Text(
         text,
         style: const TextStyle(
-          fontSize: 13,
+          fontSize: AppType.kicker,
           fontWeight: FontWeight.w600,
           color: AppColors.ink, // 文字：墨黑
         ),

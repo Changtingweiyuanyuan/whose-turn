@@ -70,7 +70,7 @@ class NotificationsScreen extends ConsumerWidget {
                               Text(
                                 n.body,
                                 style: TextStyle(
-                                    fontSize: 13,
+                                    fontSize: AppType.kicker,
                                     // 任務完成（獎勵揭曉）粗體強調，其餘 w500
                                     fontWeight:
                                         n.type == NotificationType.taskCompleted

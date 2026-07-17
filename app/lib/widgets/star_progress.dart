@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
+import '../theme/app_tokens.dart';
 import 'app_svg_icons.dart';
 
 /// 星星進度 —— 已完成=粉色星星、未完成=淡藍帶斜線星星（Iconsax broken）。
@@ -34,7 +35,7 @@ class StarProgress extends StatelessWidget {
                 TextSpan(
                   text: '$confirmed',
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: AppType.body,
                     fontWeight: FontWeight.w800,
                     color: AppColors.ink,
                   ),

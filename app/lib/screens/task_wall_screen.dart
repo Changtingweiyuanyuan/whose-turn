@@ -190,7 +190,7 @@ class _Masthead extends StatelessWidget {
                 child: Text(
                   'WHOSE TURN TODAY',
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: AppType.kicker,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 3,
                     color: AppColors.white,
@@ -200,7 +200,7 @@ class _Masthead extends StatelessWidget {
               Text(
                 'NO.${userNo.toString().padLeft(2, '0')}',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: AppType.body,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 2,
                   color: AppColors.pink,

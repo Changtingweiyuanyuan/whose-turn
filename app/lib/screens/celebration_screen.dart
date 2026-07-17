@@ -6,6 +6,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../state/providers.dart';
 import '../widgets/app_back_button.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_tokens.dart';
 
 /// 任務完成慶祝頁 —— 神秘獎勵在這裡揭曉。
 class CelebrationScreen extends ConsumerWidget {
@@ -42,7 +43,7 @@ class CelebrationScreen extends ConsumerWidget {
               Text(
                 task.title,
                 style: const TextStyle(
-                    fontSize: 20, color: AppColors.inkSoft),
+                    fontSize: AppType.title, color: AppColors.inkSoft),
               ),
               const SizedBox(height: 32),
               Container(
@@ -62,7 +63,7 @@ class CelebrationScreen extends ConsumerWidget {
                 child: Text(
                   '獎勵已解鎖：${task.rewardLabel}',
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: AppType.body,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

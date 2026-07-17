@@ -140,12 +140,12 @@ class _CountLabel extends StatelessWidget {
         Text(
           '$confirmed',
           style: const TextStyle(
-              fontSize: 26, fontWeight: FontWeight.w800, height: 1),
+              fontSize: AppType.heading, fontWeight: FontWeight.w800, height: 1),
         ),
         Text(
           '/$required',
           style: const TextStyle(
-              fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.ink),
+              fontSize: AppType.body, fontWeight: FontWeight.w600, color: AppColors.ink),
         ),
       ],
     );

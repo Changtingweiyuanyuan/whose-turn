@@ -4,6 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_tokens.dart';
 import 'app_close_icon.dart';
 import 'dashed_rule.dart';
 import 'message_bubble_icon.dart';
@@ -32,7 +33,7 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
           const Text.rich(
             TextSpan(
               style: TextStyle(
-                fontSize: 20,
+                fontSize: AppType.title,
                 fontWeight: FontWeight.w600,
                 color: AppColors.white,
                 height: 1.2,
@@ -51,7 +52,7 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
           const Text.rich(
             TextSpan(
               style: TextStyle(
-                fontSize: 14,
+                fontSize: AppType.label,
                 color: Colors.white70,
                 height: 1.5,
               ),

@@ -54,14 +54,14 @@ class ProfileScreen extends ConsumerWidget {
                     children: [
                       Text(me.displayName,
                           style: const TextStyle(
-                              fontSize: 16,
+                              fontSize: AppType.body,
                               fontWeight: FontWeight.w600,
                               color: AppColors.white)),
 											const SizedBox(height: AppSpacing.xs),
                       Text(
                         me.isGuest ? '訪客帳號' : 'LINE 已綁定',
                         style: TextStyle(
-                          fontSize: 13,
+                          fontSize: AppType.kicker,
                           color: AppColors.inkSoft,
                         ),
                       ),
@@ -76,7 +76,7 @@ class ProfileScreen extends ConsumerWidget {
                     const SizedBox(width: 6),
                     Text('${me.starTotal}',
                         style: const TextStyle(
-                            fontSize: 20,
+                            fontSize: AppType.title,
                             fontWeight: FontWeight.w800,
                             color: AppColors.white)),
                   ],
@@ -109,7 +109,7 @@ class ProfileScreen extends ConsumerWidget {
                         SizedBox(height: 4),
                         Text('綁定 LINE 保存星星與紀錄，換手機也不會消失',
                             style: TextStyle(
-                                fontSize: 13, color: AppColors.inkSoft)),
+                                fontSize: AppType.kicker, color: AppColors.inkSoft)),
                       ],
                     ),
                   ),
@@ -133,7 +133,7 @@ class ProfileScreen extends ConsumerWidget {
           const SizedBox(height: 24),
           const Text('我的群組',
               style: TextStyle(
-                  fontSize: 16,
+                  fontSize: AppType.body,
                   fontWeight: FontWeight.w500,
                   color: AppColors.white)),
           const SizedBox(height: 8),
@@ -158,7 +158,7 @@ class ProfileScreen extends ConsumerWidget {
                       Expanded(
                         child: Text(group.name,
                             style: const TextStyle(
-                                fontSize: 16,
+                                fontSize: AppType.body,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.white)),
                       ),
@@ -185,7 +185,7 @@ class ProfileScreen extends ConsumerWidget {
                           child: Text(
                             repo.userOf(uid).displayName,
                             style: const TextStyle(
-                                fontSize: 13,
+                                fontSize: AppType.kicker,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.ink),
                           ),
@@ -259,13 +259,13 @@ class ProfileScreen extends ConsumerWidget {
           const SizedBox(height: 24),
           const Text('Demo 視角切換',
               style: TextStyle(
-                  fontSize: 16,
+                  fontSize: AppType.body,
                   fontWeight: FontWeight.w600,
                   color: AppColors.white)),
           const SizedBox(height: 4),
           const Text(
             '雛形限定：切換身分同時體驗發起人與接單人',
-            style: TextStyle(fontSize: 13, color: Colors.white70),
+            style: TextStyle(fontSize: AppType.kicker, color: Colors.white70),
           ),
           const SizedBox(height: 8),
           ShadCard(
@@ -303,7 +303,7 @@ class ProfileScreen extends ConsumerWidget {
         closeIconPosition: const ShadPosition(top: 20, right: 20),
         title: const Text('離開群組？',
             style: TextStyle(
-                fontSize: 16,
+                fontSize: AppType.body,
                 fontWeight: FontWeight.w600,
                 color: AppColors.white)),
         description: const Text('離開後看不到群組的任務看板。',
@@ -442,7 +442,7 @@ class _ActionCard extends StatelessWidget {
                       style: const TextStyle(fontWeight: FontWeight.w600)),
                   Text(subtitle,
                       style: const TextStyle(
-                          fontSize: 13, color: AppColors.inkSoft)),
+                          fontSize: AppType.kicker, color: AppColors.inkSoft)),
                 ],
               ),
             ),

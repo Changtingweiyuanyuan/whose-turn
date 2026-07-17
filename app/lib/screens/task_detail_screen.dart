@@ -357,7 +357,7 @@ class _CompletionStatusLabel extends StatelessWidget {
     };
     final text = Text(
       label,
-      style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: color),
+      style: TextStyle(fontSize: AppType.kicker, fontWeight: FontWeight.w500, color: color),
     );
     if (status != CompletionStatus.confirmed) return text;
     return Row(

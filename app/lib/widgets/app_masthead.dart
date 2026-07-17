@@ -32,7 +32,7 @@ class AppMasthead extends StatelessWidget {
                 child: Text(
                   'WHOSE TURN TODAY',
                   style: TextStyle(
-                    fontSize: 13,
+                    fontSize: AppType.kicker,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 3,
                     color: AppColors.white,
@@ -42,7 +42,7 @@ class AppMasthead extends StatelessWidget {
               Text(
                 'NO.${userNo.toString().padLeft(2, '0')}',
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: AppType.body,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 2,
                   color: AppColors.pink,
@@ -60,7 +60,7 @@ class AppMasthead extends StatelessWidget {
                 child: Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 20,
+                    fontSize: AppType.title,
                     height: 1.0,
                     fontWeight: FontWeight.w600,
                     color: AppColors.white,
@@ -76,7 +76,7 @@ class AppMasthead extends StatelessWidget {
                     Text(
                       '$starTotal',
                       style: const TextStyle(
-                          fontSize: 20,
+                          fontSize: AppType.title,
                           fontWeight: FontWeight.w800,
                           color: AppColors.white),
                     ),

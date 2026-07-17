@@ -101,7 +101,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           trailing: const Text('元',
-              style: TextStyle(fontSize: 13, color: Colors.white54)),
+              style: TextStyle(fontSize: AppType.kicker, color: Colors.white54)),
           validator: (v) {
             final n = int.tryParse(v.trim());
             if (n == null || n < 1) return '請輸入獎勵金額';
@@ -207,7 +207,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                           LengthLimitingTextInputFormatter(2),
                         ],
                         trailing: const Text('次',
-                            style: TextStyle(fontSize: 13, color: Colors.white54)),
+                            style: TextStyle(fontSize: AppType.kicker, color: Colors.white54)),
                         validator: (v) {
                           final n = int.tryParse(v);
                           if (n == null || n < 1) return '至少 1 次';
