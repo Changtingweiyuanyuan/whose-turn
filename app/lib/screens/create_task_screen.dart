@@ -238,12 +238,13 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               ),
               const SizedBox(height: 16),
               const _FieldLabel('獎勵類型'),
-              // 自訂分段控制：選中格 pink 邊框 + pinkSoft 底
+              // 分段控制：容器同 input（diluteInk 底 + lightGray 1px 框），
+              // 選中格只加粉色細框、微內縮、無填色
               Container(
-                padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppColors.inkSoft, width: 1),
+                  color: AppColors.diluteInk,
+                  borderRadius: BorderRadius.circular(6),
+                  border: Border.all(color: AppColors.lightGray, width: 1),
                 ),
                 child: Row(
                   children: [
@@ -253,12 +254,10 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                           behavior: HitTestBehavior.opaque,
                           onTap: () => setState(() => _rewardType = entry.key),
                           child: Container(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            margin: const EdgeInsets.all(4),
+                            padding: const EdgeInsets.symmetric(vertical: 8),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: _rewardType == entry.key
-                                  ? AppColors.pinkSoft
-                                  : Colors.transparent,
                               borderRadius: BorderRadius.circular(6),
                               border: Border.all(
                                 color: _rewardType == entry.key
@@ -269,12 +268,10 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                             ),
                             child: Text(
                               entry.value,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: AppType.body,
                                 fontWeight: FontWeight.w500,
-                                color: _rewardType == entry.key
-                                    ? AppColors.ink
-                                    : AppColors.white,
+                                color: AppColors.white,
                               ),
                             ),
                           ),
