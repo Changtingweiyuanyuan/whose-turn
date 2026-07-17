@@ -132,7 +132,10 @@ class TaskDetailScreen extends ConsumerWidget {
                           ],
                         ),
                       )
-                    : _InfoRow(label: '獎勵內容', value: task.rewardLabel),
+                    : _InfoRow(
+                        label: '獎勵內容',
+                        value: task.rewardLabel,
+                        valueWeight: FontWeight.w600),
                 if (task.deadline != null) ...[
                   const SizedBox(height: 8),
                   _InfoRow(
@@ -375,6 +378,7 @@ class _InfoRow extends StatelessWidget {
     required this.label,
     this.value,
     this.valueChild,
+    this.valueWeight = FontWeight.w500,
   }) : assert(value != null || valueChild != null);
 
   final String label;
@@ -382,6 +386,9 @@ class _InfoRow extends StatelessWidget {
 
   /// 自訂 value 內容（如神秘禮物：文字+icon+文字），優先於 [value]。
   final Widget? valueChild;
+
+  /// value 文字字重（預設 w500）
+  final FontWeight valueWeight;
 
   @override
   Widget build(BuildContext context) {
@@ -397,7 +404,7 @@ class _InfoRow extends StatelessWidget {
         const SizedBox(width: _kInfoLabelGap),
         Expanded(
           child: valueChild ??
-              Text(value!, style: const TextStyle(fontWeight: FontWeight.w500)),
+              Text(value!, style: TextStyle(fontWeight: valueWeight)),
         ),
       ],
     );

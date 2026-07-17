@@ -289,6 +289,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                 id: 'deadline',
                 width: double.infinity,
                 backgroundColor: AppColors.diluteInk,
+                foregroundColor: AppColors.white,
               ),
               const SizedBox(height: 16),
               Row(
