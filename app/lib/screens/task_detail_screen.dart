@@ -51,7 +51,7 @@ class TaskDetailScreen extends ConsumerWidget {
         title: const Text('任務詳情',
             style: TextStyle(
                 color: AppColors.pink,
-                fontSize: AppType.body,
+                fontSize: AppType.label,
                 fontWeight: FontWeight.w500)),
       ),
       body: NoiseBackground(
@@ -116,6 +116,10 @@ class TaskDetailScreen extends ConsumerWidget {
                   value: task.rewardLabelFor(me.uid) == '???'
                       ? '神秘禮物，完成才揭曉'
                       : task.rewardLabel,
+                  trailing: task.rewardLabelFor(me.uid) == '???'
+                      ? const AppSvgIcon(kGiftSlashSvg,
+                          color: AppColors.ink, size: 16)
+                      : null,
                 ),
                 if (task.deadline != null) ...[
                   const SizedBox(height: 8),
@@ -135,12 +139,13 @@ class TaskDetailScreen extends ConsumerWidget {
                 Row(
                   children: [
                     const SizedBox(
-                      width: 88,
+                      width: _kInfoLabelWidth,
                       child: Text('進度',
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               color: AppColors.inkSoft)),
                     ),
+                    const SizedBox(width: _kInfoLabelGap),
                     StarProgress(
                       confirmed: task.confirmedCount,
                       required: task.requiredCount,
@@ -341,11 +346,18 @@ class _CompletionStatusLabel extends StatelessWidget {
   }
 }
 
+/// 標籤欄寬（約 4 個中文字），value 與它固定間距 20px。
+const double _kInfoLabelWidth = 58;
+const double _kInfoLabelGap = 20;
+
 class _InfoRow extends StatelessWidget {
-  const _InfoRow({required this.label, required this.value});
+  const _InfoRow({required this.label, required this.value, this.trailing});
 
   final String label;
   final String value;
+
+  /// value 後方的小 icon（如神秘禮物），與文字間距 4px。
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -353,14 +365,25 @@ class _InfoRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          width: 88,
+          width: _kInfoLabelWidth,
           child: Text(label,
               style: const TextStyle(
                   fontWeight: FontWeight.w500, color: AppColors.inkSoft)),
         ),
+        const SizedBox(width: _kInfoLabelGap),
         Expanded(
-          child:
-              Text(value, style: const TextStyle(fontWeight: FontWeight.w500)),
+          child: Row(
+            children: [
+              Flexible(
+                child: Text(value,
+                    style: const TextStyle(fontWeight: FontWeight.w500)),
+              ),
+              if (trailing != null) ...[
+                const SizedBox(width: 4),
+                trailing!,
+              ],
+            ],
+          ),
         ),
       ],
     );

@@ -11,39 +11,35 @@ class StarProgress extends StatelessWidget {
     required this.confirmed,
     required this.required,
     this.size = 18,
-    this.showCount = true,
   });
 
   final int confirmed;
   final int required;
   final double size;
-  final bool showCount;
 
   @override
   Widget build(BuildContext context) {
-    final countText = showCount
-        ? Padding(
-            padding: const EdgeInsets.only(left: 8),
-            child: Text(
-              '$confirmed / $required',
-              style: TextStyle(
-                fontSize: size * 0.8,
-                fontWeight: FontWeight.w500,
-                color: AppColors.ink,
-              ),
-            ),
-          )
-        : null;
-
+    // 進度條情境：顯示 confirmed/required（完成次數 18px），與條間距 8px
     if (required > 8) {
       return _SegmentBar(
         confirmed: confirmed,
         required: required,
         height: 8,
-        trailing: countText,
+        trailing: Padding(
+          padding: const EdgeInsets.only(left: 8),
+          child: Text(
+            '$confirmed/$required',
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: AppColors.ink,
+            ),
+          ),
+        ),
       );
     }
 
+    // 星星情境：不顯示 0/1 次數
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -54,7 +50,6 @@ class StarProgress extends StatelessWidget {
                 ? AppSvgIcon(kStarSvg, color: AppColors.pink, size: size)
                 : AppSvgIcon(kStarSlashSvg, color: AppColors.main, size: size),
           ),
-        ?countText,
       ],
     );
   }
