@@ -206,7 +206,7 @@ class _TaskList extends ConsumerWidget {
     return ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.fromLTRB(0, 16, 0, 96),
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 96),
       itemCount: tasks.length,
       separatorBuilder: (_, _) => const SizedBox(height: 16),
       itemBuilder: (context, i) => TaskCard(
@@ -249,7 +249,7 @@ class _ConfirmList extends ConsumerWidget {
     return ListView.separated(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      padding: const EdgeInsets.fromLTRB(0, 16, 0, 96),
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 96),
       itemCount: entries.length,
       separatorBuilder: (_, _) => const SizedBox(height: 16),
       itemBuilder: (context, i) {

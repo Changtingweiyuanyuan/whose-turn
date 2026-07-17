@@ -54,7 +54,7 @@ class ProfileScreen extends ConsumerWidget {
                     children: [
                       Text(me.displayName,
                           style: const TextStyle(
-                              fontSize: 20,
+                              fontSize: 16,
                               fontWeight: FontWeight.w600,
                               color: AppColors.white)),
 											const SizedBox(height: AppSpacing.xs),
@@ -204,7 +204,8 @@ class ProfileScreen extends ConsumerWidget {
                           foregroundColor: AppColors.ink,
                           hoverBackgroundColor: AppColors.mainDark,
                           hoverForegroundColor: AppColors.ink,
-                          leading: const Icon(Iconsax.link_copy, size: 16),
+                          leading: const AppSvgIcon(kLinkSvg,
+                              color: AppColors.ink, size: 20),
                           onPressed: () {
                             Clipboard.setData(
                                 ClipboardData(text: group.inviteLink));

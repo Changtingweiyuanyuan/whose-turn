@@ -61,6 +61,22 @@ const kCalendarSvg =
     '<path d="M8.29431 16.6992H8.30329" stroke="#ffffff" stroke-width="2" '
     'stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
+/// Iconsax `link`—— 用於「邀請好友」按鈕。
+const kLinkSvg =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" '
+    'viewBox="0 0 24 24" fill="none">'
+    '<path d="M14.9902 17.5H16.5002C19.5202 17.5 22.0002 15.03 22.0002 12C22.0002 '
+    '8.98 19.5302 6.5 16.5002 6.5H14.9902" stroke="#ffffff" stroke-width="1.5" '
+    'stroke-linecap="round" stroke-linejoin="round"/>'
+    '<path d="M2.37 10.0098C2.13 10.6298 2 11.2998 2 11.9998C2 15.0198 4.47 '
+    '17.4998 7.5 17.4998H9" stroke="#ffffff" stroke-width="1.5" '
+    'stroke-linecap="round" stroke-linejoin="round"/>'
+    '<path d="M9.00018 6.5H7.50018C6.67018 6.5 5.89018 6.68 5.18018 7.01" '
+    'stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" '
+    'stroke-linejoin="round"/>'
+    '<path d="M8 12H16" stroke="#ffffff" stroke-width="1.5" '
+    'stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
 /// Iconsax `arrow-right`—— 用於「我要接」按鈕。
 const kArrowRightSvg =
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" '
