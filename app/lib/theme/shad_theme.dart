@@ -22,9 +22,9 @@ abstract final class AppShadTheme {
     secondaryForeground: AppColors.ink,
     muted: AppColors.lightGray,
     mutedForeground: AppColors.inkSoft,
-    // hover / 選中 surface 用粉色系（日曆日期 hover、date picker hover）
-    accent: AppColors.pinkSoft,
-    accentForeground: AppColors.ink,
+    // hover surface 用半透明白（與「放棄任務」ghost hover 一致）
+    accent: Color(0x14FFFFFF), // white ~8%
+    accentForeground: AppColors.white,
     destructive: Color(0xFFC0392B),
     destructiveForeground: AppColors.white,
     border: AppColors.lightGray,

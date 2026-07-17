@@ -291,6 +291,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               ShadDatePickerFormField(
                 id: 'deadline',
                 width: double.infinity,
+                backgroundColor: AppColors.diluteInk,
               ),
               const SizedBox(height: 16),
               Row(
@@ -313,7 +314,6 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                 const _FieldLabel('指定給'),
                 ShadSelectFormField<String>(
                   id: 'assignee',
-                  minWidth: double.infinity,
                   placeholder: const Text('選擇成員'),
                   options: [
                     for (final m in members)
