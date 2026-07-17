@@ -82,7 +82,7 @@ class _HomeShellState extends ConsumerState<HomeShell> {
           child: Row(
             children: [
               _NavItem(
-                icon: Iconsax.home_2_copy,
+                iconBuilder: (color) => AppSvgIcon(kHomeBoardSvg, color: color),
               label: '任務看板',
               selected: _index == 0,
               onTap: () => setState(() => _index = 0),

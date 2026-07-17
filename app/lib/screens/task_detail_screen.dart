@@ -7,7 +7,7 @@ import '../models/task.dart';
 import '../state/providers.dart';
 import '../widgets/app_back_button.dart';
 import '../theme/app_colors.dart';
-import '../widgets/reward_badge.dart';
+import '../widgets/noise_background.dart';
 import '../widgets/star_progress.dart';
 import '../widgets/task_icon.dart';
 
@@ -38,11 +38,17 @@ class TaskDetailScreen extends ConsumerWidget {
       });
 
     return Scaffold(
+      backgroundColor: AppColors.ink,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        leading: const AppBackButton(),
-        title: const Text('任務詳情'),
+        backgroundColor: Colors.transparent,
+        foregroundColor: AppColors.white,
+        elevation: 0,
+        leading: const AppBackButton(color: AppColors.white),
+        title: const Text('任務詳情', style: TextStyle(color: AppColors.white)),
       ),
-      body: ListView(
+      body: NoiseBackground(
+        child: ListView(
         padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
         children: [
           Center(
@@ -61,16 +67,26 @@ class TaskDetailScreen extends ConsumerWidget {
           Center(
             child: Text(
               task.title,
-              style: const TextStyle(fontSize: 26, fontWeight: FontWeight.w800),
+              style: const TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.w800,
+                color: AppColors.white,
+              ),
             ),
           ),
           const SizedBox(height: 10),
-          Center(child: RewardBadge(task: task, viewerUid: me.uid)),
-          const SizedBox(height: 8),
           Center(
-            child: Text(
-              '${creator.avatarEmoji} 發起人：${creator.displayName}',
-              style: const TextStyle(color: AppColors.inkSoft),
+            child: Text.rich(
+              TextSpan(
+                style: const TextStyle(color: AppColors.white),
+                children: [
+                  const TextSpan(
+                    text: '發起人：',
+                    style: TextStyle(fontWeight: FontWeight.w800),
+                  ),
+                  TextSpan(text: creator.displayName),
+                ],
+              ),
             ),
           ),
           const SizedBox(height: 24),
@@ -122,7 +138,10 @@ class TaskDetailScreen extends ConsumerWidget {
           // ---- 完成紀錄（待確認可操作 + 歷史保留）----
           if (history.isNotEmpty) ...[
             const Text('完成紀錄',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w600)),
+                style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.white)),
             const SizedBox(height: 8),
             for (final c in history)
               Padding(
@@ -184,6 +203,7 @@ class TaskDetailScreen extends ConsumerWidget {
           ..._buildActions(context, ref, task,
               isCreator: isCreator, isClaimant: isClaimant),
         ],
+        ),
       ),
     );
   }
@@ -202,6 +222,9 @@ class TaskDetailScreen extends ConsumerWidget {
       return ShadButton(
         width: double.infinity,
         size: ShadButtonSize.lg,
+        // 深色雜訊底上，白底黑字才看得清楚（原本 ink 底會融進背景）
+        backgroundColor: AppColors.white,
+        foregroundColor: AppColors.ink,
         onPressed: () => onPressed(),
         child: Text(label, style: const TextStyle(fontSize: 17)),
       );
@@ -230,7 +253,7 @@ class TaskDetailScreen extends ConsumerWidget {
             padding: EdgeInsets.only(top: 12),
             child: Center(
               child: Text('已完成一次・等待確認中',
-                  style: TextStyle(color: AppColors.inkSoft)),
+                  style: TextStyle(color: Colors.white70)),
             ),
           ),
         const SizedBox(height: 8),
