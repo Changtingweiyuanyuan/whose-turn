@@ -21,7 +21,8 @@ abstract final class AppShadTheme {
     secondaryForeground: AppColors.ink,
     muted: AppColors.lightGray,
     mutedForeground: AppColors.inkSoft,
-    accent: AppColors.mainSoft,
+    // hover / 選中 surface 用粉色系（日曆日期 hover、date picker hover）
+    accent: AppColors.pinkSoft,
     accentForeground: AppColors.ink,
     destructive: Color(0xFFC0392B),
     destructiveForeground: AppColors.white,
@@ -66,6 +67,17 @@ abstract final class AppShadTheme {
           decoration: ShadDecoration(color: AppColors.diluteInk),
           style: TextStyle(color: AppColors.white),
           placeholderStyle: TextStyle(color: Colors.white54),
+          cursorColor: AppColors.white,
+        ),
+        // 誰都可以接開關：開=pink、關=pinkSoft、把手白
+        switchTheme: const ShadSwitchTheme(
+          thumbColor: AppColors.white,
+          checkedTrackColor: AppColors.pink,
+          uncheckedTrackColor: AppColors.pinkSoft,
+        ),
+        // 日曆：選中日期文字白色（hover 已由 accent=pinkSoft 提供）
+        calendarTheme: const ShadCalendarTheme(
+          selectedDayButtonTextStyle: TextStyle(color: AppColors.white),
         ),
         textTheme: ShadTextTheme(
           family: GoogleFonts.robotoCondensed().fontFamily!,
