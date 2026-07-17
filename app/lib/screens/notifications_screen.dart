@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-import '../models/notification_item.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
@@ -61,14 +60,10 @@ class NotificationsScreen extends ConsumerWidget {
                             children: [
                               Text(
                                 n.title,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: AppType.body,
                                     fontWeight: FontWeight.w600,
-                                    // 任務完成的標題用 main 強調，其餘白色
-                                    color: n.type ==
-                                            NotificationType.taskCompleted
-                                        ? AppColors.main
-                                        : AppColors.white),
+                                    color: AppColors.white),
                               ),
                               const SizedBox(height: 4),
                               Text(
