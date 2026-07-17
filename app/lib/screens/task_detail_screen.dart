@@ -132,11 +132,7 @@ class TaskDetailScreen extends ConsumerWidget {
                           ],
                         ),
                       )
-                    : _InfoRow(
-											label: '獎勵內容', 
-											value: task.rewardLabel,
-											style: TextStyle(fontWeight: FontWeight.w600)),
-										),
+                    : _InfoRow(label: '獎勵內容', value: task.rewardLabel),
                 if (task.deadline != null) ...[
                   const SizedBox(height: 8),
                   _InfoRow(
