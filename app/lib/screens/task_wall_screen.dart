@@ -270,7 +270,7 @@ class _TabLabel extends StatelessWidget {
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
       child: Padding(
-        padding: const EdgeInsets.only(right: AppSpacing.lg, bottom: 4),
+        padding: const EdgeInsets.only(right: AppSpacing.lg),
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
