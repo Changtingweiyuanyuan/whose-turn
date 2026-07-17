@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../models/notification_item.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
@@ -72,7 +73,11 @@ class NotificationsScreen extends ConsumerWidget {
                                 n.body,
                                 style: TextStyle(
                                     fontSize: 13,
-                                    fontWeight: FontWeight.w600,
+                                    // 任務完成（獎勵揭曉）粗體強調，其餘 w500
+                                    fontWeight:
+                                        n.type == NotificationType.taskCompleted
+                                            ? FontWeight.w600
+                                            : FontWeight.w500,
                                     color: n.read
                                         ? Colors.white70
                                         : AppColors.inkSoft),

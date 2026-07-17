@@ -348,28 +348,43 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
   }
 }
 
-/// 數量 stepper 的 +/- 按鈕：diluteInk 底（hover 不變色）、白 icon、
-/// 邊框對齊次數框（lightGray）。在 IntrinsicHeight Row 中會自動撐到輸入框高度。
-class _StepButton extends StatelessWidget {
+/// 數量 stepper 的 +/- 按鈕：diluteInk 底，hover 疊一層半透明白（底色仍 diluteInk）、
+/// 白 icon、邊框對齊次數框（lightGray）。IntrinsicHeight Row 內會撐到輸入框高度。
+class _StepButton extends StatefulWidget {
   const _StepButton({required this.svg, required this.onTap});
 
   final String svg;
   final VoidCallback onTap;
 
   @override
+  State<_StepButton> createState() => _StepButtonState();
+}
+
+class _StepButtonState extends State<_StepButton> {
+  bool _hover = false;
+
+  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: onTap,
-      child: Container(
-        width: 48,
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          color: AppColors.diluteInk,
-          borderRadius: BorderRadius.circular(6),
-          border: Border.all(color: AppColors.lightGray, width: 1),
+    // hover 時：diluteInk 疊上 8% 白 → 略亮
+    final bg = _hover
+        ? Color.alphaBlend(const Color(0x14FFFFFF), AppColors.diluteInk)
+        : AppColors.diluteInk;
+    return MouseRegion(
+      onEnter: (_) => setState(() => _hover = true),
+      onExit: (_) => setState(() => _hover = false),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: widget.onTap,
+        child: Container(
+          width: 48,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: bg,
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(color: AppColors.lightGray, width: 1),
+          ),
+          child: AppSvgIcon(widget.svg, color: AppColors.white, size: 20),
         ),
-        child: AppSvgIcon(svg, color: AppColors.white, size: 20),
       ),
     );
   }
