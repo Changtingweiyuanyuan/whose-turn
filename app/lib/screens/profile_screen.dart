@@ -11,6 +11,7 @@ import '../widgets/app_close_icon.dart';
 import '../widgets/app_masthead.dart';
 import '../widgets/app_svg_icons.dart';
 import '../widgets/line_bind_sheet.dart';
+import '../widgets/message_bubble_icon.dart';
 
 /// 我的：個人資訊、群組管理（F1）、綁定 LINE、demo 視角切換。
 class ProfileScreen extends ConsumerWidget {
@@ -34,52 +35,64 @@ class ProfileScreen extends ConsumerWidget {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 96),
               children: [
-                // ---- 個人卡 ----
-          ShadCard(
-            padding: const EdgeInsets.all(20),
+                // ---- 個人卡（深色塊，同「我的群組」）----
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.diluteInk,
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: AppColors.inkSoft, width: 1),
+            ),
             child: Row(
               children: [
                 Text(me.avatarEmoji, style: const TextStyle(fontSize: 44)),
-                const SizedBox(width: 16),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(me.displayName,
                           style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600)),
-                      const SizedBox(height: 2),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.white)),
+                      const SizedBox(height: 12),
                       Text(
                         me.isGuest ? '訪客帳號' : 'LINE 已綁定 ✅',
                         style: TextStyle(
                           fontSize: 13,
-                          color:
-                              me.isGuest ? AppColors.pink : AppColors.inkSoft,
+                          color: me.isGuest ? AppColors.pink : Colors.white70,
                         ),
                       ),
                     ],
                   ),
                 ),
+                // 星星對齊「我的任務」刊頭右側：粉色星 20 + w800 白數字
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const AppSvgIcon(kStarSvg, color: AppColors.pink, size: 22),
+                    const AppSvgIcon(kStarSvg, color: AppColors.pink, size: 20),
                     const SizedBox(width: 6),
                     Text('${me.starTotal}',
                         style: const TextStyle(
-                            fontSize: 22, fontWeight: FontWeight.w800)),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.white)),
                   ],
                 ),
               ],
             ),
           ),
 
-          // ---- 訪客提醒 ----
+          // ---- 訪客提醒（淡藍 main 底、無框）----
           if (me.isGuest) ...[
             const SizedBox(height: 12),
-            ShadCard(
-              backgroundColor: AppColors.orangeSoft,
+            Container(
               padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.main,
+                borderRadius: BorderRadius.circular(8),
+              ),
               child: Row(
                 children: [
                   const Text('💾', style: TextStyle(fontSize: 26)),
@@ -89,16 +102,27 @@ class ProfileScreen extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('資料尚未備份',
-                            style: TextStyle(fontWeight: FontWeight.w600)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.ink)),
+                        SizedBox(height: 4),
                         Text('綁定 LINE 保存星星與紀錄，換手機也不會消失',
-                            style: TextStyle(fontSize: 13)),
+                            style: TextStyle(
+                                fontSize: 13, color: AppColors.inkSoft)),
                       ],
                     ),
                   ),
+                  const SizedBox(width: 12),
+                  // 綁定鍵樣式同「離開」（ink），內容同 LINE 綁定 CTA
                   ShadButton(
-                    size: ShadButtonSize.sm,
+                    backgroundColor: AppColors.ink,
+                    foregroundColor: AppColors.white,
+                    hoverBackgroundColor: AppColors.inkHover,
+                    hoverForegroundColor: AppColors.white,
+                    leading: const MessageBubbleIcon(
+                        color: AppColors.white, size: 18),
                     onPressed: () => showLineBindSheet(context, ref),
-                    child: const Text('綁定'),
+                    child: const Text('用 LINE 綁定'),
                   ),
                 ],
               ),
