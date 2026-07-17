@@ -113,10 +113,15 @@ class ProfileScreen extends ConsumerWidget {
                   color: AppColors.white)),
           const SizedBox(height: 8),
 
-          // ---- 群組卡（F1）----
+          // ---- 群組卡（F1）：深色塊，同「完成紀錄」 ----
           if (group != null && isMember)
-            ShadCard(
-              padding: const EdgeInsets.all(20),
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: AppColors.diluteInk,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.inkSoft, width: 1),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -128,10 +133,12 @@ class ProfileScreen extends ConsumerWidget {
                       Expanded(
                         child: Text(group.name,
                             style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w600)),
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.white)),
                       ),
                       Text('${group.memberUids.length} 人',
-                          style: const TextStyle(color: AppColors.inkSoft)),
+                          style: const TextStyle(color: Colors.white70)),
                     ],
                   ),
                   const SizedBox(height: 12),
@@ -140,40 +147,52 @@ class ProfileScreen extends ConsumerWidget {
                     runSpacing: 8,
                     children: [
                       for (final uid in group.memberUids)
-                        ShadBadge.outline(
+                        // 家人 tag：對齊任務卡片獎勵 tag（白膠囊 + diluteInk 1.5 邊框 + ink 字）
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            borderRadius: BorderRadius.circular(999),
+                            border: Border.all(
+                                color: AppColors.diluteInk, width: 1.5),
+                          ),
                           child: Text(
                             '${repo.userOf(uid).avatarEmoji} ${repo.userOf(uid).displayName}',
-                            style: const TextStyle(fontSize: 13),
+                            style: const TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.ink),
                           ),
                         ),
                     ],
                   ),
                   const SizedBox(height: 12),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ShadButton.outline(
-                          foregroundColor: AppColors.ink,
-                          leading: const Icon(Iconsax.link_copy, size: 16),
-                          onPressed: () {
-                            Clipboard.setData(
-                                ClipboardData(text: group.inviteLink));
-                            ShadToaster.of(context).show(
-                              ShadToast(
-                                description:
-                                    Text('邀請連結已複製：${group.inviteLink}'),
-                              ),
-                            );
-                          },
-                          child: const Text('邀請好友'),
+                  // 邀請好友 = pink（完成一次）、離開 = ink（放棄任務），全寬堆疊
+                  ShadButton(
+                    width: double.infinity,
+                    backgroundColor: AppColors.pink,
+                    foregroundColor: AppColors.white,
+                    leading: const Icon(Iconsax.link_copy, size: 16),
+                    onPressed: () {
+                      Clipboard.setData(ClipboardData(text: group.inviteLink));
+                      ShadToaster.of(context).show(
+                        ShadToast(
+                          description: Text('邀請連結已複製：${group.inviteLink}'),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      ShadButton.ghost(
-                        onPressed: () => _confirmLeave(context, ref),
-                        child: const Text('離開'),
-                      ),
-                    ],
+                      );
+                    },
+                    child: const Text('邀請好友'),
+                  ),
+                  const SizedBox(height: 8),
+                  ShadButton(
+                    width: double.infinity,
+                    backgroundColor: AppColors.ink,
+                    foregroundColor: AppColors.white,
+                    hoverBackgroundColor: AppColors.inkHover,
+                    hoverForegroundColor: AppColors.white,
+                    onPressed: () => _confirmLeave(context, ref),
+                    child: const Text('離開'),
                   ),
                 ],
               ),
@@ -250,6 +269,8 @@ class ProfileScreen extends ConsumerWidget {
           ShadButton(
             backgroundColor: AppColors.ink,
             foregroundColor: AppColors.white,
+            hoverBackgroundColor: AppColors.inkHover,
+            hoverForegroundColor: AppColors.white,
             onPressed: () => Navigator.pop(ctx, false),
             child: const Text('取消'),
           ),

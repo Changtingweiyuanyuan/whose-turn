@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 /// 品牌色票 v2 —— Prodigy 極簡 × 繽紛 Year-in-Review：
 /// 背景 #F7F7F7、墨黑 #010101、主色 #C2D1D3、橘 #FF8B04、粉 #CF729B。
 //#fef6b7
-//#8F4D63
+
 abstract final class AppColors {
   static const ink = Color(0xFF010101);
+  /// ink + 8% 白：次要 CTA（ink 底）的 hover 疊層色
+  static const inkHover = Color(0xFF151515);
   static const diluteInk = Color(0xFF222222);
   static const main = Color(0xFFC2D1D3);
   static const orange = Color(0xFFFF8B04);

@@ -90,7 +90,7 @@ class TaskCard extends StatelessWidget {
                   ),
                   const SizedBox(height: AppSpacing.sm), // 發起人↔獎勵 8
                   RewardBadge(task: task, viewerUid: viewer.uid),
-                  const SizedBox(height: AppSpacing.sm), // 獎勵↔動作 8
+                  const SizedBox(height: AppSpacing.xs), // 獎勵↔動作 8
                   // 動作（右下角）
                   Align(
                     alignment: Alignment.centerRight,
