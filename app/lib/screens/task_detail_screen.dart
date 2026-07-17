@@ -97,6 +97,7 @@ class TaskDetailScreen extends ConsumerWidget {
           const SizedBox(height: 24),
           ShadCard(
             padding: const EdgeInsets.all(AppSpacing.md),
+            border: ShadBorder.none,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -155,9 +156,14 @@ class TaskDetailScreen extends ConsumerWidget {
             for (final c in history)
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
-                child: ShadCard(
+                child: Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: AppColors.diluteInk,
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(color: AppColors.inkSoft, width: 1),
+                  ),
                   child: Row(
                     children: [
                       Text(repo.userOf(c.userId).avatarEmoji,
@@ -169,13 +175,15 @@ class TaskDetailScreen extends ConsumerWidget {
                           children: [
                             Text(
                               '${repo.userOf(c.userId).displayName} 完成了一次',
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.w600),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.white),
                             ),
+                            const SizedBox(height: 2),
                             Text(
                               DateFormat('MM/dd HH:mm').format(c.submittedAt),
                               style: const TextStyle(
-                                  fontSize: 12, color: AppColors.inkSoft),
+                                  fontSize: 12, color: Colors.white70),
                             ),
                           ],
                         ),
@@ -313,9 +321,9 @@ class _CompletionStatusLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (label, color) = switch (status) {
-      CompletionStatus.pending => ('等待確認', AppColors.inkSoft),
+      CompletionStatus.pending => ('等待確認', Colors.white70),
       CompletionStatus.confirmed => ('已確認', AppColors.pink),
-      CompletionStatus.rejected => ('已退回', AppColors.inkSoft),
+      CompletionStatus.rejected => ('已退回', Colors.white70),
     };
     final text = Text(
       label,
