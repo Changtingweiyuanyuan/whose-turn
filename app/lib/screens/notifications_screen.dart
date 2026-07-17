@@ -23,7 +23,7 @@ class NotificationsScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           AppMasthead(title: '通知', userNo: userNo),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: AppSpacing.lg),
           Expanded(
             child: items.isEmpty
                 ? const Center(
@@ -32,7 +32,7 @@ class NotificationsScreen extends ConsumerWidget {
                         style: TextStyle(color: Colors.white70, height: 1.6)),
                   )
                 : ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(20, 8, 20, 96),
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 96),
                     itemCount: items.length,
                     separatorBuilder: (_, _) => const SizedBox(height: 8),
                     itemBuilder: (context, i) {

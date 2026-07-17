@@ -29,7 +29,7 @@ class ProfileScreen extends ConsumerWidget {
       child: Column(
         children: [
           AppMasthead(title: '個人設定', userNo: userNo),
-          const SizedBox(height: AppSpacing.md),
+          const SizedBox(height: AppSpacing.lg),
           Expanded(
             child: ListView(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 96),

@@ -186,7 +186,7 @@ class TaskDetailScreen extends ConsumerWidget {
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   decoration: BoxDecoration(
                     color: AppColors.diluteInk,
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(8),
                     border: Border.all(color: AppColors.inkSoft, width: 1),
                   ),
                   child: Row(
