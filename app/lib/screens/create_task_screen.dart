@@ -254,7 +254,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                           behavior: HitTestBehavior.opaque,
                           onTap: () => setState(() => _rewardType = entry.key),
                           child: Container(
-                            margin: const EdgeInsets.all(4),
+                            // 與 input 同高：padding v8（不加 margin）
                             padding: const EdgeInsets.symmetric(vertical: 8),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
@@ -269,7 +269,6 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                             child: Text(
                               entry.value,
                               style: const TextStyle(
-                                fontSize: AppType.body,
                                 fontWeight: FontWeight.w500,
                                 color: AppColors.white,
                               ),
@@ -310,23 +309,28 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               if (!_anyoneCanClaim) ...[
                 const SizedBox(height: 8),
                 const _FieldLabel('指定給'),
-                SizedBox(
-                  width: double.infinity,
-                  child: ShadSelectFormField<String>(
+                LayoutBuilder(
+                  builder: (context, constraints) =>
+                      ShadSelectFormField<String>(
                     id: 'assignee',
+                    // 撐滿：trigger 與 popover 都用可用寬度，不會溢出
+                    minWidth: constraints.maxWidth,
+                    maxWidth: constraints.maxWidth,
                     decoration: const ShadDecoration(color: AppColors.diluteInk),
-                    placeholder: const Text('選擇成員'),
-                  options: [
-                    for (final m in members)
-                      ShadOption(
-                        value: m.uid,
-                        child: Text('${m.avatarEmoji} ${m.displayName}'),
-                      ),
-                  ],
-                  selectedOptionBuilder: (context, value) {
-                    final m = repo.userOf(value);
-                    return Text('${m.avatarEmoji} ${m.displayName}');
-                  },
+                    placeholder: const Text('選擇成員',
+                        style: TextStyle(color: Colors.white54)),
+                    options: [
+                      for (final m in members)
+                        ShadOption(
+                          value: m.uid,
+                          child: Text('${m.avatarEmoji} ${m.displayName}'),
+                        ),
+                    ],
+                    selectedOptionBuilder: (context, value) {
+                      final m = repo.userOf(value);
+                      return Text('${m.avatarEmoji} ${m.displayName}',
+                          style: const TextStyle(color: AppColors.white));
+                    },
                     validator: (v) =>
                         !_anyoneCanClaim && v == null ? '請選擇成員' : null,
                   ),
