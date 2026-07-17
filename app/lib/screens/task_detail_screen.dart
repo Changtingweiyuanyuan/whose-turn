@@ -95,7 +95,7 @@ class TaskDetailScreen extends ConsumerWidget {
                   const TextSpan(
                     text: '：',
                     style: TextStyle(
-                        fontWeight: FontWeight.w800, color: AppColors.inkSoft),
+                        fontWeight: FontWeight.w600, color: AppColors.inkSoft),
                   ),
                   TextSpan(text: creator.displayName),
                 ],

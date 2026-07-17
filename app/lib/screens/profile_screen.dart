@@ -57,12 +57,12 @@ class ProfileScreen extends ConsumerWidget {
                               fontSize: 20,
                               fontWeight: FontWeight.w600,
                               color: AppColors.white)),
-                      const SizedBox(height: 8),
+                      //const SizedBox(height: 2),
                       Text(
                         me.isGuest ? '訪客帳號' : 'LINE 已綁定 ✅',
                         style: TextStyle(
                           fontSize: 13,
-                          color: me.isGuest ? AppColors.pink : Colors.white70,
+                          color: AppColors.inkSoft,
                         ),
                       ),
                     ],
@@ -209,7 +209,14 @@ class ProfileScreen extends ConsumerWidget {
                             ShadToaster.of(context).show(
                               ShadToast(
                                 description:
-                                    Text('邀請連結已複製：${group.inviteLink}'),
+                                    Text.rich(TextSpan(children: [
+                                      const TextSpan(text: '邀請連結已複製'),
+                                      const TextSpan(
+                                          text: '：',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600)),
+                                      TextSpan(text: group.inviteLink),
+                                    ])),
                               ),
                             );
                           },

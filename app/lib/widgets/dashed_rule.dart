@@ -5,8 +5,8 @@ class DashedRule extends StatelessWidget {
   const DashedRule({
     super.key,
     required this.color,
-    this.dash = 6,
-    this.gap = 4,
+    this.dash = 3,
+    this.gap = 3,
     this.thickness = 1,
   });
 
