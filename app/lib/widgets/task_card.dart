@@ -156,7 +156,7 @@ class _StatusChip extends StatelessWidget {
       TaskStatus.claimed when task.claimedBy == viewerUid =>
         ('進行中', AppColors.pink),
       TaskStatus.claimed => ('已被接走', AppColors.inkSoft),
-      TaskStatus.completed => ('已完成', AppColors.orange),
+      TaskStatus.completed => ('已完成', AppColors.ink),
       TaskStatus.rewardClaimed => ('獎勵已領', AppColors.inkSoft),
       TaskStatus.expired => ('已截止', AppColors.inkSoft),
       TaskStatus.cancelled => ('已取消', AppColors.inkSoft),
@@ -164,7 +164,11 @@ class _StatusChip extends StatelessWidget {
     return Text(
       label,
       style: TextStyle(
-          fontSize: AppType.label, fontWeight: FontWeight.w600, color: color),
+          fontSize: AppType.label,
+          // 「已被接走」較輕 w500，其餘 w600
+          fontWeight:
+              label == '已被接走' ? FontWeight.w500 : FontWeight.w600,
+          color: color),
     );
   }
 }
