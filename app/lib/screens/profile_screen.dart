@@ -299,10 +299,13 @@ class ProfileScreen extends ConsumerWidget {
       builder: (ctx) => ShadDialog.alert(
         backgroundColor: AppColors.diluteInk,
         radius: BorderRadius.circular(AppRadius.card),
+        // tiny 斷點預設會拿掉圓角，關掉才會保留 8px
+        removeBorderRadiusWhenTiny: false,
         // content 與 actions 之間 24；標題與內文的間距在 title 欄內自控
         gap: AppSpacing.lg,
         closeIcon: const AppCloseIcon(color: AppColors.white, size: 22),
         closeIconPosition: const ShadPosition(top: 20, right: 20),
+        // 併進 title 欄，避免 description 的 24px gap 撐開；文字大小自訂
         title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
@@ -314,7 +317,10 @@ class ProfileScreen extends ConsumerWidget {
                     color: AppColors.white)),
             SizedBox(height: 12),
             Text('離開後看不到群組的任務看板。',
-                style: TextStyle(color: Colors.white70)),
+                style: TextStyle(
+                    fontSize: AppType.label,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white70)),
           ],
         ),
         // CTA 橫排靠右、不佔滿寬度、間距對齊其他 CTA

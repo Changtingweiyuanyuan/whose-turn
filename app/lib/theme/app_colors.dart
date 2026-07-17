@@ -14,6 +14,8 @@ abstract final class AppColors {
   static const mainDark = Color(0xFFA5B2B3);
   static const orange = Color(0xFFFF8B04);
   static const pink = Color(0xFFCF729B);
+  // 已領取（不可再點）的實心暗粉色；雜訊底不用半透明
+  static const pinkDark = Color(0xFF6E3F54);
   static const bg = Color(0xFFF7F7F7);
   static const white = Color(0xFFFFFFFF);
 
