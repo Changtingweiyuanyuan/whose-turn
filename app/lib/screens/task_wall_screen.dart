@@ -288,7 +288,7 @@ class _TabLabel extends StatelessWidget {
                   child: child,
                 ),
                 child: Container(
-                  height: 4,
+                  height: 3,
                   decoration: BoxDecoration(
                     color: AppColors.pink,
                     borderRadius: BorderRadius.circular(2),
@@ -499,7 +499,7 @@ class _SortItem extends StatelessWidget {
             // 粉色短線指示器（選中才顯示；未選中留同寬空位讓文字對齊）
             Container(
               width: 16,
-              height: 4,
+              height: 3,
               decoration: BoxDecoration(
                 color: selected ? AppColors.pink : Colors.transparent,
                 borderRadius: BorderRadius.circular(2),
