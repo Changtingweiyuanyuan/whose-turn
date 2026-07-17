@@ -26,7 +26,7 @@ abstract final class AppType {
   static const display = 40.0;
   static const heading = 26.0;
   static const cardTitle = 22.0;
-  static const body = 15.0;
+  static const body = 16.0;
   static const label = 13.0;
   static const kicker = 12.0;
 }

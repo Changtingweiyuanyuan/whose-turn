@@ -28,7 +28,7 @@ class StarProgress extends StatelessWidget {
               '$confirmed / $required',
               style: TextStyle(
                 fontSize: size * 0.8,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w500,
                 color: AppColors.ink,
               ),
             ),

@@ -273,7 +273,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               onPressed: _submit,
               child: const Text(
                 '發佈任務',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
               ),
             ),
           ],

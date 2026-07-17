@@ -200,7 +200,7 @@ class _Masthead extends StatelessWidget {
               Text(
                 'NO.${userNo.toString().padLeft(2, '0')}',
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: 16,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 2,
                   color: AppColors.pink,

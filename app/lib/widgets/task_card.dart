@@ -59,9 +59,8 @@ class TaskCard extends StatelessWidget {
                           task.title,
                           style: const TextStyle(
                             fontSize: AppType.cardTitle,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w600,
                             color: AppColors.ink,
-                            height: 1.1,
                           ),
                         ),
                       ),
@@ -135,7 +134,7 @@ class _CountLabel extends StatelessWidget {
         Text(
           '/$required',
           style: const TextStyle(
-              fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.ink),
+              fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.ink),
         ),
       ],
     );

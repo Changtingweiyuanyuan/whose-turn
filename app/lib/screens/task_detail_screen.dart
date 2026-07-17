@@ -41,17 +41,23 @@ class TaskDetailScreen extends ConsumerWidget {
 
     return Scaffold(
       backgroundColor: AppColors.ink,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         foregroundColor: AppColors.white,
         elevation: 0,
         centerTitle: true,
         leading: const AppBackButton(color: AppColors.white),
-        title: const Text('任務詳情', style: TextStyle(color: AppColors.white)),
+        title: const Text('任務詳情',
+            style: TextStyle(
+                color: AppColors.pink,
+                fontSize: AppType.body,
+                fontWeight: FontWeight.w500)),
       ),
       body: NoiseBackground(
         child: ListView(
-        padding: const EdgeInsets.fromLTRB(24, 8, 24, 32),
+        padding: EdgeInsets.fromLTRB(
+            24, MediaQuery.of(context).padding.top + kToolbarHeight + 8, 24, 32),
         children: [
           Center(
             child: Container(
@@ -65,18 +71,18 @@ class TaskDetailScreen extends ConsumerWidget {
               child: TaskIcon(icon: task.emoji, size: 72),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 24),
           Center(
             child: Text(
               task.title,
               style: const TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.w800,
+                fontSize: AppType.cardTitle,
+                fontWeight: FontWeight.w600,
                 color: AppColors.white,
               ),
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: AppSpacing.xs),
           Center(
             child: Text.rich(
               TextSpan(
@@ -104,7 +110,7 @@ class TaskDetailScreen extends ConsumerWidget {
                 _InfoRow(
                     label: '完成條件',
                     value: '${task.title} ${task.requiredCount} 次'),
-                const SizedBox(height: 12),
+                const SizedBox(height: 8),
                 _InfoRow(
                   label: '獎勵內容',
                   value: task.rewardLabelFor(me.uid) == '???'
@@ -112,31 +118,33 @@ class TaskDetailScreen extends ConsumerWidget {
                       : task.rewardLabel,
                 ),
                 if (task.deadline != null) ...[
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   _InfoRow(
                     label: '截止日期',
                     value: DateFormat('yyyy/MM/dd HH:mm').format(task.deadline!),
                   ),
                 ],
                 if (task.assigneeUid != null) ...[
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 8),
                   _InfoRow(
                     label: '指定給',
                     value: repo.userOf(task.assigneeUid!).displayName,
                   ),
                 ],
-                const SizedBox(height: 12),
+                const SizedBox(height: 8),
                 Row(
                   children: [
                     const SizedBox(
                       width: 88,
                       child: Text('進度',
-                          style: TextStyle(color: AppColors.inkSoft)),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.inkSoft)),
                     ),
                     StarProgress(
                       confirmed: task.confirmedCount,
                       required: task.requiredCount,
-                      size: 24,
+                      size: 20,
                     ),
                   ],
                 ),
@@ -149,7 +157,7 @@ class TaskDetailScreen extends ConsumerWidget {
           if (history.isNotEmpty) ...[
             const Text('完成紀錄',
                 style: TextStyle(
-                    fontSize: 17,
+                    fontSize: 16,
                     fontWeight: FontWeight.w600,
                     color: AppColors.white)),
             const SizedBox(height: 8),
@@ -176,7 +184,7 @@ class TaskDetailScreen extends ConsumerWidget {
                             Text(
                               '${repo.userOf(c.userId).displayName} 完成了一次',
                               style: const TextStyle(
-                                  fontWeight: FontWeight.w600,
+                                  fontWeight: FontWeight.w500,
                                   color: AppColors.white),
                             ),
                             const SizedBox(height: 2),
@@ -260,7 +268,7 @@ class TaskDetailScreen extends ConsumerWidget {
           await repo.submitCompletion(task.id);
           if (context.mounted) {
             ShadToaster.of(context).show(
-              const ShadToast(description: Text('已送出，等待發起人確認 ⏳')),
+              const ShadToast(description: Text('已送出，等待發起人確認')),
             );
           }
         }),
@@ -354,11 +362,13 @@ class _InfoRow extends StatelessWidget {
       children: [
         SizedBox(
           width: 88,
-          child: Text(label, style: const TextStyle(color: AppColors.inkSoft)),
+          child: Text(label,
+              style: const TextStyle(
+                  fontWeight: FontWeight.w500, color: AppColors.inkSoft)),
         ),
         Expanded(
           child:
-              Text(value, style: const TextStyle(fontWeight: FontWeight.w600)),
+              Text(value, style: const TextStyle(fontWeight: FontWeight.w500)),
         ),
       ],
     );

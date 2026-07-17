@@ -106,7 +106,7 @@ class ProfileScreen extends ConsumerWidget {
           const SizedBox(height: 24),
           const Text('我的群組',
               style: TextStyle(
-                  fontSize: 17,
+                  fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: AppColors.white)),
           const SizedBox(height: 8),
@@ -194,7 +194,7 @@ class ProfileScreen extends ConsumerWidget {
           const SizedBox(height: 24),
           const Text('Demo 視角切換',
               style: TextStyle(
-                  fontSize: 17,
+                  fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: AppColors.white)),
           const SizedBox(height: 4),
