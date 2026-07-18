@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:iconsax_flutter/iconsax_flutter.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../state/providers.dart';
@@ -245,14 +244,14 @@ class ProfileScreen extends ConsumerWidget {
             )
           else ...[
             _ActionCard(
-              emoji: '👨‍👩‍👧‍👦',
+              icon: 'assets/icons/human_resources_hierarchy.svg',
               title: '建立群組',
               subtitle: '我們家、501室、情侶生活…',
               onTap: () => _createGroupFlow(context, ref),
             ),
             const SizedBox(height: 8),
             _ActionCard(
-              emoji: '🔗',
+              icon: 'assets/icons/business_agreement.svg',
               title: '加入群組',
               subtitle: '輸入邀請碼',
               onTap: () => _joinGroupFlow(context, ref),
@@ -391,41 +390,50 @@ class ProfileScreen extends ConsumerWidget {
 
 class _ActionCard extends StatelessWidget {
   const _ActionCard({
-    required this.emoji,
+    required this.icon,
     required this.title,
     required this.subtitle,
     required this.onTap,
   });
 
-  final String emoji;
+  /// 個人圖示 asset 路徑（assets/icons/xxx.svg）。
+  final String icon;
   final String title;
   final String subtitle;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
+    // 樣式對齊「資料尚未備份」：main 淺藍底、無框、ink 圖示與標題
     return GestureDetector(
       onTap: onTap,
-      child: ShadCard(
+      child: Container(
         padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppColors.main,
+          borderRadius: BorderRadius.circular(8),
+        ),
         child: Row(
           children: [
-            Text(emoji, style: const TextStyle(fontSize: 26)),
+            AppAssetIcon(icon, size: 44, fillColor: AppColors.ink),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title,
-                      style: const TextStyle(fontWeight: FontWeight.w600)),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w600, color: AppColors.ink)),
+                  const SizedBox(height: 4),
                   Text(subtitle,
                       style: const TextStyle(
                           fontSize: AppType.kicker, color: AppColors.inkSoft)),
                 ],
               ),
             ),
-            const Icon(Iconsax.arrow_right_3_copy,
-                size: 18, color: AppColors.inkSoft),
+            const SizedBox(width: 12),
+            // 前往箭頭：大小對齊星星（20）、ink
+            const AppSvgIcon(kArrowNextSvg, color: AppColors.ink, size: 20),
           ],
         ),
       ),
