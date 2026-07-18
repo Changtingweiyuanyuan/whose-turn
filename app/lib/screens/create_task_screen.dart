@@ -10,6 +10,7 @@ import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
 import '../widgets/app_svg_icons.dart';
 import '../widgets/noise_background.dart';
+import '../widgets/person_avatar.dart';
 import '../widgets/task_icon.dart';
 import '../widgets/app_back_button.dart';
 
@@ -319,13 +320,27 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                       for (final m in members)
                         ShadOption(
                           value: m.uid,
-                          child: Text('${m.avatarEmoji} ${m.displayName}'),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              PersonAvatar(m.avatarEmoji, size: 20),
+                              const SizedBox(width: 6),
+                              Text(m.displayName),
+                            ],
+                          ),
                         ),
                     ],
                     selectedOptionBuilder: (context, value) {
                       final m = repo.userOf(value);
-                      return Text('${m.avatarEmoji} ${m.displayName}',
-                          style: const TextStyle(color: AppColors.white));
+                      return Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          PersonAvatar(m.avatarEmoji, size: 20),
+                          const SizedBox(width: 6),
+                          Text(m.displayName,
+                              style: const TextStyle(color: AppColors.white)),
+                        ],
+                      );
                     },
                     validator: (v) =>
                         !_anyoneCanClaim && v == null ? '請選擇成員' : null,

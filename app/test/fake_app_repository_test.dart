@@ -187,7 +187,7 @@ void main() {
       );
       await repo.switchUser('line:mom');
       expect(
-        repo.notifications.any((n) => n.title.contains('今天有人發起新任務')),
+        repo.notifications.any((n) => n.title.contains('有人發起新任務')),
         isTrue,
       );
     });

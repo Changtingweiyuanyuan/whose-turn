@@ -8,6 +8,7 @@ import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
 import '../widgets/app_masthead.dart';
+import '../widgets/person_avatar.dart';
 import '../widgets/task_card.dart';
 
 /// 我的任務：進行中（我接的）／等待確認（我發起、待我確認）／已完成。
@@ -265,7 +266,7 @@ class _ConfirmList extends ConsumerWidget {
           ),
           child: Row(
             children: [
-              Text(doer.avatarEmoji, style: const TextStyle(fontSize: 26)),
+              PersonAvatar(doer.avatarEmoji, size: 26),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(

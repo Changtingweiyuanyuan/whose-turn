@@ -10,6 +10,7 @@ import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
 import '../widgets/app_svg_icons.dart';
 import '../widgets/noise_background.dart';
+import '../widgets/person_avatar.dart';
 import '../widgets/star_progress.dart';
 import '../widgets/task_icon.dart';
 
@@ -193,8 +194,8 @@ class TaskDetailScreen extends ConsumerWidget {
                   ),
                   child: Row(
                     children: [
-                      Text(repo.userOf(c.userId).avatarEmoji,
-                          style: const TextStyle(fontSize: 26)),
+                      PersonAvatar(repo.userOf(c.userId).avatarEmoji,
+                          size: 26),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Column(

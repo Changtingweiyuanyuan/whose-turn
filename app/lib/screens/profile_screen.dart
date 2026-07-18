@@ -11,8 +11,10 @@ import '../widgets/app_close_icon.dart';
 import '../widgets/app_masthead.dart';
 import '../widgets/app_svg_icons.dart';
 import '../widgets/dashed_rule.dart';
+import '../widgets/group_dialogs.dart';
 import '../widgets/line_bind_sheet.dart';
 import '../widgets/message_bubble_icon.dart';
+import '../widgets/person_avatar.dart';
 
 /// 我的：個人資訊、群組管理（F1）、綁定 LINE、demo 視角切換。
 class ProfileScreen extends ConsumerWidget {
@@ -46,7 +48,7 @@ class ProfileScreen extends ConsumerWidget {
             ),
             child: Row(
               children: [
-                Text(me.avatarEmoji, style: const TextStyle(fontSize: 20)),
+                PersonAvatar(me.avatarEmoji, size: 24),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -97,7 +99,7 @@ class ProfileScreen extends ConsumerWidget {
               child: Row(
                 children: [
                   const AppAssetIcon('assets/icons/cloud_phone_exchange.svg',
-                      color: AppColors.ink, size: 24),
+                      size: 24),
                   const SizedBox(width: 12),
                   const Expanded(
                     child: Column(
@@ -154,7 +156,7 @@ class ProfileScreen extends ConsumerWidget {
                   Row(
                     children: [
                       const AppAssetIcon('assets/icons/teamwork_clap.svg',
-                          color: AppColors.white, size: 32),
+                          size: 32),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(group.name,
@@ -280,8 +282,15 @@ class ProfileScreen extends ConsumerWidget {
                 for (final u in repo.knownUsers)
                   ShadRadio(
                     value: u.uid,
-                    label: Text(
-                        '${u.avatarEmoji} ${u.displayName}（${u.isGuest ? '訪客' : 'LINE'}）'),
+                    label: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        PersonAvatar(u.avatarEmoji, size: 20),
+                        const SizedBox(width: 6),
+                        Text(
+                            '${u.displayName}（${u.isGuest ? '訪客' : 'LINE'}）'),
+                      ],
+                    ),
                   ),
               ],
             ),
@@ -365,76 +374,17 @@ class ProfileScreen extends ConsumerWidget {
     }
     if (!context.mounted) return;
 
-    final name = await _promptText(
-      context,
-      title: '建立群組',
-      placeholder: '群組名稱，例如：我們家',
-      confirmLabel: '建立',
-    );
-    if (name == null || name.isEmpty) return;
-    await repo.createGroup(name, '🏠');
-    if (context.mounted) {
-      ShadToaster.of(context).show(
-        ShadToast(description: Text('群組「$name」建立完成 🎉')),
-      );
+    final message = await showCreateGroupDialog(context, ref);
+    if (message != null && context.mounted) {
+      ShadToaster.of(context).show(ShadToast(description: Text(message)));
     }
   }
 
   Future<void> _joinGroupFlow(BuildContext context, WidgetRef ref) async {
-    final code = await _promptText(
-      context,
-      title: '加入群組',
-      placeholder: '輸入邀請碼，例如 HOME2026',
-      confirmLabel: '加入',
-    );
-    if (code == null || code.isEmpty || !context.mounted) return;
-    final group = await ref.read(repositoryProvider).joinGroupByCode(code);
-    if (context.mounted) {
-      ShadToaster.of(context).show(
-        ShadToast(
-          description:
-              Text(group == null ? '找不到這個邀請碼 🙈' : '歡迎加入「${group.name}」！'),
-        ),
-      );
+    final message = await showJoinGroupDialog(context, ref);
+    if (message != null && context.mounted) {
+      ShadToaster.of(context).show(ShadToast(description: Text(message)));
     }
-  }
-
-  Future<String?> _promptText(
-    BuildContext context, {
-    required String title,
-    required String placeholder,
-    required String confirmLabel,
-  }) {
-    final controller = TextEditingController();
-    return showShadDialog<String>(
-      context: context,
-      opaque: false,
-      barrierColor: Colors.black54,
-      builder: (ctx) => ShadDialog(
-        closeIcon: const AppCloseIcon(color: AppColors.ink, size: 22),
-        closeIconPosition: const ShadPosition(top: 20, right: 20),
-        title: Text(title),
-        actions: [
-          ShadButton.outline(
-            foregroundColor: AppColors.ink,
-            onPressed: () => Navigator.pop(ctx),
-            child: const Text('取消'),
-          ),
-          ShadButton(
-            onPressed: () => Navigator.pop(ctx, controller.text.trim()),
-            child: Text(confirmLabel),
-          ),
-        ],
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 12),
-          child: ShadInput(
-            controller: controller,
-            autofocus: true,
-            placeholder: Text(placeholder),
-          ),
-        ),
-      ),
-    );
   }
 }
 

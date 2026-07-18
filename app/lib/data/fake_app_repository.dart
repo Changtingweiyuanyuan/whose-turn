@@ -29,21 +29,21 @@ class FakeAppRepository extends AppRepository {
       uid: 'line:mom',
       displayName: '媽媽',
       provider: AuthProvider.line,
-      avatarEmoji: '👩',
+      avatarEmoji: 'asset:smiley_blessed',
       starTotal: 12,
     );
     final bro = AppUser(
       uid: 'line:bro',
       displayName: '哥哥',
       provider: AuthProvider.line,
-      avatarEmoji: '👦',
+      avatarEmoji: 'asset:smiley_cheeky',
       starTotal: 7,
     );
     final me = AppUser(
       uid: 'anon-me',
       displayName: '我（訪客）',
       provider: AuthProvider.anonymous,
-      avatarEmoji: '🐱',
+      avatarEmoji: 'asset:smiley_wink',
       starTotal: 3,
     );
     for (final u in [mom, bro, me]) {
@@ -246,8 +246,19 @@ class FakeAppRepository extends AppRepository {
   // -------------------------------------------------------------- 群組
 
   @override
-  Future<Group> createGroup(String name, String avatarEmoji) async {
+  Future<Group?> findGroupByCode(String inviteCode) async {
+    if (_group != null &&
+        _group!.inviteCode.toUpperCase() == inviteCode.trim().toUpperCase()) {
+      return _group;
+    }
+    return null;
+  }
+
+  @override
+  Future<Group> createGroup(String name, String avatarEmoji,
+      {String? personalIcon}) async {
     if (_currentUser.isGuest) throw const GuestNotAllowedException('建立群組');
+    if (personalIcon != null) _setMyAvatar(personalIcon);
     final group = Group(
       id: _nextId('g'),
       name: name,
@@ -262,9 +273,11 @@ class FakeAppRepository extends AppRepository {
   }
 
   @override
-  Future<Group?> joinGroupByCode(String inviteCode) async {
+  Future<Group?> joinGroupByCode(String inviteCode,
+      {String? personalIcon}) async {
     if (_group != null &&
-        _group!.inviteCode.toUpperCase() == inviteCode.toUpperCase()) {
+        _group!.inviteCode.toUpperCase() == inviteCode.trim().toUpperCase()) {
+      if (personalIcon != null) _setMyAvatar(personalIcon);
       if (!_group!.memberUids.contains(_currentUser.uid)) {
         _group = Group(
           id: _group!.id,
@@ -279,6 +292,12 @@ class FakeAppRepository extends AppRepository {
       return _group;
     }
     return null;
+  }
+
+  /// 更新目前使用者的個人圖示（同步 _users 快取）。
+  void _setMyAvatar(String avatar) {
+    _currentUser = _currentUser.copyWith(avatarEmoji: avatar);
+    _users[_currentUser.uid] = _currentUser;
   }
 
   @override

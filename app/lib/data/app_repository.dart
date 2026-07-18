@@ -17,8 +17,12 @@ abstract class AppRepository extends ChangeNotifier {
   AppUser userOf(String uid);
 
   // --- 群組 ---
-  Future<Group> createGroup(String name, String avatarEmoji);
-  Future<Group?> joinGroupByCode(String inviteCode);
+  Future<Group> createGroup(String name, String avatarEmoji,
+      {String? personalIcon});
+  Future<Group?> joinGroupByCode(String inviteCode, {String? personalIcon});
+
+  /// 查群組但不加入（加入前預覽，用來得知已被選走的個人圖示）。
+  Future<Group?> findGroupByCode(String inviteCode);
   Future<void> leaveGroup();
 
   // --- 任務 ---

@@ -19,12 +19,17 @@ class AppUser {
 
   bool get isGuest => provider == AuthProvider.anonymous;
 
-  AppUser copyWith({String? displayName, int? starTotal, AuthProvider? provider}) {
+  AppUser copyWith({
+    String? displayName,
+    int? starTotal,
+    AuthProvider? provider,
+    String? avatarEmoji,
+  }) {
     return AppUser(
       uid: uid,
       displayName: displayName ?? this.displayName,
       provider: provider ?? this.provider,
-      avatarEmoji: avatarEmoji,
+      avatarEmoji: avatarEmoji ?? this.avatarEmoji,
       starTotal: starTotal ?? this.starTotal,
     );
   }
