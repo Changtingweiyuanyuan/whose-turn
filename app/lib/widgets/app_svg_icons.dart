@@ -24,10 +24,18 @@ class AppSvgIcon extends StatelessWidget {
 /// 通用：把 assets 內的 SVG 檔以指定顏色渲染（srcIn 上色）。
 /// [color] 給 null 時保留原始配色；給值則整體上色（Streamline Freehand 等）。
 class AppAssetIcon extends StatelessWidget {
-  const AppAssetIcon(this.asset, {this.color, this.size = 24, super.key});
+  const AppAssetIcon(this.asset,
+      {this.color, this.fillColor, this.size = 24, super.key});
 
   final String asset;
+
+  /// 整體 srcIn 上色（單色 icon 用）。
   final Color? color;
+
+  /// 只替換 Streamline Freehand 的近白填色（#f7f7f7），橘色不動。
+  /// 白／淺底請帶 ink，深底不帶（保留近白）。
+  final Color? fillColor;
+
   final double size;
 
   @override
@@ -39,8 +47,22 @@ class AppAssetIcon extends StatelessWidget {
       colorFilter: color == null
           ? null
           : ColorFilter.mode(color!, BlendMode.srcIn),
+      colorMapper: fillColor == null ? null : _LightFillMapper(fillColor!),
     );
   }
+}
+
+/// 只把 Streamline Freehand 的近白填色（#f7f7f7）換成 [to]，其餘（橘色）保留。
+class _LightFillMapper extends ColorMapper {
+  const _LightFillMapper(this.to);
+
+  final Color to;
+  static const _light = Color(0xFFF7F7F7);
+
+  @override
+  Color substitute(
+          String? id, String elementName, String attributeName, Color color) =>
+      color == _light ? to : color;
 }
 
 /// Iconsax `gift`（帶斜線）—— 神秘禮物（未揭曉）。

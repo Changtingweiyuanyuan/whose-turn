@@ -50,7 +50,8 @@ class PersonalIconPicker extends StatelessWidget {
                   color: AppColors.inkSoft,
                   shape: BoxShape.circle,
                 ),
-                child: PersonAvatar(icon, size: _icon),
+                child: PersonAvatar(icon,
+                    size: _icon, fillColor: AppColors.ink),
               ),
             )
           else
@@ -70,7 +71,8 @@ class PersonalIconPicker extends StatelessWidget {
                     width: selected == icon ? 2 : 1,
                   ),
                 ),
-                child: PersonAvatar(icon, size: _icon),
+                child: PersonAvatar(icon,
+                    size: _icon, fillColor: AppColors.ink),
               ),
             ),
       ],

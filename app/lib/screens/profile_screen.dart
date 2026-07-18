@@ -99,7 +99,7 @@ class ProfileScreen extends ConsumerWidget {
               child: Row(
                 children: [
                   const AppAssetIcon('assets/icons/cloud_phone_exchange.svg',
-                      size: 44),
+                      size: 44, fillColor: AppColors.ink),
                   const SizedBox(width: 12),
                   const Expanded(
                     child: Column(
@@ -285,7 +285,8 @@ class ProfileScreen extends ConsumerWidget {
                     label: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        PersonAvatar(u.avatarEmoji, size: 20),
+                        PersonAvatar(u.avatarEmoji,
+                            size: 20, fillColor: AppColors.ink),
                         const SizedBox(width: 6),
                         Text(
                             '${u.displayName}（${u.isGuest ? '訪客' : 'LINE'}）'),
