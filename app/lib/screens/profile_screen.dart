@@ -260,14 +260,14 @@ class ProfileScreen extends ConsumerWidget {
             _ActionCard(
               icon: 'assets/icons/human_resources_hierarchy.svg',
               title: '建立群組［建立後無法修改］',
-              subtitle: '可愛的家、305 室...',
+              subtitle: '與家人、另一半或朋友一起開始分配任務',
               onTap: () => _createGroupFlow(context, ref),
             ),
             const SizedBox(height: 8),
             _ActionCard(
               icon: 'assets/icons/business_agreement.svg',
               title: '加入群組',
-              subtitle: '輸入邀請碼',
+              subtitle: '使用邀請碼加入既有群組',
               onTap: () => _joinGroupFlow(context, ref),
             ),
           ],

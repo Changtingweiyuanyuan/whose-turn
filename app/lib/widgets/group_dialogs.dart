@@ -160,7 +160,7 @@ class _GroupDialogState extends State<_GroupDialog> {
           ShadInput(
             controller: _controller,
             autofocus: true,
-            placeholder: Text(_isCreate ? '例如：我們家' : '例如 HOME2026'),
+            placeholder: Text(_isCreate ? '例如：可愛的家、305 室...' : '例如 HOME2026'),
             onChanged: _isCreate
                 ? (_) => setState(() {})
                 : _onCodeChanged,
