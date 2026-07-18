@@ -73,7 +73,7 @@ class ProfileScreen extends ConsumerWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const AppSvgIcon(kStarSvg, color: AppColors.pink, size: 20),
+                    const AppSvgIcon(kStarSvg, color: AppColors.orange, size: 20),
                     const SizedBox(width: 6),
                     Text('${me.starTotal}',
                         style: const TextStyle(
@@ -176,15 +176,19 @@ class ProfileScreen extends ConsumerWidget {
                     runSpacing: 8,
                     children: [
                       for (final uid in group.memberUids)
-                        // 家人 tag：ink 膠囊 + 白框 + 個人圖示 + 白字
+                        // 家人 tag：ink 膠囊 + 個人圖示 + 白字；自己的框橘色
                         Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
-                            color: AppColors.ink,
+                            //color: AppColors.ink,
+                            color: AppColors.diluteInk,
                             borderRadius: BorderRadius.circular(999),
-                            border:
-                                Border.all(color: AppColors.white, width: 1),
+                            border: Border.all(
+                                color: uid == me.uid
+                                    ? AppColors.orange
+                                    : AppColors.white,
+                                width: 1),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,

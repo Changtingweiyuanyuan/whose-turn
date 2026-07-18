@@ -53,7 +53,7 @@ class NotificationsScreen extends ConsumerWidget {
                             borderRadius: BorderRadius.circular(8),
                             border: n.read
                                 ? Border.all(color: AppColors.inkSoft, width: 1)
-                                : Border.all(color: AppColors.pink, width: 1),
+                                : Border.all(color: AppColors.orange, width: 1),
                           ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
