@@ -327,7 +327,13 @@ class TaskDetailScreen extends ConsumerWidget {
           if (context.mounted) {
             ShadToaster.of(context).show(
               ShadToast(
-                description: Text('🎉 恭喜完成！獎勵已解鎖：${task.rewardLabel}'),
+                description: Text.rich(TextSpan(children: [
+                  const TextSpan(text: '🎉 恭喜完成！獎勵已解鎖'),
+                  const TextSpan(
+                      text: '：',
+                      style: TextStyle(fontWeight: FontWeight.w600)),
+                  TextSpan(text: task.rewardLabel),
+                ])),
               ),
             );
           }

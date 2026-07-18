@@ -409,7 +409,7 @@ class FakeAppRepository extends AppRepository {
       _notify(
         recipientUid: doneUid,
         type: NotificationType.taskCompleted,
-        title: '今天換你拿獎勵！',
+        title: '可以領獎勵囉！',
         body: '「${task.title}」全部完成，獎勵：${task.rewardLabel}',
         taskId: taskId,
       );
@@ -417,7 +417,7 @@ class FakeAppRepository extends AppRepository {
       _notify(
         recipientUid: doneUid,
         type: NotificationType.starEarned,
-        title: '又進一步！',
+        title: '快完成了！',
         body: '「${task.title}」${updated.confirmedCount} / ${updated.requiredCount}',
         taskId: taskId,
       );
