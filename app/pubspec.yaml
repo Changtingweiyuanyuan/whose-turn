@@ -65,6 +65,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/icons/
 
   fonts:
     # 何某手寫體（免費可商用），子集化只含「今天換誰？」，僅用於首頁大標

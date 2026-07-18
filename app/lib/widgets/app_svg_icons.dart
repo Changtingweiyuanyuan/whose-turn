@@ -21,6 +21,28 @@ class AppSvgIcon extends StatelessWidget {
   }
 }
 
+/// 通用：把 assets 內的 SVG 檔以指定顏色渲染（srcIn 上色）。
+/// [color] 給 null 時保留原始配色；給值則整體上色（Streamline Freehand 等）。
+class AppAssetIcon extends StatelessWidget {
+  const AppAssetIcon(this.asset, {this.color, this.size = 24, super.key});
+
+  final String asset;
+  final Color? color;
+  final double size;
+
+  @override
+  Widget build(BuildContext context) {
+    return SvgPicture.asset(
+      asset,
+      width: size,
+      height: size,
+      colorFilter: color == null
+          ? null
+          : ColorFilter.mode(color!, BlendMode.srcIn),
+    );
+  }
+}
+
 /// Iconsax `gift`（帶斜線）—— 神秘禮物（未揭曉）。
 const kGiftSlashSvg =
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" '

@@ -96,7 +96,8 @@ class ProfileScreen extends ConsumerWidget {
               ),
               child: Row(
                 children: [
-                  const Text('💾', style: TextStyle(fontSize: 20)),
+                  const AppAssetIcon('assets/icons/cloud_phone_exchange.svg',
+                      color: AppColors.ink, size: 24),
                   const SizedBox(width: 12),
                   const Expanded(
                     child: Column(
@@ -152,8 +153,8 @@ class ProfileScreen extends ConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      Text(group.avatarEmoji,
-                          style: const TextStyle(fontSize: 34)),
+                      const AppAssetIcon('assets/icons/teamwork_clap.svg',
+                          color: AppColors.white, size: 32),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(group.name,
