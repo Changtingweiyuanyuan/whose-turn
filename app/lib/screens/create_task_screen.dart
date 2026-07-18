@@ -38,6 +38,11 @@ const _emojiChoices = [
   'asset:earpods',
   'asset:ferris_wheel',
   'asset:hanger',
+  'asset:fork_knife',
+  'asset:dog_house',
+  'asset:mario_mushroom',
+  'asset:ball',
+  'asset:clown',
 ];
 
 /// v1.0 只開放三種獎勵類型
