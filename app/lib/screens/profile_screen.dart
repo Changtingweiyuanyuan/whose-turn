@@ -73,7 +73,7 @@ class ProfileScreen extends ConsumerWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const AppSvgIcon(kStarSvg, color: AppColors.orange, size: 20),
+                    const AppSvgIcon(kStarSvg, color: AppColors.pink, size: 20),
                     const SizedBox(width: 6),
                     Text('${me.starTotal}',
                         style: const TextStyle(
