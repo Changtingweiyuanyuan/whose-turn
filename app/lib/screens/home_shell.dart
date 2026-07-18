@@ -147,11 +147,38 @@ class _NavItem extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Badge.count(
-                count: badgeCount,
-                isLabelVisible: badgeCount > 0,
-                backgroundColor: AppColors.pink,
-                child: iconBuilder?.call(color) ?? Icon(icon, color: color),
+              // 自訂 badge：粉圓 + 1.5px diluteInk 邊框（與導覽底同色，做出切割感）
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  iconBuilder?.call(color) ?? Icon(icon, color: color),
+                  if (badgeCount > 0)
+                    Positioned(
+                      top: -6,
+                      right: -8,
+                      child: Container(
+                        height: 18,
+                        constraints: const BoxConstraints(minWidth: 18),
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: AppColors.pink,
+                          borderRadius: BorderRadius.circular(999),
+                          border: Border.all(
+                              color: AppColors.diluteInk, width: 1.5),
+                        ),
+                        child: Text(
+                          '$badgeCount',
+                          style: const TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.white,
+                            height: 1,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
               ),
               const SizedBox(height: 2),
               Text(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../widgets/app_close_icon.dart';
 import 'app_colors.dart';
 
 /// shadcn_ui 主題 —— 品牌色票 v2：
@@ -56,6 +57,9 @@ abstract final class AppShadTheme {
           ),
           descriptionStyle: const TextStyle(color: AppColors.white),
           shadows: const [],
+          // 右上角 X 對齊 modal：AppCloseIcon 22 @ top20 right20
+          closeIcon: const AppCloseIcon(color: AppColors.white, size: 22),
+          closeIconPosition: const ShadPosition(top: 20, right: 20),
         ),
         // 全站彈窗（dialog / alert）統一 inkSoft 邊框
         primaryDialogTheme: ShadDialogTheme(
