@@ -15,8 +15,7 @@ class NotificationsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final repo = ref.watch(repositoryProvider);
     final items = repo.notifications;
-    final userNo =
-        (repo.currentGroup?.memberUids.indexOf(repo.currentUser.uid) ?? -1) + 1;
+    final userNo = repo.userNo;
 
     return SafeArea(
       child: Column(

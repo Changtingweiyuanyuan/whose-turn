@@ -16,6 +16,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final AppRepository repo;
+  var lineResult = LineRedirectResult.none;
   if (kUseFirebase) {
     assert(
       !DefaultFirebaseOptions.isPlaceholder,
@@ -23,9 +24,10 @@ Future<void> main() async {
     );
     await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
     // LINE 授權回跳：帶 ?code= 回站時先完成 custom token 登入
-    final lineSignedIn = await maybeHandleLineRedirect();
+    lineResult = await maybeHandleLineRedirect();
     // 訪客先匿名登入；綁定 LINE 時由 Worker 換發 custom token 升級。
-    if (!lineSignedIn && FirebaseAuth.instance.currentUser == null) {
+    if (lineResult != LineRedirectResult.success &&
+        FirebaseAuth.instance.currentUser == null) {
       await FirebaseAuth.instance.signInAnonymously();
     }
     repo = await FirebaseAppRepository.bootstrap();
@@ -35,7 +37,10 @@ Future<void> main() async {
 
   runApp(
     ProviderScope(
-      overrides: [repositoryProvider.overrideWith((ref) => repo)],
+      overrides: [
+        repositoryProvider.overrideWith((ref) => repo),
+        lineRedirectResultProvider.overrideWithValue(lineResult),
+      ],
       child: const WhoseTurnApp(),
     ),
   );

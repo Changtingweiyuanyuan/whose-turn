@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../data/line_auth/line_auth_result.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../widgets/app_svg_icons.dart';
@@ -23,6 +25,29 @@ class HomeShell extends ConsumerStatefulWidget {
 
 class _HomeShellState extends ConsumerState<HomeShell> {
   int _index = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    // LINE 授權回跳的結果，成功或失敗都要讓使用者知道
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      switch (ref.read(lineRedirectResultProvider)) {
+        case LineRedirectResult.none:
+          break;
+        case LineRedirectResult.success:
+          ShadToaster.of(context).show(
+            const ShadToast(
+                description: Text('LINE 綁定成功！星星與紀錄會永久保存')),
+          );
+        case LineRedirectResult.failed:
+          ShadToaster.of(context).show(
+            const ShadToast.destructive(
+                description: Text('LINE 綁定失敗，請再試一次')),
+          );
+      }
+    });
+  }
 
   Future<void> _startCreateTask() async {
     final repo = ref.read(repositoryProvider);

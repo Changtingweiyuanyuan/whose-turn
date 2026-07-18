@@ -26,8 +26,7 @@ class ProfileScreen extends ConsumerWidget {
     final me = repo.currentUser;
     final group = repo.currentGroup;
     final isMember = group?.memberUids.contains(me.uid) ?? false;
-    final userNo =
-        (repo.currentGroup?.memberUids.indexOf(repo.currentUser.uid) ?? -1) + 1;
+    final userNo = repo.userNo;
 
     return SafeArea(
       child: Column(

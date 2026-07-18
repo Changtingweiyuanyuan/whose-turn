@@ -80,9 +80,7 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
     final repo = ref.watch(repositoryProvider);
     final tasks = _visibleTasks();
     final openCount = repo.tasks.where((t) => t.status == TaskStatus.open).length;
-    // 目前使用者是群組裡第幾位（1-based）
-    final userNo =
-        (repo.currentGroup?.memberUids.indexOf(repo.currentUser.uid) ?? -1) + 1;
+    final userNo = repo.userNo;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,

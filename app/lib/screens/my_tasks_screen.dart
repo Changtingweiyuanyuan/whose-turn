@@ -44,8 +44,7 @@ class _MyTasksScreenState extends ConsumerState<MyTasksScreen> {
         .expand((t) => t.completions)
         .where((c) => c.status == CompletionStatus.pending)
         .length;
-    final userNo =
-        (repo.currentGroup?.memberUids.indexOf(me.uid) ?? -1) + 1;
+    final userNo = repo.userNo;
 
     return SafeArea(
       bottom: false,

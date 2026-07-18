@@ -16,6 +16,13 @@ abstract class AppRepository extends ChangeNotifier {
 
   AppUser userOf(String uid);
 
+  /// 刊頭 NO.xx：目前使用者在群組中的座號（1-based）。
+  /// 未加入群組時視為第 1 位（NO.01 起跳，不出現 NO.00）。
+  int get userNo {
+    final index = currentGroup?.memberUids.indexOf(currentUser.uid) ?? -1;
+    return index >= 0 ? index + 1 : 1;
+  }
+
   // --- 群組 ---
   Future<Group> createGroup(String name, {String? personalIcon});
   Future<Group?> joinGroupByCode(String inviteCode, {String? personalIcon});
