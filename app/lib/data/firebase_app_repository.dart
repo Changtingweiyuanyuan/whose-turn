@@ -59,7 +59,8 @@ class FirebaseAppRepository extends AppRepository {
     if (!snap.exists) {
       final isAnon = user.isAnonymous;
       await ref.set({
-        'displayName': user.displayName ?? '我',
+        'displayName':
+            user.displayName ?? (isAnon ? guestDisplayName(user.uid) : '我'),
         'avatarEmoji': kPersonalIcons.first,
         'provider': isAnon ? 'anonymous' : 'line',
         'starTotal': 0,
@@ -218,7 +219,10 @@ class FirebaseAppRepository extends AppRepository {
   @override
   AppUser get currentUser =>
       _me ??
-      AppUser(uid: _uid, displayName: '我', provider: AuthProvider.anonymous);
+      AppUser(
+          uid: _uid,
+          displayName: guestDisplayName(_uid),
+          provider: AuthProvider.anonymous);
 
   @override
   List<AppUser> get knownUsers => List.unmodifiable(
@@ -581,7 +585,10 @@ class FirebaseAppRepository extends AppRepository {
 
   AppUser _userFrom(String uid, Map<String, dynamic> d) => AppUser(
         uid: uid,
-        displayName: (d['displayName'] as String?) ?? '成員',
+        // 訪客一律顯示「訪客 XXXX」（uid 推導），不用 DB 裡的名字
+        displayName: d['provider'] == 'line'
+            ? (d['displayName'] as String?) ?? '成員'
+            : guestDisplayName(uid),
         provider: d['provider'] == 'line'
             ? AuthProvider.line
             : AuthProvider.anonymous,
