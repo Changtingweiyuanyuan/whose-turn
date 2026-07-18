@@ -59,7 +59,7 @@ class FirebaseAppRepository extends AppRepository {
     if (!snap.exists) {
       final isAnon = user.isAnonymous;
       await ref.set({
-        'displayName': user.displayName ?? (isAnon ? '我［尚未登入］' : '我'),
+        'displayName': user.displayName ?? '我',
         'avatarEmoji': kPersonalIcons.first,
         'provider': isAnon ? 'anonymous' : 'line',
         'starTotal': 0,

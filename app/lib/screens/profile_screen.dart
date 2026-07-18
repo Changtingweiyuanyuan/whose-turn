@@ -259,7 +259,7 @@ class ProfileScreen extends ConsumerWidget {
           else ...[
             _ActionCard(
               icon: 'assets/icons/human_resources_hierarchy.svg',
-              title: '建立群組［建立後無法修改］',
+              title: '建立群組',
               subtitle: '與家人、另一半或朋友一起開始分配任務',
               onTap: () => _createGroupFlow(context, ref),
             ),

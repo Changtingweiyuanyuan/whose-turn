@@ -41,7 +41,7 @@ class FakeAppRepository extends AppRepository {
     );
     final me = AppUser(
       uid: 'anon-me',
-      displayName: '我［尚未登入］',
+      displayName: '我［訪客］',
       provider: AuthProvider.anonymous,
       avatarEmoji: 'asset:smiley_wink',
       starTotal: 3,
