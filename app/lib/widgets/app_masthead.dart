@@ -5,7 +5,7 @@ import '../theme/app_tokens.dart';
 import 'app_svg_icons.dart';
 
 /// 雜誌刊頭：WHOSE TURN TODAY / NO.xx + 粉色分隔線 + 大標題。
-/// [starTotal] 為 null 時右側不顯示星星。
+/// [starTotal] 為 null 時右側不顯示星星；[userNo] 為 null（未加入群組）時不顯示編號。
 class AppMasthead extends StatelessWidget {
   const AppMasthead({
     super.key,
@@ -15,7 +15,7 @@ class AppMasthead extends StatelessWidget {
   });
 
   final String title;
-  final int userNo;
+  final int? userNo;
   final int? starTotal;
 
   @override
@@ -39,15 +39,16 @@ class AppMasthead extends StatelessWidget {
                   ),
                 ),
               ),
-              Text(
-                'NO.${userNo.toString().padLeft(2, '0')}',
-                style: const TextStyle(
-                  fontSize: AppType.body,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 2,
-                  color: AppColors.pink,
+              if (userNo != null)
+                Text(
+                  'NO.${userNo.toString().padLeft(2, '0')}',
+                  style: const TextStyle(
+                    fontSize: AppType.body,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 2,
+                    color: AppColors.pink,
+                  ),
                 ),
-              ),
             ],
           ),
           const SizedBox(height: AppSpacing.sm),

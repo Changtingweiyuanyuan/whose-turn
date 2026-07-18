@@ -168,8 +168,8 @@ class _Masthead extends StatelessWidget {
 
   final int openCount;
 
-  /// 目前使用者是第幾位（最少兩位數、不足補 0）
-  final int userNo;
+  /// 目前使用者是第幾位（最少兩位數、不足補 0）；null＝未加入群組，不顯示。
+  final int? userNo;
 
   @override
   Widget build(BuildContext context) {
@@ -195,15 +195,16 @@ class _Masthead extends StatelessWidget {
                   ),
                 ),
               ),
-              Text(
-                'NO.${userNo.toString().padLeft(2, '0')}',
-                style: TextStyle(
-                  fontSize: AppType.body,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 2,
-                  color: AppColors.pink,
+              if (userNo != null)
+                Text(
+                  'NO.${userNo.toString().padLeft(2, '0')}',
+                  style: const TextStyle(
+                    fontSize: AppType.body,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 2,
+                    color: AppColors.pink,
+                  ),
                 ),
-              ),
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
