@@ -221,15 +221,15 @@ class _Masthead extends StatelessWidget {
           RichText(
             text: const TextSpan(
               style: TextStyle(
-                fontSize: 64,
-                fontWeight: FontWeight.w800,
+                fontSize: 60,
+                fontWeight: FontWeight.w600,
                 height: 1.1,
                 color: AppColors.white,
               ),
               children: [
                 TextSpan(text: '今天換'),
                 TextSpan(text: '誰', style: TextStyle(color: AppColors.pink)),
-                TextSpan(text: '？'),
+                TextSpan(text: '?'),
               ],
             ),
           ),

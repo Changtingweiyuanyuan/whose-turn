@@ -14,18 +14,30 @@ import '../widgets/person_avatar.dart';
 import '../widgets/task_icon.dart';
 import '../widgets/app_back_button.dart';
 
-// 全套手繪線稿圖示
+// 全套線稿圖示（Streamline Freehand duotone）
 const _emojiChoices = [
-  'asset:plate', // 洗碗
-  'asset:trash', // 倒垃圾
-  'asset:broom', // 掃地
-  'asset:basket', // 洗衣
-  'asset:cart', // 採買
-  'asset:bento', // 備餐
-  'asset:dog', // 遛狗
-  'asset:books', // 讀書
-  'asset:gift', // 禮物
-  'asset:car', // 接送
+  'asset:cleaning',
+  'asset:trash',
+  'asset:home',
+  'asset:cart_check',
+  'asset:shop_cart',
+  'asset:book',
+  'asset:newspaper',
+  'asset:piggy_bank',
+  'asset:price_tag',
+  'asset:handshake',
+  'asset:lucky_cat',
+  'asset:camera',
+  'asset:clapboard',
+  'asset:game_controller',
+  'asset:karaoke',
+  'asset:stopwatch',
+  'asset:magic_wand',
+  'asset:pen_draw',
+  'asset:code',
+  'asset:earpods',
+  'asset:ferris_wheel',
+  'asset:hanger',
 ];
 
 /// v1.0 只開放三種獎勵類型
