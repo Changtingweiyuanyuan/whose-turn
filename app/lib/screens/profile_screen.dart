@@ -181,13 +181,12 @@ class ProfileScreen extends ConsumerWidget {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
-                            //color: AppColors.ink,
-                            color: AppColors.diluteInk,
+                            color: AppColors.ink,
                             borderRadius: BorderRadius.circular(999),
                             border: Border.all(
                                 color: uid == me.uid
-                                    ? AppColors.orange
-                                    : AppColors.white,
+                                    ? AppColors.white
+                                    : AppColors.inkSoft,
                                 width: 1),
                           ),
                           child: Row(
