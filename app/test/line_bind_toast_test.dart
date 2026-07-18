@@ -23,7 +23,7 @@ void main() {
 
   testWidgets('LINE 綁定成功顯示成功 toast', (tester) async {
     await pumpApp(tester, LineRedirectResult.success);
-    expect(find.text('LINE 綁定成功！星星與紀錄會永久保存'), findsOneWidget);
+    expect(find.text('LINE 綁定成功！'), findsOneWidget);
   });
 
   testWidgets('LINE 綁定失敗顯示失敗 toast', (tester) async {
@@ -33,7 +33,7 @@ void main() {
 
   testWidgets('非回跳啟動不顯示 toast', (tester) async {
     await pumpApp(tester, LineRedirectResult.none);
-    expect(find.text('LINE 綁定成功！星星與紀錄會永久保存'), findsNothing);
+    expect(find.text('LINE 綁定成功！'), findsNothing);
     expect(find.text('LINE 綁定失敗，請再試一次'), findsNothing);
   });
 }

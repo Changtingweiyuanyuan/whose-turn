@@ -36,11 +36,11 @@ class _HomeShellState extends ConsumerState<HomeShell> {
       Future.delayed(const Duration(milliseconds: 800), () {
         if (!mounted) return;
         ShadToaster.of(context).show(
-          lineResult == LineRedirectResult.success
-              ? const ShadToast(
-                  description: Text('LINE 綁定成功！星星與紀錄會永久保存'))
-              : const ShadToast.destructive(
-                  description: Text('LINE 綁定失敗，請再試一次')),
+          ShadToast(
+            description: Text(lineResult == LineRedirectResult.success
+                ? 'LINE 綁定成功！'
+                : 'LINE 綁定失敗，請再試一次'),
+          ),
         );
       });
     }
