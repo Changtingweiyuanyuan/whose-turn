@@ -220,10 +220,9 @@ class _Masthead extends StatelessWidget {
           // 大標，粗黑無襯線，誰=粉色
           RichText(
             text: const TextSpan(
-              // 何某手寫體（免費可商用），僅首頁大標使用
               style: TextStyle(
-                fontFamily: 'HeMouTitle',
                 fontSize: 64,
+                fontWeight: FontWeight.w800,
                 height: 1.1,
                 color: AppColors.white,
               ),

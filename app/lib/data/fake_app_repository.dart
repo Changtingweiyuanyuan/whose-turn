@@ -397,7 +397,7 @@ class FakeAppRepository extends AppRepository {
     _notify(
       recipientUid: task.createdBy,
       type: NotificationType.pendingConfirm,
-      title: '有一筆完成等你確認',
+      title: '有人回報完成，等你確認',
       body: '${_currentUser.displayName} 完成了「${task.title}」',
       taskId: taskId,
     );
@@ -436,7 +436,7 @@ class FakeAppRepository extends AppRepository {
       _notify(
         recipientUid: doneUid,
         type: NotificationType.starEarned,
-        title: '快完成了！',
+        title: '確認成功，進度更新！',
         body: '「${task.title}」${updated.confirmedCount} / ${updated.requiredCount}',
         taskId: taskId,
       );
@@ -459,7 +459,7 @@ class FakeAppRepository extends AppRepository {
     _notify(
       recipientUid: doneUid,
       type: NotificationType.pendingConfirm,
-      title: '有一筆完成被退回',
+      title: '回報未通過，請重新完成',
       body: '「${task.title}」的完成紀錄被退回，再試一次！',
       taskId: taskId,
     );
