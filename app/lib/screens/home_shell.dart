@@ -29,25 +29,23 @@ class _HomeShellState extends ConsumerState<HomeShell> {
   @override
   void initState() {
     super.initState();
-    // LINE 授權回跳的結果，成功或失敗都要讓使用者知道
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!mounted) return;
-      switch (ref.read(lineRedirectResultProvider)) {
-        case LineRedirectResult.none:
-          break;
-        case LineRedirectResult.success:
-          ShadToaster.of(context).show(
-            const ShadToast(
-                description: Text('LINE 綁定成功！星星與紀錄會永久保存')),
-          );
-        case LineRedirectResult.failed:
-          ShadToaster.of(context).show(
-            const ShadToast.destructive(
-                description: Text('LINE 綁定失敗，請再試一次')),
-          );
-      }
-    });
+    // LINE 授權回跳的結果，成功或失敗都要讓使用者知道。
+    // 延遲到首幀之後再 show：ShadToaster 的進場動畫在第一幀尚未就緒。
+    final lineResult = ref.read(lineRedirectResultProvider);
+    if (lineResult != LineRedirectResult.none) {
+      Future.delayed(const Duration(milliseconds: 800), () {
+        if (!mounted) return;
+        ShadToaster.of(context).show(
+          lineResult == LineRedirectResult.success
+              ? const ShadToast(
+                  description: Text('LINE 綁定成功！星星與紀錄會永久保存'))
+              : const ShadToast.destructive(
+                  description: Text('LINE 綁定失敗，請再試一次')),
+        );
+      });
+    }
   }
+
 
   Future<void> _startCreateTask() async {
     final repo = ref.read(repositoryProvider);
