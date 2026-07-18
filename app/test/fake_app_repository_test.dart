@@ -149,7 +149,7 @@ void main() {
 
     test('訪客不能建立群組', () async {
       expect(
-        () => repo.createGroup('新群組', '🏠'),
+        () => repo.createGroup('新群組'),
         throwsA(isA<GuestNotAllowedException>()),
       );
     });

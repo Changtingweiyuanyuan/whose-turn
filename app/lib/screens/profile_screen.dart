@@ -60,7 +60,7 @@ class ProfileScreen extends ConsumerWidget {
                               color: AppColors.white)),
 											const SizedBox(height: AppSpacing.xs),
                       Text(
-                        me.isGuest ? '訪客帳號' : 'LINE 已綁定',
+                        me.isGuest ? '訪客帳號' : 'LINE 已綁定，紀錄永久保存',
                         style: TextStyle(
                           fontSize: AppType.kicker,
                           color: AppColors.inkSoft,
@@ -259,8 +259,8 @@ class ProfileScreen extends ConsumerWidget {
           else ...[
             _ActionCard(
               icon: 'assets/icons/human_resources_hierarchy.svg',
-              title: '建立群組',
-              subtitle: '我們家、501室、情侶生活…',
+              title: '建立群組［建立後無法修改］',
+              subtitle: '可愛的家、305 室...',
               onTap: () => _createGroupFlow(context, ref),
             ),
             const SizedBox(height: 8),
@@ -338,7 +338,7 @@ class ProfileScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text('離開群組？',
+            Text('確定要離開群組？',
                 style: TextStyle(
                     fontSize: AppType.body,
                     fontWeight: FontWeight.w500,

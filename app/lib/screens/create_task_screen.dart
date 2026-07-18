@@ -89,7 +89,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
   /// 獎勵內容欄位標題依類型變化
   String get _rewardFieldLabel => switch (_rewardType) {
         RewardType.money => '獎勵金額',
-        RewardType.mystery => '獎勵內容（內容將保密）',
+        RewardType.mystery => '獎勵內容［內容將保密］',
         _ => '獎勵內容',
       };
 
@@ -111,12 +111,12 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
         ),
       RewardType.mystery => ShadInputFormField(
           id: 'reward',
-          placeholder: const Text('例如：神秘禮物、驚喜行程…'),
+          placeholder: const Text('例如：神秘禮物、驚喜行程...'),
           validator: (v) => v.trim().isEmpty ? '請輸入獎勵內容' : null,
         ),
       _ => ShadInputFormField(
           id: 'reward',
-          placeholder: const Text('例如：珍奶一杯、看一場電影…'),
+          placeholder: const Text('例如：珍奶一杯、看一場電影...'),
           validator: (v) => v.trim().isEmpty ? '請輸入獎勵內容' : null,
         ),
     };
@@ -156,7 +156,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               const _FieldLabel('任務名稱'),
               ShadInputFormField(
                 id: 'title',
-                placeholder: const Text('例如：洗碗、倒垃圾、遛狗…'),
+                placeholder: const Text('例如：洗碗、倒垃圾、遛狗...'),
                 validator: (v) => v.trim().isEmpty ? '請輸入任務名稱' : null,
               ),
               const SizedBox(height: 16),
@@ -276,7 +276,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               _FieldLabel(_rewardFieldLabel),
               _buildRewardField(),
               const SizedBox(height: 16),
-              const _FieldLabel('截止日期（可不填）'),
+              const _FieldLabel('截止日期［可不填］'),
               ShadDatePickerFormField(
                 id: 'deadline',
                 width: double.infinity,
@@ -284,6 +284,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                 foregroundColor: AppColors.white,
                 hoverBackgroundColor: AppColors.diluteInk,
                 hoverForegroundColor: AppColors.white,
+                placeholder: const Text('選擇日期'),
                 leading: const AppSvgIcon(kCalendarSvg,
                     color: AppColors.white, size: 18),
               ),

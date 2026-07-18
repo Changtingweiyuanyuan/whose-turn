@@ -106,7 +106,7 @@ class _GroupDialogState extends State<_GroupDialog> {
     final repo = widget.ref.read(repositoryProvider);
     if (_isCreate) {
       final name = _controller.text.trim();
-      await repo.createGroup(name, '🏠', personalIcon: _selectedIcon);
+      await repo.createGroup(name, personalIcon: _selectedIcon);
       if (mounted) Navigator.pop(context, '群組「$name」建立完成 🎉');
     } else {
       final group = await repo.joinGroupByCode(_controller.text,

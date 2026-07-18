@@ -114,6 +114,17 @@ const kArrowNextSvg =
     'stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>'
     '</svg>';
 
+/// Iconsax `arrow-left`（broken）—— AppBar 返回鍵。
+const kArrowBackSvg =
+    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" '
+    'viewBox="0 0 24 24" fill="none">'
+    '<path d="M11.19 7.94043L8.56999 10.5604C7.79999 11.3304 7.79999 12.5904 '
+    '8.56999 13.3604L15.09 19.8804" stroke="#ffffff" stroke-width="1.5" '
+    'stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>'
+    '<path d="M15.09 4.04004L14.05 5.08004" stroke="#ffffff" stroke-width="1.5" '
+    'stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>'
+    '</svg>';
+
 /// Iconsax `calendar`—— 截止日期欄位前的日曆圖示。
 const kCalendarSvg =
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" '

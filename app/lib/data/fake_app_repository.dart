@@ -54,7 +54,6 @@ class FakeAppRepository extends AppRepository {
     _group = Group(
       id: 'g-home',
       name: '我們家',
-      avatarEmoji: '🏠',
       inviteCode: 'HOME2026',
       createdBy: mom.uid,
       memberUids: [mom.uid, bro.uid, me.uid],
@@ -255,14 +254,12 @@ class FakeAppRepository extends AppRepository {
   }
 
   @override
-  Future<Group> createGroup(String name, String avatarEmoji,
-      {String? personalIcon}) async {
+  Future<Group> createGroup(String name, {String? personalIcon}) async {
     if (_currentUser.isGuest) throw const GuestNotAllowedException('建立群組');
     if (personalIcon != null) _setMyAvatar(personalIcon);
     final group = Group(
       id: _nextId('g'),
       name: name,
-      avatarEmoji: avatarEmoji,
       inviteCode: 'INV${_idCounter}X',
       createdBy: _currentUser.uid,
       memberUids: [_currentUser.uid],
@@ -282,7 +279,6 @@ class FakeAppRepository extends AppRepository {
         _group = Group(
           id: _group!.id,
           name: _group!.name,
-          avatarEmoji: _group!.avatarEmoji,
           inviteCode: _group!.inviteCode,
           createdBy: _group!.createdBy,
           memberUids: [..._group!.memberUids, _currentUser.uid],
@@ -306,7 +302,6 @@ class FakeAppRepository extends AppRepository {
     _group = Group(
       id: _group!.id,
       name: _group!.name,
-      avatarEmoji: _group!.avatarEmoji,
       inviteCode: _group!.inviteCode,
       createdBy: _group!.createdBy,
       memberUids:
