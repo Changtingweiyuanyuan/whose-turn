@@ -22,7 +22,7 @@ class RewardBadge extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.white, // 底：白，讓文字清楚
         borderRadius: BorderRadius.circular(999), // 膠囊
-        border: Border.all(color: AppColors.diluteInk, width: 1.5),
+        border: Border.all(color: AppColors.diluteInk, width: 1),
       ),
       child: Text(
         text,

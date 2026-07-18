@@ -163,7 +163,7 @@ class FakeAppRepository extends AppRepository {
       id: _nextId('n'),
       recipientUid: me.uid,
       type: NotificationType.newTask,
-      title: '有人發起新任務！',
+      title: '有人發起了新任務！',
       body: '哥哥 發起了「整理客廳」，獎勵是神秘禮物',
       taskId: _tasks[2].id,
       createdAt: now.subtract(const Duration(minutes: 30)),
@@ -344,7 +344,7 @@ class FakeAppRepository extends AppRepository {
     _tasks.insert(0, task);
     _notifyGroup(
       type: NotificationType.newTask,
-      title: '有人發起新任務！',
+      title: '有人發起了新任務！',
       body: '${_currentUser.displayName} 發起了「$title」',
       taskId: task.id,
     );

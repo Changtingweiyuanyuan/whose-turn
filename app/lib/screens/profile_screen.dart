@@ -169,33 +169,44 @@ class ProfileScreen extends ConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: 12),
+									const DashedRule(color: AppColors.inkSoft),
+                  const SizedBox(height: 12),
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
                     children: [
                       for (final uid in group.memberUids)
-                        // 家人 tag：白膠囊 + orange 1.5 邊框 + ink 字（無 emoji）
+                        // 家人 tag：ink 膠囊 + 白框 + 個人圖示 + 白字
                         Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 6),
                           decoration: BoxDecoration(
-                            color: AppColors.white,
+                            color: AppColors.ink,
                             borderRadius: BorderRadius.circular(999),
                             border:
-                                Border.all(color: AppColors.orange, width: 1.5),
+                                Border.all(color: AppColors.white, width: 1),
                           ),
-                          child: Text(
-                            repo.userOf(uid).displayName,
-                            style: const TextStyle(
-                                fontSize: AppType.kicker,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.ink),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // 深底保留原色；size 16 不撐高 tag
+                              PersonAvatar(repo.userOf(uid).avatarEmoji,
+                                  size: 16),
+                              const SizedBox(width: 8),
+                              Text(
+                                repo.userOf(uid).displayName,
+                                style: const TextStyle(
+                                    fontSize: AppType.kicker,
+                                    fontWeight: FontWeight.w500,
+                                    color: AppColors.white),
+                              ),
+                            ],
                           ),
                         ),
                     ],
                   ),
-                  const SizedBox(height: 12),
-                  const DashedRule(color: AppColors.inkSoft),
+                  //const SizedBox(height: 12),
+                  //const DashedRule(color: AppColors.inkSoft),
                   const SizedBox(height: 12),
                   // 邀請好友 = pink 佔滿；離開 = ink 只佔文字寬；gap 8
                   Row(
