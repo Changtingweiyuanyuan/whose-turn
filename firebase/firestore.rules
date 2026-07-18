@@ -6,6 +6,10 @@ rules_version = '2';
 //   2. 訪客不可建立群組、不可發起任務
 //   3. 星星只加不扣（starTotal 只允許遞增）
 //   4. completion 的確認/退回只有任務發起人能做
+//
+// App 端使用兩個 collectionGroup 查詢，rules 需用 {path=**} 撰寫：
+//   - collectionGroup('members').where('userId'==uid)      → 找自己的群組
+//   - collectionGroup('completions').where('groupId'==gid) → 任務完成紀錄即時同步
 
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -26,11 +30,19 @@ service cloud.firestore {
     match /users/{uid} {
       allow read: if signedIn();
       allow create: if signedIn() && request.auth.uid == uid;
-      // starTotal 只加不扣；mergedInto 僅由 Worker（Admin 權限，繞過 rules）寫入
-      allow update: if signedIn()
-        && request.auth.uid == uid
-        && request.resource.data.starTotal >= resource.data.starTotal
-        && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['mergedInto']);
+      // 兩種合法 update：
+      //   a) 本人改自己的資料（starTotal 不可下降、mergedInto 僅 Worker 可寫）
+      //   b) 其他登入者「只動 starTotal 且遞增」——發起人確認完成時幫接單人 +1 ⭐
+      allow update: if signedIn() && (
+        (
+          request.auth.uid == uid
+          && request.resource.data.starTotal >= resource.data.starTotal
+          && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['mergedInto'])
+        ) || (
+          request.resource.data.diff(resource.data).affectedKeys().hasOnly(['starTotal'])
+          && request.resource.data.starTotal > resource.data.starTotal
+        )
+      );
 
       match /notifications/{notificationId} {
         allow read, update: if signedIn() && request.auth.uid == uid;
@@ -57,6 +69,12 @@ service cloud.firestore {
       }
     }
 
+    // collectionGroup('members')：找「我所屬的群組」
+    // 查詢一定帶 where('userId' == 自己)，這裡限制只能讀自己的 membership
+    match /{path=**}/members/{memberUid} {
+      allow read: if signedIn() && resource.data.userId == request.auth.uid;
+    }
+
     match /tasks/{taskId} {
       allow read: if signedIn() && isMember(resource.data.groupId);
       // 訪客不可發起任務
@@ -72,16 +90,22 @@ service cloud.firestore {
             || resource.data.status == 'open');
 
       match /completions/{completionId} {
-        allow read: if signedIn();
         // 送出完成：訪客也可以；只能以自己名義送出，且初始狀態必須是 pending
+        // （completion 冗餘 groupId 欄位供 collectionGroup 查詢）
         allow create: if signedIn()
           && request.resource.data.userId == request.auth.uid
-          && request.resource.data.status == 'pending';
+          && request.resource.data.status == 'pending'
+          && request.resource.data.groupId == get(/databases/$(database)/documents/tasks/$(taskId)).data.groupId;
         // 確認 / 退回：只有任務發起人
         allow update: if signedIn()
           && get(/databases/$(database)/documents/tasks/$(taskId)).data.createdBy == request.auth.uid
           && request.resource.data.status in ['confirmed', 'rejected'];
       }
+    }
+
+    // collectionGroup('completions')：同群組成員即時同步完成紀錄
+    match /{path=**}/completions/{completionId} {
+      allow read: if signedIn() && isMember(resource.data.groupId);
     }
   }
 }

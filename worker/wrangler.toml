@@ -7,6 +7,7 @@ compatibility_date = "2026-01-01"
 
 # 部署前用 wrangler secret put 設定以下機密：
 #   wrangler secret put LINE_CHANNEL_ID
+#   wrangler secret put LINE_CHANNEL_SECRET    # Web OAuth code 換 token 用
 #   wrangler secret put FIREBASE_PROJECT_ID
 #   wrangler secret put FIREBASE_CLIENT_EMAIL
 #   wrangler secret put FIREBASE_PRIVATE_KEY   # service account 的 PEM（含換行）

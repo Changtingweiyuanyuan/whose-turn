@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../data/fake_app_repository.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
@@ -272,43 +273,46 @@ class ProfileScreen extends ConsumerWidget {
             ),
           ],
 
-          const SizedBox(height: 24),
-          const Text('Demo 視角切換',
-              style: TextStyle(
-                  fontSize: AppType.body,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.white)),
-          const SizedBox(height: 4),
-          const Text(
-            '雛形限定：切換身分同時體驗發起人與接單人',
-            style: TextStyle(fontSize: AppType.kicker, color: Colors.white70),
-          ),
-          const SizedBox(height: 8),
-          ShadCard(
-            padding: const EdgeInsets.all(16),
-            child: ShadRadioGroup<String>(
-              initialValue: me.uid,
-              onChanged: (uid) {
-                if (uid != null) repo.switchUser(uid);
-              },
-              items: [
-                for (final u in repo.knownUsers)
-                  ShadRadio(
-                    value: u.uid,
-                    label: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        PersonAvatar(u.avatarEmoji,
-                            size: 20, fillColor: AppColors.ink),
-                        const SizedBox(width: 6),
-                        Text(
-                            '${u.displayName}（${u.isGuest ? '訪客' : 'LINE'}）'),
-                      ],
-                    ),
-                  ),
-              ],
+          // Demo 視角切換：僅雛形（FakeAppRepository）顯示；正式模式不能切身分
+          if (repo is FakeAppRepository) ...[
+            const SizedBox(height: 24),
+            const Text('Demo 視角切換',
+                style: TextStyle(
+                    fontSize: AppType.body,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.white)),
+            const SizedBox(height: 4),
+            const Text(
+              '雛形限定：切換身分同時體驗發起人與接單人',
+              style: TextStyle(fontSize: AppType.kicker, color: Colors.white70),
             ),
-          ),
+            const SizedBox(height: 8),
+            ShadCard(
+              padding: const EdgeInsets.all(16),
+              child: ShadRadioGroup<String>(
+                initialValue: me.uid,
+                onChanged: (uid) {
+                  if (uid != null) repo.switchUser(uid);
+                },
+                items: [
+                  for (final u in repo.knownUsers)
+                    ShadRadio(
+                      value: u.uid,
+                      label: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          PersonAvatar(u.avatarEmoji,
+                              size: 20, fillColor: AppColors.ink),
+                          const SizedBox(width: 6),
+                          Text(
+                              '${u.displayName}（${u.isGuest ? '訪客' : 'LINE'}）'),
+                        ],
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
               ],
             ),
           ),

@@ -1,9 +1,11 @@
 /**
- * LINE access token 驗證與取得使用者 profile。
+ * LINE 登入串接：
  *
- * App 端流程：Flutter 用 flutter_line_sdk 登入取得 access token，
- * POST 給本 Worker，Worker 向 LINE 驗證後才鑄造 Firebase custom token。
- * 不走 Web OAuth redirect，省去 deep link 複雜度。
+ * 1. Web OAuth（主要路徑）：Flutter Web 整頁導向 LINE 授權頁，
+ *    回跳帶 authorization code → Worker 以 channel secret 換 access token
+ *    （exchangeAuthorizationCode）→ 取 profile → 鑄 Firebase custom token。
+ * 2. Native SDK（保留）：App 端用 flutter_line_sdk 取得 access token
+ *    直接 POST，Worker 驗證（verifyLineAccessToken）。
  */
 
 export interface LineProfile {
@@ -14,6 +16,7 @@ export interface LineProfile {
 
 const VERIFY_URL = 'https://api.line.me/oauth2/v2.1/verify';
 const PROFILE_URL = 'https://api.line.me/v2/profile';
+const TOKEN_URL = 'https://api.line.me/oauth2/v2.1/token';
 
 export class LineAuthError extends Error {
   constructor(
@@ -63,4 +66,33 @@ export async function verifyLineAccessToken(
     displayName: profile.displayName,
     pictureUrl: profile.pictureUrl,
   };
+}
+
+/** Web OAuth：authorization code → access token（需要 channel secret）。 */
+export async function exchangeAuthorizationCode(
+  code: string,
+  redirectUri: string,
+  channelId: string,
+  channelSecret: string,
+  fetcher: typeof fetch = fetch,
+): Promise<string> {
+  const res = await fetcher(TOKEN_URL, {
+    method: 'POST',
+    headers: { 'content-type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({
+      grant_type: 'authorization_code',
+      code,
+      redirect_uri: redirectUri,
+      client_id: channelId,
+      client_secret: channelSecret,
+    }),
+  });
+  if (!res.ok) {
+    throw new LineAuthError('Failed to exchange authorization code', 401);
+  }
+  const data = (await res.json()) as { access_token?: string };
+  if (!data.access_token) {
+    throw new LineAuthError('LINE token response missing access_token', 502);
+  }
+  return data.access_token;
 }
