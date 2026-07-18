@@ -41,7 +41,7 @@ class WhoseTurnApp extends StatelessWidget {
         // 全站文字加一點字距，緩解 Roboto Condensed 的擁擠感
         builder: (context, child) => ShadAppBuilder(
           child: DefaultTextStyle.merge(
-            style: const TextStyle(letterSpacing: 0.3),
+            style: const TextStyle(letterSpacing: 0.4),
             child: child ?? const SizedBox.shrink(),
           ),
         ),
