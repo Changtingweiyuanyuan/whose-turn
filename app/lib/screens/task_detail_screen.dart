@@ -132,10 +132,25 @@ class TaskDetailScreen extends ConsumerWidget {
                           ],
                         ),
                       )
-                    : _InfoRow(
-                        label: '獎勵內容',
-                        value: task.rewardLabel,
-                        valueWeight: FontWeight.w600),
+                    : task.rewardType == RewardType.money
+                        ? _InfoRow(
+                            label: '獎勵內容',
+                            valueChild: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(task.rewardLabel,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w600)),
+                                const SizedBox(width: 4),
+                                const AppSvgIcon(kCashSvg,
+                                    color: AppColors.ink, size: 16),
+                              ],
+                            ),
+                          )
+                        : _InfoRow(
+                            label: '獎勵內容',
+                            value: task.rewardLabel,
+                            valueWeight: FontWeight.w600),
                 if (task.deadline != null) ...[
                   const SizedBox(height: 8),
                   _InfoRow(
