@@ -48,7 +48,7 @@ class ProfileScreen extends ConsumerWidget {
             ),
             child: Row(
               children: [
-                PersonAvatar(me.avatarEmoji, size: 24),
+                PersonAvatar(me.avatarEmoji, size: 44),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -99,7 +99,7 @@ class ProfileScreen extends ConsumerWidget {
               child: Row(
                 children: [
                   const AppAssetIcon('assets/icons/cloud_phone_exchange.svg',
-                      size: 24),
+                      size: 44),
                   const SizedBox(width: 12),
                   const Expanded(
                     child: Column(
@@ -156,7 +156,7 @@ class ProfileScreen extends ConsumerWidget {
                   Row(
                     children: [
                       const AppAssetIcon('assets/icons/teamwork_clap.svg',
-                          size: 32),
+                          size: 44),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(group.name,
@@ -175,7 +175,7 @@ class ProfileScreen extends ConsumerWidget {
                     runSpacing: 8,
                     children: [
                       for (final uid in group.memberUids)
-                        // 家人 tag：白膠囊 + 黑(ink) 1.5 邊框 + ink 字（無 emoji）
+                        // 家人 tag：白膠囊 + orange 1.5 邊框 + ink 字（無 emoji）
                         Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 12, vertical: 6),
@@ -183,7 +183,7 @@ class ProfileScreen extends ConsumerWidget {
                             color: AppColors.white,
                             borderRadius: BorderRadius.circular(999),
                             border:
-                                Border.all(color: AppColors.ink, width: 1.5),
+                                Border.all(color: AppColors.orange, width: 1.5),
                           ),
                           child: Text(
                             repo.userOf(uid).displayName,
