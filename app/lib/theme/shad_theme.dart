@@ -73,9 +73,10 @@ abstract final class AppShadTheme {
         inputTheme: ShadInputTheme(
           decoration: ShadDecoration(
             color: const Color(0xFFF3F3F3),
+            // focus 內框維持原本灰色
             focusedBorder: ShadBorder.all(
-              color: AppColors.green,
-              width: 1.5,
+              color: AppColors.lightGray,
+              width: 1,
               radius: BorderRadius.circular(6),
             ),
             // focus 外圈改淡綠 1.5px
