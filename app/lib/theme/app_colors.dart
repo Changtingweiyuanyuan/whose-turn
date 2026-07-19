@@ -42,10 +42,11 @@ abstract final class AppColors {
   static const orangeLine = Color(0xFFF2A375);
   /// 卡片輪替色（依序循環）
   static const cardCycle = [
-    Color(0xFFEBE8E1),
-    Color(0xFFF6F6EB),
-    Color(0xFFEFDEDC),
-    Color(0xFFE6DEEA),
+    Color(0xFFFAF6EF),
+    Color(0xFFF0F4F7),
+    Color(0xFFF6F7F2),
+    Color(0xFFF4F0F6),
+    Color(0xFFFCF7E9),
   ];
 
   // 衍生色（柔和背景、輔助文字）
