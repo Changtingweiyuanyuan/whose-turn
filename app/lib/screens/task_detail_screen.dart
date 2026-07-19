@@ -433,8 +433,8 @@ class _CompletionStatusLabel extends StatelessWidget {
   }
 }
 
-/// 標籤欄寬（約 4 個中文字，含 0.8 全站字距），value 與它固定間距 20px。
-const double _kInfoLabelWidth = 64;
+/// 標籤欄寬（4 個 16px 中文字 + 0.8 全站字距），value 與它固定間距 20px。
+const double _kInfoLabelWidth = 72;
 const double _kInfoLabelGap = 20;
 
 class _InfoRow extends StatelessWidget {
