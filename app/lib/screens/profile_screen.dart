@@ -37,17 +37,12 @@ class ProfileScreen extends ConsumerWidget {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 96),
               children: [
-                // ---- 個人卡（深色塊，同「我的群組」）----
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: AppColors.diluteInk,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: AppColors.inkSoft, width: 1),
-            ),
+                // ---- 個人卡：1px 紋理邊框 + 紙白底（同任務詳情任務內容 block）----
+          _PaperBlock(
             child: Row(
               children: [
-                PersonAvatar(me.avatarEmoji, size: 44),
+                PersonAvatar(me.avatarEmoji,
+                    size: 44, fillColor: AppColors.ink),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -57,7 +52,7 @@ class ProfileScreen extends ConsumerWidget {
                           style: const TextStyle(
                               fontSize: AppType.body,
                               fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
-                              color: AppColors.white)),
+                              color: AppColors.ink)),
 											const SizedBox(height: AppSpacing.xs),
                       Text(
                         me.isGuest ? '訪客帳號' : 'LINE 已綁定，紀錄永久保存',
@@ -69,30 +64,30 @@ class ProfileScreen extends ConsumerWidget {
                     ],
                   ),
                 ),
-                // 星星對齊「我的任務」刊頭右側：粉色星 20 + w800 白數字
+                // 星星：紅星 20 + w800 softInk 數字
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const AppSvgIcon(kStarSvg, color: AppColors.pink, size: 20),
+                    const AppSvgIcon(kStarSvg, color: AppColors.red, size: 20),
                     const SizedBox(width: 6),
                     Text('${me.starTotal}',
                         style: const TextStyle(
                             fontSize: AppType.title,
                             fontWeight: FontWeight.w800, letterSpacing: AppType.spacingBold,
-                            color: AppColors.white)),
+                            color: AppColors.inkSoft)),
                   ],
                 ),
               ],
             ),
           ),
 
-          // ---- 訪客提醒（淡藍 main 底、無框）----
+          // ---- 訪客提醒（F3F3F3 淡灰底、無框）----
           if (me.isGuest) ...[
             const SizedBox(height: 12),
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.main,
+                color: const Color(0xFFF3F3F3),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
@@ -116,14 +111,12 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(width: 12),
-                  // 綁定鍵樣式同「離開」（ink），內容同 LINE 綁定 CTA
+                  // 綁定鍵＝主要 CTA：愛心綠底白字
                   ShadButton(
-                    backgroundColor: AppColors.bg,
-                    foregroundColor: AppColors.green,
-                    hoverBackgroundColor: AppColors.greenSoft,
-                    hoverForegroundColor: AppColors.green,
-                    decoration: ShadDecoration(
-                        border: ShadBorder.all(color: AppColors.green, width: 1)),
+                    backgroundColor: AppColors.green,
+                    foregroundColor: AppColors.bg,
+                    hoverBackgroundColor: AppColors.greenDark,
+                    hoverForegroundColor: AppColors.bg,
                     leading: const MessageBubbleIcon(
                         color: AppColors.white, size: 18),
                     onPressed: () => showLineBindSheet(context, ref),
@@ -135,95 +128,90 @@ class ProfileScreen extends ConsumerWidget {
           ],
 
           const SizedBox(height: 24),
+          // block title 對齊「完成紀錄 (n)」：body、w500、Ink
           const Text('我的群組',
               style: TextStyle(
                   fontSize: AppType.body,
                   fontWeight: FontWeight.w500,
-                  color: AppColors.white)),
+                  color: AppColors.ink)),
           const SizedBox(height: 8),
 
-          // ---- 群組卡（F1）：深色塊，同「完成紀錄」 ----
+          // ---- 群組卡（F1）：1px 紋理邊框 + 紙白底 ----
           if (group != null && isMember)
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.diluteInk,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: AppColors.inkSoft, width: 1),
-              ),
+            _PaperBlock(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     children: [
                       const AppAssetIcon('assets/icons/teamwork_clap.svg',
-                          size: 44),
+                          size: 44, fillColor: AppColors.ink),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(group.name,
                             style: const TextStyle(
                                 fontSize: AppType.body,
                                 fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
-                                color: AppColors.white)),
+                                color: AppColors.ink)),
                       ),
                       Text('${group.memberUids.length} 人',
-                          style: const TextStyle(color: Colors.white70)),
+                          style: const TextStyle(color: AppColors.inkSoft)),
                     ],
                   ),
-                  const SizedBox(height: 12),
-									const DashedRule(color: AppColors.inkSoft),
-                  const SizedBox(height: 12),
+                  // 虛線：同任務內容 block（F3F3F3、上下 gap 6）
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 6),
+                    child:
+                        DashedRule(color: Color(0xFFF3F3F3), thickness: 1),
+                  ),
                   Wrap(
                     spacing: 8,
                     runSpacing: 8,
                     children: [
                       for (final uid in group.memberUids)
-                        // 家人 tag：ink 膠囊 + 個人圖示 + 白字；自己的框橘色
+                        // 家人 tag：對齊任務卡獎勵膠囊（白底 + diluteInk 1px 框）
                         Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 6),
+                              horizontal: 12, vertical: 2),
                           decoration: BoxDecoration(
-                            color: AppColors.ink,
+                            color: AppColors.white,
                             borderRadius: BorderRadius.circular(999),
                             border: Border.all(
-                                color: uid == me.uid
-                                    ? AppColors.white
-                                    : AppColors.inkSoft,
-                                width: 1),
+                                color: AppColors.diluteInk, width: 1),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              // 深底保留原色；size 16 不撐高 tag
+                              // 白、橘皆改 Ink；size 16 不撐高 tag
                               PersonAvatar(repo.userOf(uid).avatarEmoji,
-                                  size: 16),
+                                  size: 16,
+                                  fillColor: AppColors.ink,
+                                  orangeColor: AppColors.ink),
                               const SizedBox(width: 8),
                               Text(
                                 repo.userOf(uid).displayName,
                                 style: const TextStyle(
                                     fontSize: AppType.kicker,
                                     fontWeight: FontWeight.w500,
-                                    color: AppColors.white),
+                                    color: AppColors.ink),
                               ),
                             ],
                           ),
                         ),
                     ],
                   ),
-                  //const SizedBox(height: 12),
-                  //const DashedRule(color: AppColors.inkSoft),
                   const SizedBox(height: 12),
-                  // 邀請好友 = pink 佔滿；離開 = ink 只佔文字寬；gap 8
+                  // 邀請好友 = 主要 CTA 佔滿；離開 = 綠框次要；gap 8
                   Row(
                     children: [
                       Expanded(
                         child: ShadButton(
-                          backgroundColor: AppColors.main,
-                          foregroundColor: AppColors.ink,
-                          hoverBackgroundColor: AppColors.mainDark,
-                          hoverForegroundColor: AppColors.ink,
+                          backgroundColor: AppColors.green,
+                          foregroundColor: AppColors.bg,
+                          hoverBackgroundColor: AppColors.greenDark,
+                          hoverForegroundColor: AppColors.bg,
                           leading: const AppSvgIcon(kLinkSvg,
-                              color: AppColors.ink, size: 20),
+                              color: AppColors.white, size: 20),
                           onPressed: () {
                             Clipboard.setData(
                                 ClipboardData(text: group.inviteLink));
@@ -279,15 +267,17 @@ class ProfileScreen extends ConsumerWidget {
           // Demo 視角切換：僅雛形（FakeAppRepository）顯示；正式模式不能切身分
           if (repo is FakeAppRepository) ...[
             const SizedBox(height: 24),
+            // block title 對齊「完成紀錄 (n)」：body、w500、Ink
             const Text('Demo 視角切換',
                 style: TextStyle(
                     fontSize: AppType.body,
-                    fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
-                    color: AppColors.white)),
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.ink)),
             const SizedBox(height: 4),
             const Text(
               '雛形限定：切換身分同時體驗發起人與接單人',
-              style: TextStyle(fontSize: AppType.kicker, color: Colors.white70),
+              style:
+                  TextStyle(fontSize: AppType.kicker, color: AppColors.inkSoft),
             ),
             const SizedBox(height: 8),
             ShadCard(
@@ -410,6 +400,36 @@ class ProfileScreen extends ConsumerWidget {
     if (message != null && context.mounted) {
       ShadToaster.of(context).show(ShadToast(description: Text(message)));
     }
+  }
+}
+
+/// 1px 紋理邊框 + 紙白底的內容塊（同任務詳情的任務內容 block）。
+class _PaperBlock extends StatelessWidget {
+  const _PaperBlock({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(1),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(AppRadius.card),
+        image: const DecorationImage(
+          image: AssetImage('assets/images/card_border.png'),
+          repeat: ImageRepeat.repeat,
+          fit: BoxFit.none,
+        ),
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(AppRadius.card - 1),
+        ),
+        child: child,
+      ),
+    );
   }
 }
 

@@ -74,7 +74,7 @@ class AppMasthead extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const AppSvgIcon(kStarSvg,
-                        color: AppColors.orange, size: 20),
+                        color: AppColors.red, size: 20),
                     const SizedBox(width: 6),
                     Text(
                       '$starTotal',
