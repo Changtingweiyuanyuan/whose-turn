@@ -30,7 +30,6 @@ const _sortLabels = {
   TaskWallSort.reward: '現金',
 };
 
-const _weekdays = ['一', '二', '三', '四', '五', '六', '日'];
 
 // Iconsax arrow-down2（broken 樣式）—— 直接用官方 SVG，最精準
 const _sortArrowSvg =
@@ -82,7 +81,12 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
   Widget build(BuildContext context) {
     final repo = ref.watch(repositoryProvider);
     final tasks = _visibleTasks();
-    final openCount = repo.tasks.where((t) => t.status == TaskStatus.open).length;
+    // 全部任務 tab 的數量（看板上會出現的任務）
+    final allCount = repo.tasks
+        .where((t) =>
+            t.status != TaskStatus.cancelled &&
+            t.status != TaskStatus.rewardClaimed)
+        .length;
     final userNo = repo.userNo;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
@@ -92,8 +96,9 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _Masthead(openCount: openCount, userNo: userNo),
-              const SizedBox(height: AppSpacing.md),
+            _Masthead(userNo: userNo),
+              // 刊頭↔tab 間距對齊其他頁（24）
+              const SizedBox(height: AppSpacing.lg),
               // 排版式分頁 + 行內排序
               Padding(
                 padding: const EdgeInsets.symmetric(
@@ -101,7 +106,10 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
                 // 與「我的任務」共用同一種滑動分頁
                 child: AppSlidingTabs(
                   labels: [
-                    for (final f in TaskWallFilter.values) _filterLabels[f]!,
+                    for (final f in TaskWallFilter.values)
+                      f == TaskWallFilter.all && allCount > 1
+                          ? '${_filterLabels[f]!} ($allCount)'
+                          : _filterLabels[f]!,
                   ],
                   selected: TaskWallFilter.values.indexOf(_filter),
                   onChanged: (i) =>
@@ -158,20 +166,15 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
   }
 }
 
-/// 雜誌刊頭：WHOSE TURN TODAY / NO.xx + 大標「今天換誰？」+ 副標。
+/// 雜誌刊頭：WHOSE TURN TODAY / NO.xx + 大標「今天換誰？」。
 class _Masthead extends StatelessWidget {
-  const _Masthead({required this.openCount, required this.userNo});
-
-  final int openCount;
+  const _Masthead({required this.userNo});
 
   /// 目前使用者是第幾位（最少兩位數、不足補 0）；null＝未加入群組，不顯示。
   final int? userNo;
 
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now();
-    final weekday = _weekdays[(now.weekday - 1) % 7];
-
     return Padding(
       padding: const EdgeInsets.fromLTRB(
           AppSpacing.pagePadding, AppSpacing.md, AppSpacing.pagePadding, 0),
@@ -216,23 +219,6 @@ class _Masthead extends StatelessWidget {
               letterSpacing: AppType.spacingBold,
               color: AppColors.ink,
             ),
-          ),
-          const SizedBox(height: AppSpacing.md),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  '本週待接任務 · ${openCount.toString().padLeft(2, '0')}',
-                  style: const TextStyle(
-                      fontSize: AppType.label, color: AppColors.inkSoft),
-                ),
-              ),
-              Text(
-                '星期$weekday',
-                style: const TextStyle(
-                    fontSize: AppType.label, color: AppColors.red),
-              ),
-            ],
           ),
         ],
       ),
