@@ -9,7 +9,6 @@ import '../widgets/app_back_button.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
 import '../widgets/app_svg_icons.dart';
-import '../widgets/dashed_rule.dart';
 import '../widgets/noise_background.dart';
 import '../widgets/person_avatar.dart';
 import '../widgets/star_progress.dart';
@@ -44,7 +43,8 @@ class TaskDetailScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.paper,
       appBar: AppBar(
-        backgroundColor: AppColors.bg,
+        // 試色：淺灰 F3F3F3
+        backgroundColor: const Color(0xFFF3F3F3),
         foregroundColor: AppColors.ink,
         elevation: 0,
         centerTitle: true,
@@ -64,19 +64,6 @@ class TaskDetailScreen extends ConsumerWidget {
             SizedBox(width: 6),
             AppAssetIcon('assets/icons/flower_green.svg', size: 20),
           ],
-        ),
-        // 刊頭同款 1.5px 橘色虛線，左右留全站 gutter
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.5),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.pagePadding,
-            ),
-            child: const DashedRule(
-              color: AppColors.orangeLine,
-              thickness: 1.5,
-            ),
-          ),
         ),
       ),
       body: NoiseBackground(
