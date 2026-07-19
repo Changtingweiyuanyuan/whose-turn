@@ -36,7 +36,7 @@ class NoiseBackground extends StatelessWidget {
             child: Image.asset(
               'assets/images/paper_grid.png',
               repeat: ImageRepeat.repeat,
-              scale: 4, // 384px 磚 → 96 邏輯 px
+              scale: 384 / 115.2, // 原圖 60%（384px 磚 → 115.2 邏輯 px @2x）
             ),
           ),
           // 紙張雜點

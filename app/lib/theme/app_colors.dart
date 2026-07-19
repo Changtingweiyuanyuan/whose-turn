@@ -32,6 +32,8 @@ abstract final class AppColors {
   static const framePink = Color(0xFFE6CCD9);
   /// 淺粉線：資訊卡 1px 邊框（同 $ 符號色）
   static const pinkLight = Color(0xFFFAD3D7);
+  /// 狀態紅：進行中等狀態字
+  static const red = Color(0xFFFD282C);
   /// 主綠壓深版：綠色 CTA 的 hover 底
   static const greenDark = Color(0xFF1D7A4B);
   /// 淡綠字：未選取分頁、星期、刊頭小標
