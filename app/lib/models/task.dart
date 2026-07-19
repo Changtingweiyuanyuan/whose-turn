@@ -56,7 +56,15 @@ class Task {
     this.claimedBy,
     this.status = TaskStatus.open,
     this.completions = const [],
+    this.colorIndex = 0,
   });
+
+  /// 卡片輪替色的色數（對應 AppColors.cardCycle）。
+  static const cardColorCount = 5;
+
+  /// 舊資料沒存 colorIndex 時的穩定備援：由 id 導出，不隨列表順序變動。
+  static int colorIndexFromId(String id) =>
+      id.codeUnits.fold<int>(0, (a, b) => a + b) % cardColorCount;
 
   final String id;
   final String groupId;
@@ -74,6 +82,9 @@ class Task {
   final String? claimedBy;
   final TaskStatus status;
   final List<Completion> completions;
+
+  /// 建立任務時記錄的卡片底色索引（AppColors.cardCycle）。
+  final int colorIndex;
 
   bool get isMystery => rewardType == RewardType.mystery;
 
@@ -126,6 +137,7 @@ class Task {
       claimedBy: clearClaimedBy ? null : (claimedBy ?? this.claimedBy),
       status: status ?? this.status,
       completions: completions ?? this.completions,
+      colorIndex: colorIndex,
     );
   }
 }

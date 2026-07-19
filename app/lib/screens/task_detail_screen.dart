@@ -270,7 +270,7 @@ class TaskDetailScreen extends ConsumerWidget {
                   child: ListView(
                     padding: EdgeInsets.zero,
                     children: [
-                      for (final (i, c) in history.indexed)
+                      for (final c in history)
                         Padding(
                           padding: const EdgeInsets.only(bottom: 8),
                           child: Container(
@@ -279,9 +279,9 @@ class TaskDetailScreen extends ConsumerWidget {
                               vertical: 12,
                             ),
                             decoration: BoxDecoration(
-                              // 與任務卡同一組四色輪替、無邊框
-                              color: AppColors
-                                  .cardCycle[i % AppColors.cardCycle.length],
+                              // 完成紀錄底色一致＝任務卡的底色
+                              color: AppColors.cardCycle[task.colorIndex %
+                                  AppColors.cardCycle.length],
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Row(

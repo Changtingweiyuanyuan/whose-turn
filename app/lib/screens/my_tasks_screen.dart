@@ -120,8 +120,9 @@ class _TaskList extends ConsumerWidget {
         task: tasks[i],
         viewer: repo.currentUser,
         creator: repo.userOf(tasks[i].createdBy),
-        // 四色依序輪替，與首頁一致
-        backgroundColor: AppColors.cardCycle[i % AppColors.cardCycle.length],
+        // 底色 = 任務建立時記錄的輪替色，與首頁一致
+        backgroundColor: AppColors
+            .cardCycle[tasks[i].colorIndex % AppColors.cardCycle.length],
         onTap: () => context.push('/task/${tasks[i].id}'),
       ),
     );
@@ -166,7 +167,8 @@ class _ConfirmList extends ConsumerWidget {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
-            color: AppColors.cardCycle[i % AppColors.cardCycle.length],
+            color: AppColors
+                .cardCycle[task.colorIndex % AppColors.cardCycle.length],
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(

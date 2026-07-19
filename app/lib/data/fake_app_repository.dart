@@ -65,6 +65,7 @@ class FakeAppRepository extends AppRepository {
         id: _nextId('t'),
         groupId: 'g-home',
         title: '洗碗一次',
+        colorIndex: 1,
         emoji: 'asset:cleaning',
         rewardType: RewardType.normal,
         rewardLabel: '珍奶一杯',
@@ -101,6 +102,7 @@ class FakeAppRepository extends AppRepository {
         id: _nextId('t'),
         groupId: 'g-home',
         title: '倒垃圾',
+        colorIndex: 2,
         emoji: 'asset:trash',
         rewardType: RewardType.money,
         rewardLabel: '50 元',
@@ -113,6 +115,7 @@ class FakeAppRepository extends AppRepository {
         id: _nextId('t'),
         groupId: 'g-home',
         title: '整理客廳',
+        colorIndex: 0,
         emoji: 'asset:home',
         rewardType: RewardType.mystery,
         rewardLabel: '神秘禮物',
@@ -124,6 +127,7 @@ class FakeAppRepository extends AppRepository {
         id: _nextId('t'),
         groupId: 'g-home',
         title: '遛狗',
+        colorIndex: 3,
         emoji: 'asset:lucky_cat',
         rewardType: RewardType.experience,
         rewardLabel: '週末火鍋',
@@ -137,6 +141,7 @@ class FakeAppRepository extends AppRepository {
         id: _nextId('t'),
         groupId: 'g-home',
         title: '背英文單字',
+        colorIndex: 4,
         emoji: 'asset:book',
         rewardType: RewardType.normal,
         rewardLabel: 'Switch 遊戲一片',
@@ -335,6 +340,8 @@ class FakeAppRepository extends AppRepository {
       assigneeUid: assigneeUid,
       createdBy: _currentUser.uid,
       createdAt: _now(),
+      // 建立時記錄卡片底色：依現有任務數輪替
+      colorIndex: _tasks.length % Task.cardColorCount,
     );
     _tasks.insert(0, task);
     _notifyGroup(

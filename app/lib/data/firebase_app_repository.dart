@@ -360,10 +360,13 @@ class FirebaseAppRepository extends AppRepository {
   }) async {
     if (currentUser.isGuest) throw const GuestNotAllowedException('發起任務');
     final g = _group!;
+    // 建立時記錄卡片底色：依群組現有任務數輪替
+    final colorIndex = tasks.length % Task.cardColorCount;
     final ref = await _db.collection('tasks').add({
       'groupId': g.id,
       'title': title,
       'emoji': emoji,
+      'colorIndex': colorIndex,
       'rewardType': rewardType.name,
       'rewardLabel': rewardLabel,
       'requiredCount': requiredCount,
@@ -394,6 +397,7 @@ class FirebaseAppRepository extends AppRepository {
       createdBy: _uid,
       createdAt: DateTime.now(),
       assigneeUid: assigneeUid,
+      colorIndex: colorIndex,
     );
   }
 
@@ -621,6 +625,8 @@ class FirebaseAppRepository extends AppRepository {
         claimedBy: d['claimedBy'] as String?,
         status:
             TaskStatus.values.asNameMap()[d['status']] ?? TaskStatus.open,
+        colorIndex: (d['colorIndex'] as num?)?.toInt() ??
+            Task.colorIndexFromId(id),
       );
 
   Completion _completionFrom(String id, Map<String, dynamic> d) => Completion(

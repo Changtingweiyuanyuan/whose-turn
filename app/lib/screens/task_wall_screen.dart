@@ -133,9 +133,9 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
                             task: task,
                             viewer: repo.currentUser,
                             creator: repo.userOf(task.createdBy),
-                            // 四色依序輪替
-                            backgroundColor:
-                                AppColors.cardCycle[i % AppColors.cardCycle.length],
+                            // 底色 = 任務建立時記錄的輪替色
+                            backgroundColor: AppColors.cardCycle[
+                                task.colorIndex % AppColors.cardCycle.length],
                             onTap: () => context.push('/task/${task.id}'),
                             onClaim: () async {
                               await repo.claimTask(task.id);
