@@ -55,15 +55,13 @@ class TaskDetailScreen extends ConsumerWidget {
             Text(
               '任務詳情',
               style: TextStyle(
-                color: AppColors.red,
+                color: AppColors.green,
                 fontSize: AppType.label,
                 fontWeight: FontWeight.w500,
                 letterSpacing: AppType.spacing,
               ),
             ),
-            SizedBox(width: 12),
-            AppAssetIcon('assets/icons/flower_red.svg', size: 20),
-            SizedBox(width: 12),
+            SizedBox(width: 6),
             AppAssetIcon('assets/icons/flower_red.svg', size: 20),
           ],
         ),
