@@ -336,6 +336,8 @@ class TaskDetailScreen extends ConsumerWidget {
                                     ],
                                   ),
                                 ),
+                                // 文字↔按鈕 gap 對齊按鈕之間的 8
+                                const SizedBox(width: 8),
                                 if (c.status == CompletionStatus.pending &&
                                     isCreator)
                                   Row(

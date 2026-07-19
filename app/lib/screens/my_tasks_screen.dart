@@ -210,6 +210,8 @@ class _ConfirmList extends ConsumerWidget {
                   ],
                 ),
               ),
+              // 文字↔按鈕 gap 對齊按鈕之間的 8
+              const SizedBox(width: 8),
               // 退回 = 次要 CTA：ink 底、hover inkHover
               ShadButton(
                 size: ShadButtonSize.sm,
