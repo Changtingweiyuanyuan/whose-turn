@@ -66,11 +66,6 @@ class TaskDetailScreen extends ConsumerWidget {
                 letterSpacing: AppType.spacing,
               ),
             ),
-            SizedBox(width: 6),
-            Opacity(
-              opacity: 0.5,
-              child: AppAssetIcon('assets/icons/flower_green.svg', size: 16),
-            ),
           ],
         ),
       ),
@@ -457,17 +452,24 @@ class TaskDetailScreen extends ConsumerWidget {
         return [abandon];
       }
 
+      // 兩顆 CTA 同一 row：次要（放棄）在左、主要在右
       return [
-        primary('完成一次', () async {
-          await repo.submitCompletion(task.id);
-          if (context.mounted) {
-            ShadToaster.of(
-              context,
-            ).show(const ShadToast(description: Text('已送出，等待發起人確認')));
-          }
-        }),
-        const SizedBox(height: 8),
-        abandon,
+        Row(
+          children: [
+            Expanded(child: abandon),
+            const SizedBox(width: 8),
+            Expanded(
+              child: primary('完成一次', () async {
+                await repo.submitCompletion(task.id);
+                if (context.mounted) {
+                  ShadToaster.of(
+                    context,
+                  ).show(const ShadToast(description: Text('已送出，等待發起人確認')));
+                }
+              }),
+            ),
+          ],
+        ),
       ];
     }
 
