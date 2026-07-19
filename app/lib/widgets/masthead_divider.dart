@@ -21,7 +21,7 @@ class MastheadDivider extends StatelessWidget {
           if (i > 0) ...[
             const SizedBox(width: 12),
             const Expanded(
-              child: DashedRule(color: AppColors.orangeLine, thickness: 2),
+              child: DashedRule(color: AppColors.orangeLine, thickness: 1.5),
             ),
             const SizedBox(width: 12),
           ],
