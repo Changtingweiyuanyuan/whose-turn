@@ -187,9 +187,8 @@ class _StatusChip extends StatelessWidget {
       label,
       style: TextStyle(
           fontSize: AppType.label,
-          // 「已被接走」較輕 w500，其餘 w600
-          fontWeight:
-              label == '已被接走' ? FontWeight.w500 : FontWeight.w600,
+          // 狀態字一律 w500
+          fontWeight: FontWeight.w500,
           color: color),
     );
 

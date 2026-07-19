@@ -44,7 +44,6 @@ class AppSlidingTabs extends StatelessWidget {
                         Text(
                           labels[i],
                           style: TextStyle(
-                            fontSize: AppType.body,
                             fontWeight: i == selected
                                 ? FontWeight.w600
                                 : FontWeight.w500,
