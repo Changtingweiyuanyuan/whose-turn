@@ -76,18 +76,23 @@ class _HomeShellState extends ConsumerState<HomeShell> {
           ],
         ),
       ),
-      // 中央建立鍵：粉色圓形大鍵，坐落在圓弧 notch 上
+      // 中央建立鍵：綠色愛心大鍵，浮在導覽列上
       floatingActionButton: GestureDetector(
         onTap: _startCreateTask,
-        child: Container(
-          width: 60,
-          height: 60,
-          decoration: const BoxDecoration(
-            color: AppColors.pink,
-            shape: BoxShape.circle,
+        child: SizedBox(
+          width: 62,
+          height: 62,
+          child: Stack(
+            alignment: Alignment.center,
+            children: const [
+              AppAssetIcon('assets/icons/heart.svg', size: 62),
+              // 愛心視覺重心略偏上，加號往上微調置中
+              Padding(
+                padding: EdgeInsets.only(bottom: 3),
+                child: AppSvgIcon(kAddSvg, color: AppColors.white, size: 26),
+              ),
+            ],
           ),
-          alignment: Alignment.center,
-          child: const AppSvgIcon(kAddSvg, color: AppColors.white, size: 28),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -96,9 +101,7 @@ class _HomeShellState extends ConsumerState<HomeShell> {
           //border: Border(top: BorderSide(color: AppColors.inkSoft, width: 0.5)),
         ),
         child: BottomAppBar(
-          color: AppColors.diluteInk,
-          shape: const CircularNotchedRectangle(),
-          notchMargin: 8,
+          color: AppColors.greenSoft,
           height: 62 + MediaQuery.of(context).padding.bottom,
           padding:
               EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
@@ -161,7 +164,7 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = selected ? AppColors.pink : Colors.white54;
+    final color = selected ? AppColors.green : AppColors.ink;
     return Expanded(
       child: InkWell(
         onTap: onTap,
@@ -170,7 +173,7 @@ class _NavItem extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // 自訂 badge：粉圓 + 1.5px diluteInk 邊框（與導覽底同色，做出切割感）
+              // 自訂 badge：橘圓 + 1.5px 邊框（與導覽底同色，做出切割感）
               Stack(
                 clipBehavior: Clip.none,
                 children: [
@@ -185,10 +188,10 @@ class _NavItem extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 5),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: AppColors.pink,
+                          color: AppColors.orange,
                           borderRadius: BorderRadius.circular(999),
                           border: Border.all(
-                              color: AppColors.diluteInk, width: 1.5),
+                              color: AppColors.greenSoft, width: 1.5),
                         ),
                         child: Text(
                           '$badgeCount',

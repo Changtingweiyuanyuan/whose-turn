@@ -8,6 +8,7 @@ import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
 import '../widgets/app_masthead.dart';
+import '../widgets/app_sliding_tabs.dart';
 import '../widgets/person_avatar.dart';
 import '../widgets/task_card.dart';
 
@@ -57,7 +58,7 @@ class _MyTasksScreenState extends ConsumerState<MyTasksScreen> {
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: AppSpacing.pagePadding),
-            child: _SlidingTabs(
+            child: AppSlidingTabs(
               labels: const ['進行中', '等待確認', '已完成'],
               selected: _tab,
               onChanged: (i) => setState(() => _tab = i),
@@ -88,100 +89,6 @@ class _MyTasksScreenState extends ConsumerState<MyTasksScreen> {
 }
 
 
-/// 滑動底線分頁（圖二）：三格平均分佈，選中底線在整條基線上滑動。
-class _SlidingTabs extends StatelessWidget {
-  const _SlidingTabs({
-    required this.labels,
-    required this.selected,
-    required this.onChanged,
-    this.badgeIndex = -1,
-    this.badgeCount = 0,
-  });
-
-  final List<String> labels;
-  final int selected;
-  final ValueChanged<int> onChanged;
-  final int badgeIndex;
-  final int badgeCount;
-
-  @override
-  Widget build(BuildContext context) {
-    final n = labels.length;
-    // 選中格中心的對齊 x：0→-1, 中→0, 末→1
-    final x = n == 1 ? 0.0 : -1.0 + 2.0 * selected / (n - 1);
-
-    return Column(
-      children: [
-        Row(
-          children: [
-            for (var i = 0; i < n; i++)
-              Expanded(
-                child: GestureDetector(
-                  onTap: () => onChanged(i),
-                  behavior: HitTestBehavior.opaque,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          labels[i],
-                          style: TextStyle(
-                            fontSize: AppType.body,
-                            fontWeight: FontWeight.w500,
-                            color:
-                                i == selected ? AppColors.white : AppColors.main,
-                          ),
-                        ),
-                        if (i == badgeIndex && badgeCount > 0) ...[
-                          const SizedBox(width: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 6, vertical: 1),
-                            decoration: const BoxDecoration(
-                              color: AppColors.pink,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Text('$badgeCount',
-                                style: const TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w800,
-                                    color: AppColors.white)),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-          ],
-        ),
-        // 基線 + 滑動的粉色底線
-        Stack(
-          children: [
-            Container(height: 1, color: Colors.white24),
-            AnimatedAlign(
-              duration: const Duration(milliseconds: 240),
-              curve: Curves.easeOutCubic,
-              alignment: Alignment(x, 0),
-              child: FractionallySizedBox(
-                widthFactor: 1 / n,
-                child: Container(
-                  height: 3,
-                  decoration: BoxDecoration(
-                    color: AppColors.pink,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
 class _TaskList extends ConsumerWidget {
   const _TaskList({required this.tasks, required this.emptyText});
 
@@ -198,7 +105,7 @@ class _TaskList extends ConsumerWidget {
           child: Text(
             emptyText,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white70, height: 1.6),
+            style: const TextStyle(color: AppColors.inkSoft, height: 1.6),
           ),
         ),
       );
@@ -213,8 +120,8 @@ class _TaskList extends ConsumerWidget {
         task: tasks[i],
         viewer: repo.currentUser,
         creator: repo.userOf(tasks[i].createdBy),
-        // 藍/白輪替，與首頁一致
-        backgroundColor: i.isEven ? AppColors.main : AppColors.white,
+        // 四色依序輪替，與首頁一致
+        backgroundColor: AppColors.cardCycle[i % AppColors.cardCycle.length],
         onTap: () => context.push('/task/${tasks[i].id}'),
       ),
     );
@@ -241,7 +148,7 @@ class _ConfirmList extends ConsumerWidget {
         padding: EdgeInsets.symmetric(vertical: 48),
         child: Center(
           child: Text('沒有待確認的完成紀錄',
-              style: TextStyle(color: Colors.white70)),
+              style: TextStyle(color: AppColors.inkSoft)),
         ),
       );
     }

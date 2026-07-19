@@ -1,3 +1,4 @@
+// ignore_for_file: unused_element
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +9,7 @@ import '../models/task.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
+import '../widgets/app_sliding_tabs.dart';
 import '../widgets/task_card.dart';
 
 enum TaskWallFilter { all, mine, claimed }
@@ -48,7 +50,7 @@ class TaskWallScreen extends ConsumerStatefulWidget {
 
 class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
   TaskWallFilter _filter = TaskWallFilter.all;
-  TaskWallSort _sort = TaskWallSort.newest;
+  final TaskWallSort _sort = TaskWallSort.newest;
 
   List<Task> _visibleTasks() {
     final repo = ref.watch(repositoryProvider);
@@ -95,28 +97,20 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: AppSpacing.pagePadding),
-                // spaceBetween（無 flex widget）避免干擾分頁的 IntrinsicWidth
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        for (final f in TaskWallFilter.values)
-                          _TabLabel(
-                            label: _filterLabels[f]!,
-                            selected: _filter == f,
-                            onTap: () => setState(() => _filter = f),
-                          ),
-                      ],
-                    ),
-                    _SortControl(
-                      value: _sort,
-                      onChanged: (v) => setState(() => _sort = v),
-                    ),
+                // 與「我的任務」共用同一種滑動分頁
+                child: AppSlidingTabs(
+                  labels: [
+                    for (final f in TaskWallFilter.values) _filterLabels[f]!,
                   ],
+                  selected: TaskWallFilter.values.indexOf(_filter),
+                  onChanged: (i) =>
+                      setState(() => _filter = TaskWallFilter.values[i]),
                 ),
+                // 排序控制先收起來（保留程式碼，之後要用再打開）
+                // _SortControl(
+                //   value: _sort,
+                //   onChanged: (v) => setState(() => _sort = v),
+                // ),
               ),
               const SizedBox(height: AppSpacing.md),
               Expanded(
@@ -137,9 +131,9 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
                             task: task,
                             viewer: repo.currentUser,
                             creator: repo.userOf(task.createdBy),
-                            // 藍/白輪替
+                            // 四色依序輪替
                             backgroundColor:
-                                i.isEven ? AppColors.main : AppColors.white,
+                                AppColors.cardCycle[i % AppColors.cardCycle.length],
                             onTap: () => context.push('/task/${task.id}'),
                             onClaim: () async {
                               await repo.claimTask(task.id);
@@ -191,7 +185,7 @@ class _Masthead extends StatelessWidget {
                     fontSize: AppType.kicker,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 3,
-                    color: AppColors.white,
+                    color: AppColors.greenPale,
                   ),
                 ),
               ),
@@ -202,7 +196,7 @@ class _Masthead extends StatelessWidget {
                     fontSize: AppType.body,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 2,
-                    color: AppColors.pink,
+                    color: AppColors.green,
                   ),
                 ),
             ],
@@ -211,23 +205,23 @@ class _Masthead extends StatelessWidget {
           Container(
             height: 2,
             decoration: BoxDecoration(
-              color: AppColors.pink,
+              color: AppColors.orangeLine,
               borderRadius: BorderRadius.circular(2), // 對齊選中 tab 底線
             ),
           ),
           const SizedBox(height: AppSpacing.md),
-          // 大標，粗黑無襯線，誰=粉色
+          // 大標，粗黑無襯線，誰=綠色
           RichText(
             text: const TextSpan(
               style: TextStyle(
-                fontSize: 60,
+                fontSize: 40,
                 fontWeight: FontWeight.w600,
                 height: 1.1,
-                color: AppColors.white,
+                color: AppColors.ink,
               ),
               children: [
                 TextSpan(text: '今天換'),
-                TextSpan(text: '誰', style: TextStyle(color: AppColors.pink)),
+                TextSpan(text: '誰', style: TextStyle(color: AppColors.green)),
                 TextSpan(text: '?'),
               ],
             ),
@@ -239,13 +233,13 @@ class _Masthead extends StatelessWidget {
                 child: Text(
                   '本週待接任務 · ${openCount.toString().padLeft(2, '0')}',
                   style: const TextStyle(
-                      fontSize: AppType.label, color: Colors.white70),
+                      fontSize: AppType.label, color: AppColors.inkSoft),
                 ),
               ),
               Text(
                 '星期$weekday',
                 style: const TextStyle(
-                    fontSize: AppType.label, color: Colors.white70),
+                    fontSize: AppType.label, color: AppColors.greenPale),
               ),
             ],
           ),
@@ -295,7 +289,7 @@ class _TabLabel extends StatelessWidget {
                 child: Container(
                   height: 3,
                   decoration: BoxDecoration(
-                    color: AppColors.pink,
+                    color: AppColors.orangeLine,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -309,7 +303,7 @@ class _TabLabel extends StatelessWidget {
                 style: TextStyle(
                   fontSize: AppType.body,
                   fontWeight: FontWeight.w500,
-                  color: selected ? AppColors.white : AppColors.main,
+                  color: selected ? AppColors.green : AppColors.greenPale,
                 ),
               ),
             ),
@@ -397,7 +391,7 @@ class _SortControlState extends State<_SortControl> {
                 style: const TextStyle(
                   fontSize: AppType.label,
                   fontWeight: FontWeight.w500,
-                  color: Colors.white70,
+                  color: AppColors.inkSoft,
                 ),
               ),
               const SizedBox(width: 4),
@@ -406,7 +400,7 @@ class _SortControlState extends State<_SortControl> {
                 width: 16,
                 height: 16,
                 colorFilter:
-                    const ColorFilter.mode(Colors.white70, BlendMode.srcIn),
+                    const ColorFilter.mode(AppColors.inkSoft, BlendMode.srcIn),
               ),
             ],
           ),
@@ -488,7 +482,7 @@ class _EmptyWall extends StatelessWidget {
           Text(
             '目前沒有任務\n發起一個，看看今天換誰？',
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white70, height: 1.6),
+            style: TextStyle(color: AppColors.inkSoft, height: 1.6),
           ),
         ],
       ),

@@ -19,6 +19,31 @@ abstract final class AppColors {
   static const bg = Color(0xFFF7F7F7);
   static const white = Color(0xFFFFFFFF);
 
+  // ---- v3 改版新色（綠色系；舊色保留至全面改版完成）----
+  /// 主綠：愛心 FAB、選中態
+  static const green = Color(0xFF23965C);
+  /// 淺綠：底部導覽列底色
+  static const greenSoft = Color(0xFFDBE7DB);
+  /// 紙張底色（全站背景基底）
+  static const paper = Color(0xFFFDFBFC);
+  /// 紙張雜點色
+  static const paperNoise = Color(0xFFF6F6EB);
+  /// 畫面 1px 外框粉
+  static const framePink = Color(0xFFE6CCD9);
+  /// 主綠壓深版：綠色 CTA 的 hover 底
+  static const greenDark = Color(0xFF1D7A4B);
+  /// 淡綠字：未選取分頁、星期、刊頭小標
+  static const greenPale = Color(0xFF98B2A2);
+  /// 橘線：刊頭分隔線、選中分頁底線
+  static const orangeLine = Color(0xFFF2A375);
+  /// 卡片輪替色（依序循環）
+  static const cardCycle = [
+    Color(0xFFEBE8E1),
+    Color(0xFFF6F6EB),
+    Color(0xFFEFDEDC),
+    Color(0xFFE6DEEA),
+  ];
+
   // 衍生色（柔和背景、輔助文字）
   static const inkSoft = Color(0xFF6F6F6F);
   static const mainSoft = Color(0xFFE6EDEE);

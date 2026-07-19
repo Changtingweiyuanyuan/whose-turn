@@ -42,10 +42,19 @@ class TaskCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // 左側插圖（emoji 或手繪圖）；與內容間距 12
+            // 左側插圖（emoji 或手繪圖）白圓底；與內容間距 12
             Padding(
               padding: const EdgeInsets.only(top: 2, right: 12),
-              child: TaskIcon(icon: task.emoji, size: 44),
+              child: Container(
+                width: 44,
+                height: 44,
+                alignment: Alignment.center,
+                decoration: const BoxDecoration(
+                  color: AppColors.white,
+                  shape: BoxShape.circle,
+                ),
+                child: TaskIcon(icon: task.emoji, size: 30),
+              ),
             ),
             Expanded(
               child: Column(
@@ -97,9 +106,9 @@ class TaskCard extends StatelessWidget {
                     child: canClaim
                         ? ShadButton(
                             size: ShadButtonSize.sm,
-                            backgroundColor: AppColors.ink,
+                            backgroundColor: AppColors.green,
                             foregroundColor: AppColors.white,
-                            hoverBackgroundColor: AppColors.inkHover,
+                            hoverBackgroundColor: AppColors.greenDark,
                             hoverForegroundColor: AppColors.white,
                             onPressed: onClaim,
                             child: const Row(
@@ -145,7 +154,9 @@ class _CountLabel extends StatelessWidget {
         Text(
           '/$required',
           style: const TextStyle(
-              fontSize: AppType.body, fontWeight: FontWeight.w600, color: AppColors.ink),
+              fontSize: AppType.body,
+              fontWeight: FontWeight.w600,
+              color: AppColors.inkSoft),
         ),
       ],
     );

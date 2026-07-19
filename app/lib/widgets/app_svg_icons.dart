@@ -25,7 +25,7 @@ class AppSvgIcon extends StatelessWidget {
 /// [color] 給 null 時保留原始配色；給值則整體上色（Streamline Freehand 等）。
 class AppAssetIcon extends StatelessWidget {
   const AppAssetIcon(this.asset,
-      {this.color, this.fillColor, this.size = 24, super.key});
+      {this.color, this.fillColor, this.accentColor, this.size = 24, super.key});
 
   final String asset;
 
@@ -35,6 +35,10 @@ class AppAssetIcon extends StatelessWidget {
   /// 只替換 Streamline Freehand 的近白填色（#f7f7f7），橘色不動。
   /// 白／淺底請帶 ink，深底不帶（保留近白）。
   final Color? fillColor;
+
+  /// 只替換深色線稿的次色（#222222），主色 #010101 不動。
+  /// 任務圖示雙色化（黑 + 綠）用。
+  final Color? accentColor;
 
   final double size;
 
@@ -47,22 +51,30 @@ class AppAssetIcon extends StatelessWidget {
       colorFilter: color == null
           ? null
           : ColorFilter.mode(color!, BlendMode.srcIn),
-      colorMapper: fillColor == null ? null : _LightFillMapper(fillColor!),
+      colorMapper: (fillColor == null && accentColor == null)
+          ? null
+          : _DuotoneMapper(light: fillColor, accent: accentColor),
     );
   }
 }
 
-/// 只把 Streamline Freehand 的近白填色（#f7f7f7）換成 [to]，其餘（橘色）保留。
-class _LightFillMapper extends ColorMapper {
-  const _LightFillMapper(this.to);
+/// Streamline 雙色替換：近白（#f7f7f7）→ [light]、次色（#222222）→ [accent]，
+/// 其餘顏色（橘、#010101 主線）保留。
+class _DuotoneMapper extends ColorMapper {
+  const _DuotoneMapper({this.light, this.accent});
 
-  final Color to;
-  static const _light = Color(0xFFF7F7F7);
+  final Color? light;
+  final Color? accent;
+  static const _lightSrc = Color(0xFFF7F7F7);
+  static const _accentSrc = Color(0xFF222222);
 
   @override
   Color substitute(
-          String? id, String elementName, String attributeName, Color color) =>
-      color == _light ? to : color;
+      String? id, String elementName, String attributeName, Color color) {
+    if (light != null && color == _lightSrc) return light!;
+    if (accent != null && color == _accentSrc) return accent!;
+    return color;
+  }
 }
 
 /// Iconsax `gift`（帶斜線）—— 神秘禮物（未揭曉）。

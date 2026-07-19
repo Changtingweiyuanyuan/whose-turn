@@ -28,7 +28,8 @@ class NotificationsScreen extends ConsumerWidget {
                 ? const Center(
                     child: Text('還沒有訊息\n有人發起任務時會通知你 👀',
                         textAlign: TextAlign.center,
-                        style: TextStyle(color: Colors.white70, height: 1.6)),
+                        style:
+                            TextStyle(color: AppColors.inkSoft, height: 1.6)),
                   )
                 : ListView.separated(
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 96),

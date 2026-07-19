@@ -1,18 +1,19 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:shadcn_ui/shadcn_ui.dart' show SvgPicture;
 
 import '../theme/app_colors.dart';
 
-/// 有顆粒雜訊的純色背景 —— 純 code（CustomPainter 灑淡白點），不用圖片。
-/// 用法：NoiseBackground(child: ...)，預設黑底。
+/// 紙張感背景 —— 紙白基底 + 蠟筆格紋圖磚重複 + 雜點 + 隨機 $ 符號 + 1px 粉外框。
+/// 用法：NoiseBackground(child: ...)。
 class NoiseBackground extends StatelessWidget {
   const NoiseBackground({
     super.key,
     required this.child,
-    this.color = AppColors.ink,
-    this.opacity = 0.2,
-    this.density = 0.1,
+    this.color = AppColors.paper,
+    this.opacity = 0.9,
+    this.density = 0.06,
   });
 
   final Widget child;
@@ -30,6 +31,15 @@ class NoiseBackground extends StatelessWidget {
       color: color,
       child: Stack(
         children: [
+          // 蠟筆格紋圖磚
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/paper_grid.png',
+              repeat: ImageRepeat.repeat,
+              scale: 4, // 384px 磚 → 96 邏輯 px
+            ),
+          ),
+          // 紙張雜點
           Positioned.fill(
             child: RepaintBoundary(
               child: CustomPaint(
@@ -37,7 +47,19 @@ class NoiseBackground extends StatelessWidget {
               ),
             ),
           ),
+          // 隨機灑落的 $ 符號
+          const Positioned.fill(child: _DollarScatter()),
           child,
+          // 1px 粉色外框（蓋在最上、不擋點擊）
+          Positioned.fill(
+            child: IgnorePointer(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.framePink, width: 1),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -56,7 +78,8 @@ class _NoisePainter extends CustomPainter {
     final paint = Paint();
     final count = (size.width * size.height * density).toInt();
     for (var i = 0; i < count; i++) {
-      paint.color = Colors.white.withValues(alpha: rng.nextDouble() * opacity);
+      paint.color =
+          AppColors.paperNoise.withValues(alpha: rng.nextDouble() * opacity);
       canvas.drawRect(
         Rect.fromLTWH(
           rng.nextDouble() * size.width,
@@ -72,4 +95,38 @@ class _NoisePainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant _NoisePainter old) =>
       old.opacity != opacity || old.density != density;
+}
+
+/// 固定 seed 的隨機 $ 灑落（LayoutBuilder 依畫面大小佈點，不會閃動）。
+class _DollarScatter extends StatelessWidget {
+  const _DollarScatter();
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final rng = Random(7);
+        final w = constraints.maxWidth;
+        final h = constraints.maxHeight;
+        // 大約每 45000 px² 一顆，手機直式約 7~8 顆
+        final count = max(6, (w * h / 45000).round());
+        return Stack(
+          children: [
+            for (var i = 0; i < count; i++)
+              Positioned(
+                left: rng.nextDouble() * (w - 24),
+                top: rng.nextDouble() * (h - 32),
+                child: Transform.rotate(
+                  angle: (rng.nextDouble() - 0.5) * 0.6, // 約 ±17°
+                  child: SvgPicture.asset(
+                    'assets/icons/dollar.svg',
+                    width: 12 + rng.nextDouble() * 4,
+                  ),
+                ),
+              ),
+          ],
+        );
+      },
+    );
+  }
 }
