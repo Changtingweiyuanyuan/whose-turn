@@ -44,7 +44,7 @@ class ProfileScreen extends ConsumerWidget {
                 PersonAvatar(me.avatarEmoji,
                     size: 44,
                     fillColor: AppColors.ink,
-                    orangeColor: AppColors.green),
+                    orangeColor: AppColors.ink),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
