@@ -52,6 +52,11 @@ class TaskDetailScreen extends ConsumerWidget {
         title: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Opacity(
+              opacity: 0.5,
+              child: AppAssetIcon('assets/icons/flower_green.svg', size: 16),
+            ),
+            SizedBox(width: 6),
             Text(
               '任務詳情',
               style: TextStyle(
@@ -62,7 +67,10 @@ class TaskDetailScreen extends ConsumerWidget {
               ),
             ),
             SizedBox(width: 6),
-            AppAssetIcon('assets/icons/flower_green.svg', size: 20),
+            Opacity(
+              opacity: 0.5,
+              child: AppAssetIcon('assets/icons/flower_green.svg', size: 16),
+            ),
           ],
         ),
       ),
