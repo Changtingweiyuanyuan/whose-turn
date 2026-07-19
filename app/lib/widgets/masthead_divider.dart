@@ -5,10 +5,12 @@ import 'app_svg_icons.dart';
 import 'dashed_rule.dart';
 
 /// 刊頭裝飾分隔線：5 朵花之間以 2px 橘色虛線相連（gap 12）。
+/// 花為藍色，第 4 朵紅色點綴。
 class MastheadDivider extends StatelessWidget {
   const MastheadDivider({super.key});
 
   static const _flowers = 5;
+  static const _redIndex = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,12 @@ class MastheadDivider extends StatelessWidget {
             ),
             const SizedBox(width: 12),
           ],
-          const AppAssetIcon('assets/icons/flower.svg', size: 20),
+          AppAssetIcon(
+            i == _redIndex
+                ? 'assets/icons/flower_red.svg'
+                : 'assets/icons/flower.svg',
+            size: 20,
+          ),
         ],
       ],
     );
