@@ -497,16 +497,14 @@ class TaskDetailScreen extends ConsumerWidget {
     }
 
     if (isClaimant && task.status == TaskStatus.rewardClaimed) {
-      // 已領取＝不可再點：實心暗粉色、hover 不變化（雜訊底不用半透明）
+      // 已領取＝愛心綠 disabled（onPressed null → 套件自帶降透明度）
       return [
-        ShadButton(
+        const ShadButton(
           width: double.infinity,
-          backgroundColor: AppColors.pinkDark,
-          foregroundColor: AppColors.white,
-          hoverBackgroundColor: AppColors.pinkDark,
-          hoverForegroundColor: AppColors.white,
-          onPressed: () {},
-          child: const Text('已領取獎勵'),
+          backgroundColor: AppColors.green,
+          foregroundColor: AppColors.bg,
+          onPressed: null,
+          child: Text('已領取獎勵'),
         ),
       ];
     }

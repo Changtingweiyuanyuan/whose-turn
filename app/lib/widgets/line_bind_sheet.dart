@@ -29,8 +29,9 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          // 同「資料尚未備份」的雲端↔手機 icon
           const AppAssetIcon(
-            'assets/icons/cloud_phone.svg',
+            'assets/icons/cloud_phone_exchange.svg',
             fillColor: AppColors.ink,
             size: 60,
           ),

@@ -59,11 +59,14 @@ class _MyTasksScreenState extends ConsumerState<MyTasksScreen> {
             padding:
                 const EdgeInsets.symmetric(horizontal: AppSpacing.pagePadding),
             child: AppSlidingTabs(
-              labels: const ['進行中', '等待確認', '已完成'],
+              // 數字直接進標題（同「完成紀錄 (n)」），不用橘色 badge
+              labels: [
+                '進行中',
+                pendingCount > 0 ? '等待確認 ($pendingCount)' : '等待確認',
+                '已完成',
+              ],
               selected: _tab,
               onChanged: (i) => setState(() => _tab = i),
-              badgeIndex: 1,
-              badgeCount: pendingCount,
             ),
           ),
           const SizedBox(height: AppSpacing.md),
@@ -173,20 +176,27 @@ class _ConfirmList extends ConsumerWidget {
           ),
           child: Row(
             children: [
-              PersonAvatar(doer.avatarEmoji,
-                  size: 26,
-                  fillColor: AppColors.ink,
-                  orangeColor: AppColors.ink),
-              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '${doer.displayName} 完成了 ${task.title}',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.ink),
+                    // 笑臉與標題同一 row，gap 4（與詳情完成紀錄一致）
+                    Row(
+                      children: [
+                        PersonAvatar(doer.avatarEmoji,
+                            size: 26,
+                            fillColor: AppColors.ink,
+                            orangeColor: AppColors.ink),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            '${doer.displayName} 完成了 ${task.title}',
+                            style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.ink),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 2),
                     Text(

@@ -45,12 +45,12 @@ class NotificationsScreen extends ConsumerWidget {
                             context.push('/task/${n.taskId}');
                           }
                         },
-                        // 1px 邊框：已讀＝紋理、未讀＝愛心綠
+                        // 1px 邊框：已讀＝紋理、未讀＝紅 D5665C
                         child: Container(
                           padding: const EdgeInsets.all(1),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(AppRadius.card),
-                            color: n.read ? null : AppColors.green,
+                            color: n.read ? null : AppColors.red,
                             image: n.read
                                 ? const DecorationImage(
                                     image: AssetImage(
