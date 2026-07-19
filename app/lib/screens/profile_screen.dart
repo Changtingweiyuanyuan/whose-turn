@@ -297,7 +297,9 @@ class ProfileScreen extends ConsumerWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           PersonAvatar(u.avatarEmoji,
-                              size: 20, fillColor: AppColors.ink),
+                              size: 20,
+                              fillColor: AppColors.ink,
+                              orangeColor: AppColors.ink),
                           const SizedBox(width: 6),
                           Text(
                               '${u.displayName}（${u.isGuest ? '訪客' : 'LINE'}）'),
