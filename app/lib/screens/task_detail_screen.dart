@@ -62,7 +62,7 @@ class TaskDetailScreen extends ConsumerWidget {
               ),
             ),
             SizedBox(width: 6),
-            AppAssetIcon('assets/icons/flower_red.svg', size: 20),
+            AppAssetIcon('assets/icons/flower_green.svg', size: 20),
           ],
         ),
         // 刊頭同款 1.5px 橘色虛線，左右留全站 gutter
