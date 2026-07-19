@@ -6,6 +6,7 @@ import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
 import 'app_close_icon.dart';
+import 'app_svg_icons.dart';
 import 'dashed_rule.dart';
 import 'message_bubble_icon.dart';
 
@@ -16,10 +17,11 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
     context: context,
     side: ShadSheetSide.bottom,
     builder: (sheetContext) => ShadSheet(
-      backgroundColor: AppColors.greenMist,
+      // 同任務詳情列的背景色
+      backgroundColor: const Color(0xFFF3F3F3),
       radius: const BorderRadius.vertical(top: Radius.circular(8)),
       border: const Border(
-        top: BorderSide(color: AppColors.green, width: 1),
+        top: BorderSide(color: AppColors.green, width: 1.5),
       ),
       closeIcon: const AppCloseIcon(),
       closeIconPosition: const ShadPosition(top: 20, right: 20),
@@ -27,7 +29,11 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Image.asset('assets/images/lock.png', height: 72),
+          const AppAssetIcon(
+            'assets/icons/cloud_phone.svg',
+            fillColor: AppColors.ink,
+            size: 60,
+          ),
           const SizedBox(height: 16),
           // 標題：LINE 愛心綠強調
           const Text.rich(
@@ -61,7 +67,11 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
                 TextSpan(text: '建立群組和發起任務需要綁定帳號，\n你的星星和紀錄也會'),
                 TextSpan(
                   text: '永久保存',
-                  style: TextStyle(color: AppColors.red),
+                  style: TextStyle(
+                    color: AppColors.red,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: AppType.spacingBold,
+                  ),
                 ),
                 TextSpan(text: '、不怕換手機。'),
               ],

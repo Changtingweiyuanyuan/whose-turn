@@ -217,7 +217,7 @@ class _StatusChip extends StatelessWidget {
     final text = Text(
       label,
       style: TextStyle(
-        fontSize: AppType.label,
+        fontSize: AppType.kicker,
         // 狀態字一律 w500
         fontWeight: FontWeight.w500,
         color: color,
