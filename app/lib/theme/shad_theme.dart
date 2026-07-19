@@ -17,12 +17,12 @@ abstract final class AppShadTheme {
     // 彈出層（select 選項、日曆）淡灰底 Ink 字
     popover: Color(0xFFF3F3F3),
     popoverForeground: AppColors.ink,
-    // 主色粉紅（主要按鈕、日曆選中日）
-    primary: AppColors.pink,
+    // 主色愛心綠（日曆選中日）
+    primary: AppColors.green,
     primaryForeground: AppColors.white,
-    // secondary＝日曆「今天」底色（ink），文字白
-    secondary: AppColors.ink,
-    secondaryForeground: AppColors.white,
+    // secondary＝日曆「今天」底色（淡綠），文字 Ink
+    secondary: AppColors.greenMist,
+    secondaryForeground: AppColors.ink,
     muted: AppColors.lightGray,
     mutedForeground: AppColors.inkSoft,
     // hover surface：淡灰底上用半透明黑
@@ -78,15 +78,21 @@ abstract final class AppShadTheme {
               width: 1.5,
               radius: BorderRadius.circular(6),
             ),
+            // focus 外圈改淡綠 1.5px
+            secondaryFocusedBorder: ShadBorder.all(
+              color: AppColors.greenMist,
+              width: 1.5,
+              radius: BorderRadius.circular(8),
+            ),
           ),
           style: const TextStyle(color: AppColors.ink),
           placeholderStyle: const TextStyle(color: AppColors.inkSoft),
           cursorColor: AppColors.ink,
           cursorWidth: 1,
         ),
-        // Outline 前景白（日曆左右導覽箭頭）；白底彈窗上的 outline 按鈕另行指定 ink
+        // Outline 前景 Ink（日曆左右導覽箭頭）
         outlineButtonTheme: const ShadButtonTheme(
-          foregroundColor: AppColors.white,
+          foregroundColor: AppColors.ink,
         ),
         // 誰都可以接開關：開=愛心綠、把手白
         switchTheme: const ShadSwitchTheme(

@@ -257,7 +257,9 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               const _FieldLabel('獎勵類型'),
               // 分段控制：容器同 input（F3F3F3 底），選中＝愛心綠
               Container(
-                padding: const EdgeInsets.all(6), // 距容器 6px
+                // 選中塊與容器：左右 6、上下 2
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
                   color: const Color(0xFFF3F3F3),
                   borderRadius: BorderRadius.circular(6),
@@ -358,7 +360,8 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              PersonAvatar(m.avatarEmoji, size: 20),
+                              PersonAvatar(m.avatarEmoji,
+                                  size: 20, fillColor: AppColors.ink),
                               const SizedBox(width: 6),
                               Text(m.displayName),
                             ],
@@ -370,7 +373,8 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                       return Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          PersonAvatar(m.avatarEmoji, size: 20),
+                          PersonAvatar(m.avatarEmoji,
+                              size: 20, fillColor: AppColors.ink),
                           const SizedBox(width: 6),
                           Text(m.displayName,
                               style: const TextStyle(color: AppColors.ink)),
