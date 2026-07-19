@@ -86,16 +86,27 @@ class TaskDetailScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Center(
+                // 1px 紋理邊框：與任務介紹卡一致。
                 child: Container(
                   width: 60,
                   height: 60,
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
+                  padding: const EdgeInsets.all(1),
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.ink, width: 1.5),
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/card_border.png'),
+                      repeat: ImageRepeat.repeat,
+                      fit: BoxFit.none,
+                    ),
                   ),
-                  alignment: Alignment.center,
-                  child: TaskIcon(icon: task.emoji, size: 36),
+                  child: Container(
+                    decoration: const BoxDecoration(
+                      color: AppColors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    alignment: Alignment.center,
+                    child: TaskIcon(icon: task.emoji, size: 36),
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
