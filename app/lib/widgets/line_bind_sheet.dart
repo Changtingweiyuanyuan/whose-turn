@@ -68,7 +68,7 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
                 TextSpan(
                   text: '永久保存',
                   style: TextStyle(
-                    color: AppColors.red,
+                    color: AppColors.orange,
                     fontWeight: FontWeight.w600,
                     letterSpacing: AppType.spacingBold,
                   ),

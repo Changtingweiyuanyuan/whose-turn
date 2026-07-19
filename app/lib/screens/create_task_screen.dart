@@ -119,7 +119,8 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           trailing: const Text('元',
-              style: TextStyle(fontSize: AppType.kicker, color: Colors.white54)),
+              style: TextStyle(
+                  fontSize: AppType.kicker, color: AppColors.inkSoft)),
           validator: (v) {
             final n = int.tryParse(v.trim());
             if (n == null || n < 1) return '請輸入獎勵金額';
@@ -150,25 +151,32 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
 
     return Scaffold(
       backgroundColor: AppColors.ink,
-      extendBodyBehindAppBar: true,
+      // header 對齊任務詳情：F3F3F3 底、綠返回鍵、粉花 + 綠字標題
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        foregroundColor: AppColors.white,
+        backgroundColor: const Color(0xFFF3F3F3),
+        foregroundColor: AppColors.ink,
         elevation: 0,
         centerTitle: true,
-        leading: const AppBackButton(color: AppColors.white),
-        title: const Text('發起任務',
-            style: TextStyle(
-                color: AppColors.pink,
-                fontSize: AppType.label,
-                fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold)),
+        leading: const AppBackButton(),
+        title: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AppAssetIcon('assets/icons/flower_green.svg', size: 16),
+            SizedBox(width: 6),
+            Text('發起任務',
+                style: TextStyle(
+                    color: AppColors.green,
+                    fontSize: AppType.label,
+                    fontWeight: FontWeight.w500,
+                    letterSpacing: AppType.spacing)),
+          ],
+        ),
       ),
       body: NoiseBackground(
         child: ShadForm(
           key: _formKey,
           child: ListView(
-            padding: EdgeInsets.fromLTRB(24,
-                MediaQuery.of(context).padding.top + kToolbarHeight + 8, 24, 32),
+            padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
             children: [
               const _FieldLabel('任務名稱'),
               ShadInputFormField(
@@ -225,7 +233,8 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                           LengthLimitingTextInputFormatter(2),
                         ],
                         trailing: const Text('次',
-                            style: TextStyle(fontSize: AppType.kicker, color: Colors.white54)),
+                            style: TextStyle(
+                  fontSize: AppType.kicker, color: AppColors.inkSoft)),
                         validator: (v) {
                           final n = int.tryParse(v);
                           if (n == null || n < 1) return '至少 1 次';
@@ -297,13 +306,13 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               ShadDatePickerFormField(
                 id: 'deadline',
                 width: double.infinity,
-                backgroundColor: AppColors.diluteInk,
-                foregroundColor: AppColors.white,
-                hoverBackgroundColor: AppColors.diluteInk,
-                hoverForegroundColor: AppColors.white,
+                backgroundColor: const Color(0xFFF3F3F3),
+                foregroundColor: AppColors.ink,
+                hoverBackgroundColor: const Color(0xFFF3F3F3),
+                hoverForegroundColor: AppColors.ink,
                 placeholder: const Text('選擇日期'),
                 leading: const AppSvgIcon(kCalendarSvg,
-                    color: AppColors.white, size: 18),
+                    color: AppColors.inkSoft, size: 18),
               ),
               const SizedBox(height: 16),
               Row(
@@ -436,10 +445,11 @@ class _FieldLabel extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8),
       child: Text(
         text,
+        // 對齊「完成紀錄 (n)」標題：body、w500、Ink
         style: const TextStyle(
           fontSize: AppType.body,
           fontWeight: FontWeight.w500,
-          color: AppColors.white,
+          color: AppColors.ink,
         ),
       ),
     );

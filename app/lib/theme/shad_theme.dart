@@ -52,7 +52,7 @@ abstract final class AppShadTheme {
           backgroundColor: const Color(0xFFF3F3F3),
           radius: BorderRadius.circular(6),
           border: ShadBorder.all(
-            color: AppColors.orangeLine,
+            color: AppColors.inkSoft,
             width: 1,
             radius: BorderRadius.circular(6),
           ),
@@ -69,12 +69,12 @@ abstract final class AppShadTheme {
         alertDialogTheme: ShadDialogTheme(
           border: Border.all(color: AppColors.inkSoft, width: 1),
         ),
-        // Input：diluteInk 深底 + 白字（深色頁面上一致）
+        // Input：任務詳情列同款 F3F3F3 淺底 + Ink 字
         inputTheme: const ShadInputTheme(
-          decoration: ShadDecoration(color: AppColors.diluteInk),
-          style: TextStyle(color: AppColors.white),
-          placeholderStyle: TextStyle(color: Colors.white54),
-          cursorColor: AppColors.white,
+          decoration: ShadDecoration(color: Color(0xFFF3F3F3)),
+          style: TextStyle(color: AppColors.ink),
+          placeholderStyle: TextStyle(color: AppColors.inkSoft),
+          cursorColor: AppColors.ink,
           cursorWidth: 1,
         ),
         // Outline 前景白（日曆左右導覽箭頭）；白底彈窗上的 outline 按鈕另行指定 ink
