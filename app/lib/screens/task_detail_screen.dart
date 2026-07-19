@@ -9,6 +9,7 @@ import '../widgets/app_back_button.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
 import '../widgets/app_svg_icons.dart';
+import '../widgets/dashed_rule.dart';
 import '../widgets/noise_background.dart';
 import '../widgets/person_avatar.dart';
 import '../widgets/star_progress.dart';
@@ -43,18 +44,40 @@ class TaskDetailScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.paper,
       appBar: AppBar(
-        backgroundColor: AppColors.greenMist,
+        backgroundColor: AppColors.bg,
         foregroundColor: AppColors.ink,
         elevation: 0,
         centerTitle: true,
         leading: const AppBackButton(),
-        title: const Text(
-          '任務詳情',
-          style: TextStyle(
-            color: AppColors.inkSoft,
-            fontSize: AppType.label,
-            fontWeight: FontWeight.w600,
-            letterSpacing: AppType.spacingBold,
+        title: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '任務詳情',
+              style: TextStyle(
+                color: AppColors.red,
+                fontSize: AppType.label,
+                fontWeight: FontWeight.w500,
+                letterSpacing: AppType.spacing,
+              ),
+            ),
+            SizedBox(width: 12),
+            AppAssetIcon('assets/icons/flower_red.svg', size: 20),
+            SizedBox(width: 12),
+            AppAssetIcon('assets/icons/flower_red.svg', size: 20),
+          ],
+        ),
+        // 刊頭同款 1.5px 橘色虛線，左右留全站 gutter
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(1.5),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.pagePadding,
+            ),
+            child: const DashedRule(
+              color: AppColors.orangeLine,
+              thickness: 1.5,
+            ),
           ),
         ),
       ),
