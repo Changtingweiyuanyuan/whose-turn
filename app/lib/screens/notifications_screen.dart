@@ -7,6 +7,7 @@ import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
 import '../widgets/app_masthead.dart';
+import '../widgets/dashed_rule.dart';
 
 class NotificationsScreen extends ConsumerWidget {
   const NotificationsScreen({super.key});
@@ -44,42 +45,59 @@ class NotificationsScreen extends ConsumerWidget {
                             context.push('/task/${n.taskId}');
                           }
                         },
+                        // 1px 紋理邊框：同任務詳情的任務內容 block
                         child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 12),
+                          padding: const EdgeInsets.all(1),
                           decoration: BoxDecoration(
-                            // 讀取狀態同款深底；未讀僅差在粉色 2px 邊框
-                            color: AppColors.diluteInk,
-                            borderRadius: BorderRadius.circular(8),
-                            border: n.read
-                                ? Border.all(color: AppColors.inkSoft, width: 1)
-                                : Border.all(color: AppColors.pink, width: 1),
+                            borderRadius: BorderRadius.circular(AppRadius.card),
+                            image: const DecorationImage(
+                              image: AssetImage(
+                                  'assets/images/card_border.png'),
+                              repeat: ImageRepeat.repeat,
+                              fit: BoxFit.none,
+                            ),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                n.title,
-                                style: const TextStyle(
-                                    fontSize: AppType.body,
-                                    fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
-                                    color: AppColors.white),
-                              ),
-                              const SizedBox(height: AppSpacing.sm), // 標題↔內文 8
-                              Text(
-                                n.body,
-                                style: const TextStyle(
-                                    fontSize: AppType.kicker,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.white70),
-                              ),
-                              const SizedBox(height: 2),
-                              Text(
-                                DateFormat('MM/dd HH:mm').format(n.createdAt),
-                                style: const TextStyle(
-                                    fontSize: 12, color: AppColors.main),
-                              ),
-                            ],
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 12),
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius:
+                                  BorderRadius.circular(AppRadius.card - 1),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  n.title,
+                                  style: const TextStyle(
+                                      fontSize: AppType.body,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: AppType.spacingBold,
+                                      color: AppColors.ink),
+                                ),
+                                // 標題下虛線：同任務內容 block（上下 gap 6）
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 6),
+                                  child: DashedRule(
+                                      color: Color(0xFFF3F3F3), thickness: 1),
+                                ),
+                                Text(
+                                  n.body,
+                                  style: const TextStyle(
+                                      fontSize: AppType.kicker,
+                                      fontWeight: FontWeight.w500,
+                                      color: AppColors.inkSoft),
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  DateFormat('MM/dd HH:mm')
+                                      .format(n.createdAt),
+                                  style: const TextStyle(
+                                      fontSize: 12, color: AppColors.inkSoft),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       );

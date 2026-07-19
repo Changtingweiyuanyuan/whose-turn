@@ -47,9 +47,9 @@ abstract final class AppShadTheme {
           radius: BorderRadius.circular(8),
           border: ShadBorder.all(color: AppColors.lightGray, width: 1),
         ),
-        // Toast：F3F3F3 底 + 1px 橘線邊框 + Ink 字
+        // Toast：紙白底 + 1px softInk 邊框 + Ink 字
         primaryToastTheme: ShadToastTheme(
-          backgroundColor: const Color(0xFFF3F3F3),
+          backgroundColor: AppColors.bg,
           radius: BorderRadius.circular(6),
           border: ShadBorder.all(
             color: AppColors.inkSoft,
