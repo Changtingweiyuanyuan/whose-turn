@@ -50,12 +50,15 @@ class NoiseBackground extends StatelessWidget {
           // 隨機灑落的 $ 符號
           const Positioned.fill(child: _DollarScatter()),
           child,
-          // 1px 粉色外框（蓋在最上、不擋點擊）
+          // 左右 1.5px 粉色邊框（上下不畫，避開狀態列與螢幕圓角；蓋在最上、不擋點擊）
           Positioned.fill(
             child: IgnorePointer(
               child: DecoratedBox(
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.framePink, width: 1),
+                decoration: const BoxDecoration(
+                  border: Border(
+                    left: BorderSide(color: AppColors.framePink, width: 1.5),
+                    right: BorderSide(color: AppColors.framePink, width: 1.5),
+                  ),
                 ),
               ),
             ),

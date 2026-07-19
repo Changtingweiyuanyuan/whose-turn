@@ -185,7 +185,7 @@ class _Masthead extends StatelessWidget {
                     fontSize: AppType.kicker,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 3,
-                    color: AppColors.greenPale,
+                    color: AppColors.orangeLine,
                   ),
                 ),
               ),
