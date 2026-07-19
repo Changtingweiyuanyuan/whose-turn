@@ -47,16 +47,16 @@ abstract final class AppShadTheme {
           radius: BorderRadius.circular(8),
           border: ShadBorder.all(color: AppColors.lightGray, width: 1),
         ),
-        // Toast：diluteInk 深色底 + inkSoft 邊框 + 白字
+        // Toast：對齊 LINE 綁定 modal — F3F3F3 底 + 1.5px 綠邊框 + Ink 字
         primaryToastTheme: ShadToastTheme(
-          backgroundColor: AppColors.diluteInk,
+          backgroundColor: const Color(0xFFF3F3F3),
           radius: BorderRadius.circular(6),
           border: ShadBorder.all(
-            color: AppColors.inkSoft,
-            width: 1,
+            color: AppColors.green,
+            width: 1.5,
             radius: BorderRadius.circular(6),
           ),
-          descriptionStyle: const TextStyle(color: AppColors.white),
+          descriptionStyle: const TextStyle(color: AppColors.ink),
           shadows: const [],
           // 右上角 X 對齊 modal：AppCloseIcon 22 @ top20 right20
           closeIcon: const AppCloseIcon(),
