@@ -189,7 +189,7 @@ class ProfileScreen extends ConsumerWidget {
                                   size: 16,
                                   fillColor: AppColors.ink,
                                   orangeColor: AppColors.ink),
-                              const SizedBox(width: 8),
+                              const SizedBox(width: 4),
                               Text(
                                 repo.userOf(uid).displayName,
                                 style: const TextStyle(
@@ -326,6 +326,7 @@ class ProfileScreen extends ConsumerWidget {
       builder: (ctx) => ShadDialog.alert(
         // 對齊 toast：紙白底 + softInk 1px 框
         backgroundColor: AppColors.bg,
+        border: Border.all(color: AppColors.inkSoft, width: 1),
         radius: BorderRadius.circular(AppRadius.card),
         // tiny 斷點預設會拿掉圓角，關掉才會保留 8px
         removeBorderRadiusWhenTiny: false,

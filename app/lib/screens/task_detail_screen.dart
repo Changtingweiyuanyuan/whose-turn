@@ -291,26 +291,37 @@ class TaskDetailScreen extends ConsumerWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      // 笑臉與標題同一 row，gap 4；全 Ink
-                                      Row(
-                                        children: [
-                                          PersonAvatar(
-                                            repo.userOf(c.userId).avatarEmoji,
-                                            size: 26,
-                                            fillColor: AppColors.ink,
-                                            orangeColor: AppColors.ink,
-                                          ),
-                                          const SizedBox(width: 4),
-                                          Expanded(
-                                            child: Text(
-                                              '${repo.userOf(c.userId).displayName} 完成了一次',
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                color: AppColors.ink,
+                                      // 笑臉（16，同家人 tag）行內排版：斷行會繞到 icon 下方
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            WidgetSpan(
+                                              alignment: PlaceholderAlignment
+                                                  .middle,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.only(
+                                                        right: 4),
+                                                child: PersonAvatar(
+                                                  repo
+                                                      .userOf(c.userId)
+                                                      .avatarEmoji,
+                                                  size: 16,
+                                                  fillColor: AppColors.ink,
+                                                  orangeColor: AppColors.ink,
+                                                ),
                                               ),
                                             ),
-                                          ),
-                                        ],
+                                            TextSpan(
+                                              text:
+                                                  '${repo.userOf(c.userId).displayName} 完成了一次',
+                                            ),
+                                          ],
+                                        ),
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          color: AppColors.ink,
+                                        ),
                                       ),
                                       const SizedBox(height: 2),
                                       Text(
@@ -497,10 +508,11 @@ class TaskDetailScreen extends ConsumerWidget {
     }
 
     if (isClaimant && task.status == TaskStatus.rewardClaimed) {
-      // 已領取＝愛心綠 disabled（onPressed null → 套件自帶降透明度）
+      // 已領取＝愛心綠 disabled（enabled: false → 降透明度、不可點）
       return [
         const ShadButton(
           width: double.infinity,
+          enabled: false,
           backgroundColor: AppColors.green,
           foregroundColor: AppColors.bg,
           onPressed: null,

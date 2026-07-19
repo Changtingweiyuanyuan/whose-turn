@@ -180,23 +180,26 @@ class _ConfirmList extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // 笑臉與標題同一 row，gap 4（與詳情完成紀錄一致）
-                    Row(
-                      children: [
-                        PersonAvatar(doer.avatarEmoji,
-                            size: 26,
-                            fillColor: AppColors.ink,
-                            orangeColor: AppColors.ink),
-                        const SizedBox(width: 4),
-                        Expanded(
-                          child: Text(
-                            '${doer.displayName} 完成了 ${task.title}',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.ink),
+                    // 笑臉（16，同家人 tag）行內排版：斷行會繞到 icon 下方
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: PersonAvatar(doer.avatarEmoji,
+                                  size: 16,
+                                  fillColor: AppColors.ink,
+                                  orangeColor: AppColors.ink),
+                            ),
                           ),
-                        ),
-                      ],
+                          TextSpan(
+                              text: '${doer.displayName} 完成了 ${task.title}'),
+                        ],
+                      ),
+                      style: const TextStyle(
+                          fontWeight: FontWeight.w500, color: AppColors.ink),
                     ),
                     const SizedBox(height: 2),
                     Text(

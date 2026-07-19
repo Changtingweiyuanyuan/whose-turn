@@ -58,9 +58,10 @@ abstract final class AppShadTheme {
           ),
           descriptionStyle: const TextStyle(color: AppColors.ink),
           shadows: const [],
-          // 右上角 X 對齊 modal：AppCloseIcon 22 @ top20 right20
+          // 右上角 X 對齊 modal：AppCloseIcon 22 @ top20 right20，常駐顯示
           closeIcon: const AppCloseIcon(forToast: true),
           closeIconPosition: const ShadPosition(top: 20, right: 20),
+          showCloseIconOnlyWhenHovered: false,
         ),
         // 全站彈窗（dialog / alert）統一 inkSoft 邊框
         primaryDialogTheme: ShadDialogTheme(

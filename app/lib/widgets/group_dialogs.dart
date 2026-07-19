@@ -123,6 +123,7 @@ class _GroupDialogState extends State<_GroupDialog> {
     return ShadDialog(
       // 對齊 toast：紙白底 + softInk 1px 框
       backgroundColor: AppColors.bg,
+      border: Border.all(color: AppColors.inkSoft, width: 1),
       radius: BorderRadius.circular(AppRadius.card),
       removeBorderRadiusWhenTiny: false,
       gap: AppSpacing.md,
