@@ -70,8 +70,8 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
           const SizedBox(height: 24),
           ShadButton(
             width: double.infinity,
-            backgroundColor: AppColors.pink,
-            foregroundColor: AppColors.white,
+            backgroundColor: AppColors.green,
+            foregroundColor: AppColors.bg,
             leading: const MessageBubbleIcon(color: AppColors.white, size: 20),
             onPressed: () async {
               await ref.read(repositoryProvider).bindLine();
@@ -85,10 +85,12 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
           // 次要 CTA：ink 底白字；hover 維持 ink 疊半透明白
           ShadButton(
             width: double.infinity,
-            backgroundColor: AppColors.ink,
-            foregroundColor: AppColors.white,
-            hoverBackgroundColor: AppColors.inkHover,
-            hoverForegroundColor: AppColors.white,
+            backgroundColor: AppColors.bg,
+            foregroundColor: AppColors.green,
+            hoverBackgroundColor: AppColors.greenSoft,
+            hoverForegroundColor: AppColors.green,
+            decoration: ShadDecoration(
+                border: ShadBorder.all(color: AppColors.green, width: 1)),
             onPressed: () => Navigator.of(sheetContext).pop(false),
             child: const Text('下次再說'),
           ),

@@ -368,8 +368,8 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               const SizedBox(height: 28),
               ShadButton(
                 width: double.infinity,
-                backgroundColor: AppColors.pink,
-                foregroundColor: AppColors.white,
+                backgroundColor: AppColors.green,
+                foregroundColor: AppColors.bg,
                 onPressed: _submit,
                 child: const Text('發佈任務'),
               ),

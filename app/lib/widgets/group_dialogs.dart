@@ -138,16 +138,18 @@ class _GroupDialogState extends State<_GroupDialog> {
       actionsGap: AppSpacing.sm,
       actions: [
         ShadButton(
-          backgroundColor: AppColors.ink,
-          foregroundColor: AppColors.white,
-          hoverBackgroundColor: AppColors.inkHover,
-          hoverForegroundColor: AppColors.white,
+          backgroundColor: AppColors.bg,
+          foregroundColor: AppColors.green,
+          hoverBackgroundColor: AppColors.greenSoft,
+          hoverForegroundColor: AppColors.green,
+          decoration: ShadDecoration(
+              border: ShadBorder.all(color: AppColors.green, width: 1)),
           onPressed: () => Navigator.pop(context),
           child: const Text('取消'),
         ),
         ShadButton(
-          backgroundColor: AppColors.pink,
-          foregroundColor: AppColors.white,
+          backgroundColor: AppColors.green,
+          foregroundColor: AppColors.bg,
           onPressed: _canConfirm ? _confirm : null,
           child: Text(_isCreate ? '建立' : '加入'),
         ),

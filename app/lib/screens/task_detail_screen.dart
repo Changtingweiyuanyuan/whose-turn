@@ -41,32 +41,31 @@ class TaskDetailScreen extends ConsumerWidget {
       });
 
     return Scaffold(
-      backgroundColor: AppColors.ink,
-      extendBodyBehindAppBar: true,
+      backgroundColor: AppColors.paper,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        foregroundColor: AppColors.white,
+        backgroundColor: AppColors.green,
+        foregroundColor: AppColors.bg,
         elevation: 0,
         centerTitle: true,
-        leading: const AppBackButton(color: AppColors.white),
+        leading: const AppBackButton(),
         title: const Text('任務詳情',
             style: TextStyle(
-                color: AppColors.pink,
+                color: AppColors.bg,
                 fontSize: AppType.label,
                 fontWeight: FontWeight.w600)),
       ),
       body: NoiseBackground(
         child: ListView(
-        padding: EdgeInsets.fromLTRB(
-            24, MediaQuery.of(context).padding.top + kToolbarHeight + 8, 24, 32),
+        padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
         children: [
           Center(
             child: Container(
               width: 120,
               height: 120,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: AppColors.white,
                 shape: BoxShape.circle,
+                border: Border.all(color: AppColors.ink, width: 2),
               ),
               alignment: Alignment.center,
               child: TaskIcon(icon: task.emoji, size: 72),
@@ -80,7 +79,7 @@ class TaskDetailScreen extends ConsumerWidget {
               style: const TextStyle(
                 fontSize: AppType.heading,
                 fontWeight: FontWeight.w600,
-                color: AppColors.white,
+                color: AppColors.green,
               ),
             ),
           ),
@@ -238,10 +237,12 @@ class TaskDetailScreen extends ConsumerWidget {
                             // 退回 = 次要 CTA：ink 底、hover inkHover
                             ShadButton(
                               size: ShadButtonSize.sm,
-                              backgroundColor: AppColors.ink,
-                              foregroundColor: AppColors.white,
-                              hoverBackgroundColor: AppColors.inkHover,
-                              hoverForegroundColor: AppColors.white,
+                              backgroundColor: AppColors.bg,
+                              foregroundColor: AppColors.green,
+                              hoverBackgroundColor: AppColors.greenSoft,
+                              hoverForegroundColor: AppColors.green,
+                              decoration: ShadDecoration(
+                                  border: ShadBorder.all(color: AppColors.green, width: 1)),
                               onPressed: () =>
                                   repo.rejectCompletion(task.id, c.id),
                               child: const Text('退回'),
@@ -250,8 +251,8 @@ class TaskDetailScreen extends ConsumerWidget {
                             // 確認 對齊「完成一次」：粉底白字
                             ShadButton(
                               size: ShadButtonSize.sm,
-                              backgroundColor: AppColors.pink,
-                              foregroundColor: AppColors.white,
+                              backgroundColor: AppColors.green,
+                              foregroundColor: AppColors.bg,
                               onPressed: () =>
                                   repo.confirmCompletion(task.id, c.id),
                               child: const Text('確認'),
@@ -290,8 +291,8 @@ class TaskDetailScreen extends ConsumerWidget {
     Widget primary(String label, Future<void> Function() onPressed) {
       return ShadButton(
         width: double.infinity,
-        backgroundColor: AppColors.pink,
-        foregroundColor: AppColors.white,
+        backgroundColor: AppColors.green,
+        foregroundColor: AppColors.bg,
         onPressed: () => onPressed(),
         child: Text(label),
       );
@@ -309,10 +310,12 @@ class TaskDetailScreen extends ConsumerWidget {
       // 次要 CTA：ink 底白字；hover 維持 ink 疊半透明白
       final abandon = ShadButton(
         width: double.infinity,
-        backgroundColor: AppColors.ink,
-        foregroundColor: AppColors.white,
-        hoverBackgroundColor: AppColors.inkHover,
-        hoverForegroundColor: AppColors.white,
+        backgroundColor: AppColors.bg,
+        foregroundColor: AppColors.green,
+        hoverBackgroundColor: AppColors.greenSoft,
+        hoverForegroundColor: AppColors.green,
+        decoration: ShadDecoration(
+            border: ShadBorder.all(color: AppColors.green, width: 1)),
         onPressed: () => repo.abandonTask(task.id),
         child: const Text('放棄任務'),
       );
@@ -376,10 +379,12 @@ class TaskDetailScreen extends ConsumerWidget {
       return [
         ShadButton(
           width: double.infinity,
-          backgroundColor: AppColors.ink,
-          foregroundColor: AppColors.white,
-          hoverBackgroundColor: AppColors.inkHover,
-          hoverForegroundColor: AppColors.white,
+          backgroundColor: AppColors.bg,
+          foregroundColor: AppColors.green,
+          hoverBackgroundColor: AppColors.greenSoft,
+          hoverForegroundColor: AppColors.green,
+          decoration: ShadDecoration(
+              border: ShadBorder.all(color: AppColors.green, width: 1)),
           onPressed: () async {
             await repo.cancelTask(task.id);
             if (context.mounted) context.pop();

@@ -9,12 +9,12 @@ import 'app_svg_icons.dart';
 class AppBackButton extends StatelessWidget {
   const AppBackButton({super.key, this.color});
 
-  /// 箭頭顏色；深色頁面傳白色。預設白色。
+  /// 箭頭顏色；預設 bg 白（放在綠色 app bar 上）。
   final Color? color;
 
   @override
   Widget build(BuildContext context) {
-    final iconColor = color ?? AppColors.white;
+    final iconColor = color ?? AppColors.bg;
     return ShadButton.ghost(
       foregroundColor: color,
       hoverForegroundColor: color,

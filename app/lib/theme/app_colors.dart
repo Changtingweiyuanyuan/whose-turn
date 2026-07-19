@@ -16,7 +16,7 @@ abstract final class AppColors {
   static const pink = Color(0xFFCF729B);
   // 已領取（不可再點）的實心暗粉色；雜訊底不用半透明
   static const pinkDark = Color(0xFF6E3F54);
-  static const bg = Color(0xFFF7F7F7);
+  static const bg = Color(0xFFFDFBFC);
   static const white = Color(0xFFFFFFFF);
 
   // ---- v3 改版新色（綠色系；舊色保留至全面改版完成）----

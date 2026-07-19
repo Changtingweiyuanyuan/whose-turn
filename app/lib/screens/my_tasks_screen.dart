@@ -196,10 +196,12 @@ class _ConfirmList extends ConsumerWidget {
               // 退回 = 次要 CTA：ink 底、hover inkHover
               ShadButton(
                 size: ShadButtonSize.sm,
-                backgroundColor: AppColors.ink,
-                foregroundColor: AppColors.white,
-                hoverBackgroundColor: AppColors.inkHover,
-                hoverForegroundColor: AppColors.white,
+                backgroundColor: AppColors.bg,
+                foregroundColor: AppColors.green,
+                hoverBackgroundColor: AppColors.greenSoft,
+                hoverForegroundColor: AppColors.green,
+                decoration: ShadDecoration(
+                    border: ShadBorder.all(color: AppColors.green, width: 1)),
                 onPressed: () =>
                     repo.rejectCompletion(task.id, completion.id),
                 child: const Text('退回'),
@@ -208,8 +210,8 @@ class _ConfirmList extends ConsumerWidget {
               // 確認 對齊「完成一次」：粉底白字
               ShadButton(
                 size: ShadButtonSize.sm,
-                backgroundColor: AppColors.pink,
-                foregroundColor: AppColors.white,
+                backgroundColor: AppColors.green,
+                foregroundColor: AppColors.bg,
                 onPressed: () =>
                     repo.confirmCompletion(task.id, completion.id),
                 child: const Text('確認'),

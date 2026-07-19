@@ -118,10 +118,12 @@ class ProfileScreen extends ConsumerWidget {
                   const SizedBox(width: 12),
                   // 綁定鍵樣式同「離開」（ink），內容同 LINE 綁定 CTA
                   ShadButton(
-                    backgroundColor: AppColors.ink,
-                    foregroundColor: AppColors.white,
-                    hoverBackgroundColor: AppColors.inkHover,
-                    hoverForegroundColor: AppColors.white,
+                    backgroundColor: AppColors.bg,
+                    foregroundColor: AppColors.green,
+                    hoverBackgroundColor: AppColors.greenSoft,
+                    hoverForegroundColor: AppColors.green,
+                    decoration: ShadDecoration(
+                        border: ShadBorder.all(color: AppColors.green, width: 1)),
                     leading: const MessageBubbleIcon(
                         color: AppColors.white, size: 18),
                     onPressed: () => showLineBindSheet(context, ref),
@@ -244,10 +246,12 @@ class ProfileScreen extends ConsumerWidget {
                       ),
                       const SizedBox(width: 8),
                       ShadButton(
-                        backgroundColor: AppColors.ink,
-                        foregroundColor: AppColors.white,
-                        hoverBackgroundColor: AppColors.inkHover,
-                        hoverForegroundColor: AppColors.white,
+                        backgroundColor: AppColors.bg,
+                        foregroundColor: AppColors.green,
+                        hoverBackgroundColor: AppColors.greenSoft,
+                        hoverForegroundColor: AppColors.green,
+                        decoration: ShadDecoration(
+                            border: ShadBorder.all(color: AppColors.green, width: 1)),
                         onPressed: () => _confirmLeave(context, ref),
                         child: const Text('離開'),
                       ),
@@ -361,16 +365,18 @@ class ProfileScreen extends ConsumerWidget {
         actionsGap: AppSpacing.sm,
         actions: [
           ShadButton(
-            backgroundColor: AppColors.ink,
-            foregroundColor: AppColors.white,
-            hoverBackgroundColor: AppColors.inkHover,
-            hoverForegroundColor: AppColors.white,
+            backgroundColor: AppColors.bg,
+            foregroundColor: AppColors.green,
+            hoverBackgroundColor: AppColors.greenSoft,
+            hoverForegroundColor: AppColors.green,
+            decoration: ShadDecoration(
+                border: ShadBorder.all(color: AppColors.green, width: 1)),
             onPressed: () => Navigator.pop(ctx, false),
             child: const Text('取消'),
           ),
           ShadButton(
-            backgroundColor: AppColors.pink,
-            foregroundColor: AppColors.white,
+            backgroundColor: AppColors.green,
+            foregroundColor: AppColors.bg,
             onPressed: () => Navigator.pop(ctx, true),
             child: const Text('離開'),
           ),
