@@ -338,7 +338,7 @@ class ProfileScreen extends ConsumerWidget {
         removeBorderRadiusWhenTiny: false,
         // content 與 actions 之間 24；標題與內文的間距在 title 欄內自控
         gap: AppSpacing.lg,
-        closeIcon: const AppCloseIcon(color: AppColors.white, size: 22),
+        closeIcon: const AppCloseIcon(),
         closeIconPosition: const ShadPosition(top: 20, right: 20),
         // 併進 title 欄，避免 description 的 24px gap 撐開；文字大小自訂
         title: const Column(

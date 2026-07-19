@@ -125,7 +125,7 @@ class _GroupDialogState extends State<_GroupDialog> {
       radius: BorderRadius.circular(AppRadius.card),
       removeBorderRadiusWhenTiny: false,
       gap: AppSpacing.md,
-      closeIcon: const AppCloseIcon(color: AppColors.white, size: 22),
+      closeIcon: const AppCloseIcon(),
       closeIconPosition: const ShadPosition(top: 20, right: 20),
       title: Text(_isCreate ? '建立群組' : '加入群組',
           style: const TextStyle(

@@ -3,14 +3,17 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../theme/app_colors.dart';
+
 /// 全站統一的關閉（✕）icon。
 ///
 /// 來源是 Iconsax broken 風格的「加號」SVG，旋轉 45° 後成為打叉造型，
 /// 與排序選單的 broken 箭頭風格一致。顏色透過 [color] 以 srcIn 濾鏡上色，
 /// 深色底傳白色、淺色底傳墨黑。
 class AppCloseIcon extends StatelessWidget {
-  const AppCloseIcon({super.key, required this.color, this.size = 22});
+  const AppCloseIcon({super.key, this.color = AppColors.green, this.size = 22});
 
+  /// 全站預設愛心綠。
   final Color color;
   final double size;
 

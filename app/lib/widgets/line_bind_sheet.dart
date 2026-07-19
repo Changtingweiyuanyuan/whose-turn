@@ -16,12 +16,12 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
     context: context,
     side: ShadSheetSide.bottom,
     builder: (sheetContext) => ShadSheet(
-      backgroundColor: AppColors.diluteInk,
+      backgroundColor: AppColors.greenMist,
       radius: const BorderRadius.vertical(top: Radius.circular(8)),
       border: const Border(
-        top: BorderSide(color: AppColors.pink, width: 1),
+        top: BorderSide(color: AppColors.green, width: 1),
       ),
-      closeIcon: const AppCloseIcon(color: AppColors.white, size: 22),
+      closeIcon: const AppCloseIcon(),
       closeIconPosition: const ShadPosition(top: 20, right: 20),
       padding: const EdgeInsets.fromLTRB(24, 32, 24, 32),
       child: Column(
@@ -29,38 +29,39 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
         children: [
           Image.asset('assets/images/lock.png', height: 72),
           const SizedBox(height: 16),
-          // 標題：LINE 粉色強調
+          // 標題：LINE 愛心綠強調
           const Text.rich(
             TextSpan(
               style: TextStyle(
                 fontSize: AppType.title,
                 fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
-                color: AppColors.white,
+                color: AppColors.ink,
                 height: 1.2,
               ),
               children: [
                 TextSpan(text: '先綁定 '),
-                TextSpan(text: 'LINE', style: TextStyle(color: AppColors.pink)),
+                TextSpan(
+                    text: 'LINE', style: TextStyle(color: AppColors.green)),
                 TextSpan(text: ' 再繼續'),
               ],
             ),
           ),
           const SizedBox(height: 12),
-          const DashedRule(color: AppColors.pink),
+          const DashedRule(color: AppColors.inkSoft),
           const SizedBox(height: 12),
-          // 內文：永久保存 粉色強調
+          // 內文：永久保存 紅色強調
           const Text.rich(
             TextSpan(
               style: TextStyle(
                 fontSize: AppType.label,
-                color: Colors.white70,
+                color: AppColors.inkSoft,
                 height: 1.5,
               ),
               children: [
                 TextSpan(text: '建立群組和發起任務需要綁定帳號，\n你的星星和紀錄也會'),
                 TextSpan(
                   text: '永久保存',
-                  style: TextStyle(color: AppColors.pink),
+                  style: TextStyle(color: AppColors.red),
                 ),
                 TextSpan(text: '、不怕換手機。'),
               ],
@@ -68,33 +69,41 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 24),
-          ShadButton(
-            width: double.infinity,
-            backgroundColor: AppColors.green,
-            foregroundColor: AppColors.bg,
-            hoverBackgroundColor: AppColors.greenDark,
-            hoverForegroundColor: AppColors.bg,
-            leading: const MessageBubbleIcon(color: AppColors.white, size: 20),
-            onPressed: () async {
-              await ref.read(repositoryProvider).bindLine();
-              if (sheetContext.mounted) {
-                Navigator.of(sheetContext).pop(true);
-              }
-            },
-            child: const Text('用 LINE 綁定'),
-          ),
-          const SizedBox(height: 8),
-          // 次要 CTA：ink 底白字；hover 維持 ink 疊半透明白
-          ShadButton(
-            width: double.infinity,
-            backgroundColor: AppColors.bg,
-            foregroundColor: AppColors.green,
-            hoverBackgroundColor: AppColors.greenSoft,
-            hoverForegroundColor: AppColors.green,
-            decoration: ShadDecoration(
-                border: ShadBorder.all(color: AppColors.green, width: 1)),
-            onPressed: () => Navigator.of(sheetContext).pop(false),
-            child: const Text('下次再說'),
+          // 兩顆 CTA 同一 row：次要在左、主要在右（對齊任務詳情）
+          Row(
+            children: [
+              Expanded(
+                child: ShadButton(
+                  backgroundColor: AppColors.bg,
+                  foregroundColor: AppColors.green,
+                  hoverBackgroundColor: AppColors.greenSoft,
+                  hoverForegroundColor: AppColors.green,
+                  decoration: ShadDecoration(
+                      border:
+                          ShadBorder.all(color: AppColors.green, width: 1)),
+                  onPressed: () => Navigator.of(sheetContext).pop(false),
+                  child: const Text('下次再說'),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: ShadButton(
+                  backgroundColor: AppColors.green,
+                  foregroundColor: AppColors.bg,
+                  hoverBackgroundColor: AppColors.greenDark,
+                  hoverForegroundColor: AppColors.bg,
+                  leading:
+                      const MessageBubbleIcon(color: AppColors.white, size: 20),
+                  onPressed: () async {
+                    await ref.read(repositoryProvider).bindLine();
+                    if (sheetContext.mounted) {
+                      Navigator.of(sheetContext).pop(true);
+                    }
+                  },
+                  child: const Text('用 LINE 綁定'),
+                ),
+              ),
+            ],
           ),
         ],
       ),
