@@ -121,7 +121,8 @@ class _GroupDialogState extends State<_GroupDialog> {
   @override
   Widget build(BuildContext context) {
     return ShadDialog(
-      backgroundColor: AppColors.diluteInk,
+      // 對齊 toast：紙白底 + softInk 1px 框
+      backgroundColor: AppColors.bg,
       radius: BorderRadius.circular(AppRadius.card),
       removeBorderRadiusWhenTiny: false,
       gap: AppSpacing.md,
@@ -131,7 +132,7 @@ class _GroupDialogState extends State<_GroupDialog> {
           style: const TextStyle(
               fontSize: AppType.body,
               fontWeight: FontWeight.w500,
-              color: AppColors.white)),
+              color: AppColors.ink)),
       expandActionsWhenTiny: false,
       actionsAxis: Axis.horizontal,
       actionsMainAxisAlignment: MainAxisAlignment.end,
@@ -172,7 +173,7 @@ class _GroupDialogState extends State<_GroupDialog> {
           if (!_isCreate && _notFound) ...[
             const SizedBox(height: 8),
             const Text('找不到這個邀請碼 🙈',
-                style: TextStyle(color: AppColors.pink, fontSize: AppType.label)),
+                style: TextStyle(color: AppColors.red, fontSize: AppType.label)),
           ],
           if (_showPicker) ...[
             const SizedBox(height: AppSpacing.md),
@@ -203,7 +204,7 @@ class _DialogLabel extends StatelessWidget {
         style: const TextStyle(
           fontSize: AppType.body,
           fontWeight: FontWeight.w500,
-          color: AppColors.white,
+          color: AppColors.ink,
         ),
       ),
     );

@@ -4,7 +4,8 @@ import '../constants/personal_icons.dart';
 import '../theme/app_colors.dart';
 import 'person_avatar.dart';
 
-/// 個人圖示選擇器 —— 呈現同「發起任務」的圖示：白圓底、選中 softPink 底 + pink 2px 邊框。
+/// 個人圖示選擇器 —— 呈現同「發起任務」的圖示：白圓底、
+/// 選中＝DEEDE4 2px 邊框 + 50% DEEDE4 疊層；笑臉橘色改愛心綠。
 ///
 /// 已被其他成員選走的（[taken]）像 disabled 按鈕：變暗色、排到最後、點擊沒反應。
 class PersonalIconPicker extends StatelessWidget {
@@ -62,17 +63,26 @@ class PersonalIconPicker extends StatelessWidget {
                 height: _cell,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                  color: selected == icon ? AppColors.pinkSoft : AppColors.white,
+                  color: AppColors.white,
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: selected == icon
-                        ? AppColors.pink
+                        ? AppColors.greenMist
                         : AppColors.lightGray,
                     width: selected == icon ? 2 : 1,
                   ),
                 ),
+                // 選中：icon 上蓋一層 50% 淡綠（同發起任務）
+                foregroundDecoration: selected == icon
+                    ? const BoxDecoration(
+                        color: Color(0x80DEEDE4),
+                        shape: BoxShape.circle,
+                      )
+                    : null,
                 child: PersonAvatar(icon,
-                    size: _icon, fillColor: AppColors.ink),
+                    size: _icon,
+                    fillColor: AppColors.ink,
+                    orangeColor: AppColors.green),
               ),
             ),
       ],

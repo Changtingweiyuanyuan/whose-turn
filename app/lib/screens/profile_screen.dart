@@ -42,7 +42,9 @@ class ProfileScreen extends ConsumerWidget {
             child: Row(
               children: [
                 PersonAvatar(me.avatarEmoji,
-                    size: 44, fillColor: AppColors.ink),
+                    size: 44,
+                    fillColor: AppColors.ink,
+                    orangeColor: AppColors.green),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
@@ -322,7 +324,8 @@ class ProfileScreen extends ConsumerWidget {
       // 套件預設 barrier 0xcc000000 太濃，改回正常半透明遮罩
       barrierColor: Colors.black54,
       builder: (ctx) => ShadDialog.alert(
-        backgroundColor: AppColors.diluteInk,
+        // 對齊 toast：紙白底 + softInk 1px 框
+        backgroundColor: AppColors.bg,
         radius: BorderRadius.circular(AppRadius.card),
         // tiny 斷點預設會拿掉圓角，關掉才會保留 8px
         removeBorderRadiusWhenTiny: false,
@@ -339,13 +342,13 @@ class ProfileScreen extends ConsumerWidget {
                 style: TextStyle(
                     fontSize: AppType.body,
                     fontWeight: FontWeight.w500,
-                    color: AppColors.white)),
+                    color: AppColors.ink)),
             SizedBox(height: 12),
             Text('離開後看不到群組的任務看板。',
                 style: TextStyle(
                     fontSize: AppType.label,
                     fontWeight: FontWeight.w400,
-                    color: Colors.white70)),
+                    color: AppColors.inkSoft)),
           ],
         ),
         // CTA 橫排靠右、不佔滿寬度、間距對齊其他 CTA
@@ -449,13 +452,13 @@ class _ActionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 樣式對齊「資料尚未備份」：main 淺藍底、無框、ink 圖示與標題
+    // 樣式對齊「資料尚未備份」：F3F3F3 淡灰底、無框、ink 圖示與標題
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: AppColors.main,
+          color: const Color(0xFFF3F3F3),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Row(
