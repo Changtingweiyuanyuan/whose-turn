@@ -81,11 +81,14 @@ class _HomeShellState extends ConsumerState<HomeShell> {
       floatingActionButton: GestureDetector(
         onTap: _startCreateTask,
         child: SizedBox(
-          width: 62,
-          height: 62,
+          width: 70,
+          height: 70,
           child: Stack(
             alignment: Alignment.center,
             children: const [
+              // 4px 淡綠光暈（放大版愛心墊底）
+              AppAssetIcon('assets/icons/heart.svg',
+                  color: AppColors.greenMist, size: 70),
               AppAssetIcon('assets/icons/heart.svg', size: 62),
               // 愛心視覺重心略偏上，加號往上微調置中
               Padding(

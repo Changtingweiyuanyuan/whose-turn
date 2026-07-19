@@ -45,10 +45,15 @@ class AppSlidingTabs extends StatelessWidget {
                           labels[i],
                           style: TextStyle(
                             fontSize: AppType.body,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: i == selected
+                                ? FontWeight.w600
+                                : FontWeight.w500,
+                            letterSpacing: i == selected
+                                ? AppType.spacingBold
+                                : AppType.spacing,
                             color: i == selected
                                 ? AppColors.green
-                                : AppColors.greenPale,
+                                : AppColors.inkSoft,
                           ),
                         ),
                         if (i == badgeIndex && badgeCount > 0) ...[
@@ -85,7 +90,7 @@ class AppSlidingTabs extends StatelessWidget {
               child: FractionallySizedBox(
                 widthFactor: 1 / n,
                 child: Container(
-                  height: 3,
+                  height: 2,
                   decoration: BoxDecoration(
                     color: AppColors.orangeLine,
                     borderRadius: BorderRadius.circular(2),

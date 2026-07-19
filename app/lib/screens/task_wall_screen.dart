@@ -10,6 +10,7 @@ import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
 import '../widgets/app_sliding_tabs.dart';
+import '../widgets/masthead_divider.dart';
 import '../widgets/task_card.dart';
 
 enum TaskWallFilter { all, mine, claimed }
@@ -185,7 +186,7 @@ class _Masthead extends StatelessWidget {
                     fontSize: AppType.kicker,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 3,
-                    color: AppColors.orangeLine,
+                    color: AppColors.green,
                   ),
                 ),
               ),
@@ -202,13 +203,7 @@ class _Masthead extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
-          Container(
-            height: 2,
-            decoration: BoxDecoration(
-              color: AppColors.orangeLine,
-              borderRadius: BorderRadius.circular(2), // 對齊選中 tab 底線
-            ),
-          ),
+          const MastheadDivider(),
           const SizedBox(height: AppSpacing.md),
           // 大標，粗黑無襯線，誰=綠色
           RichText(
@@ -239,7 +234,7 @@ class _Masthead extends StatelessWidget {
               Text(
                 '星期$weekday',
                 style: const TextStyle(
-                    fontSize: AppType.label, color: AppColors.greenPale),
+                    fontSize: AppType.label, color: AppColors.orangeLine),
               ),
             ],
           ),

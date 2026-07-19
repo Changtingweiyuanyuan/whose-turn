@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
 import 'app_svg_icons.dart';
+import 'masthead_divider.dart';
 
 /// 雜誌刊頭：WHOSE TURN TODAY / NO.xx + 粉色分隔線 + 大標題。
 /// [starTotal] 為 null 時右側不顯示星星；[userNo] 為 null（未加入群組）時不顯示編號。
@@ -35,7 +36,7 @@ class AppMasthead extends StatelessWidget {
                     fontSize: AppType.kicker,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 3,
-                    color: AppColors.orangeLine,
+                    color: AppColors.green,
                   ),
                 ),
               ),
@@ -52,13 +53,7 @@ class AppMasthead extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
-          Container(
-            height: 2,
-            decoration: BoxDecoration(
-              color: AppColors.orangeLine,
-              borderRadius: BorderRadius.circular(2), // 對齊選中 tab 底線
-            ),
-          ),
+          const MastheadDivider(),
           const SizedBox(height: AppSpacing.md),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
