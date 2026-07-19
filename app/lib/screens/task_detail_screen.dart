@@ -621,15 +621,15 @@ class _InfoRow extends StatelessWidget {
   }
 }
 
-/// 任務介紹卡的列間分隔：softInk 1px 虛線，置於 8px gap 正中（上下各 4）。
+/// 任務介紹卡的列間分隔：1px 虛線（同任務詳情列背景色 F3F3F3），上下各 6。
 class _InfoDivider extends StatelessWidget {
   const _InfoDivider();
 
   @override
   Widget build(BuildContext context) {
     return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 4),
-      child: DashedRule(color: AppColors.inkSoft, thickness: 1),
+      padding: EdgeInsets.symmetric(vertical: 6),
+      child: DashedRule(color: Color(0xFFF3F3F3), thickness: 1),
     );
   }
 }
