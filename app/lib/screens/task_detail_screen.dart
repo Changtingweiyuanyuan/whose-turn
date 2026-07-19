@@ -53,10 +53,7 @@ class TaskDetailScreen extends ConsumerWidget {
         title: const Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Opacity(
-              opacity: 0.5,
-              child: AppAssetIcon('assets/icons/flower_green.svg', size: 16),
-            ),
+            AppAssetIcon('assets/icons/flower_green.svg', size: 16),
             SizedBox(width: 6),
             Text(
               '任務詳情',
@@ -458,7 +455,7 @@ class TaskDetailScreen extends ConsumerWidget {
         Row(
           children: [
             Expanded(child: abandon),
-            const SizedBox(width: 8),
+            const SizedBox(width: 12),
             Expanded(
               child: primary('完成一次', () async {
                 await repo.submitCompletion(task.id);

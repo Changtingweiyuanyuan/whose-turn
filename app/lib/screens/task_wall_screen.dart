@@ -124,8 +124,9 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
                             AppSpacing.pagePadding,
                             AppSpacing.bottomNavClearance),
                         itemCount: tasks.length,
+                        // 任務卡間距 12
                         separatorBuilder: (_, _) =>
-                            const SizedBox(height: AppSpacing.md),
+                            const SizedBox(height: 12),
                         itemBuilder: (context, i) {
                           final task = tasks[i];
                           return TaskCard(
