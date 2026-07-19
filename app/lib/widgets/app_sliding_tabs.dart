@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
 
-/// 滑動底線分頁（全站共用）：格子平均分佈，選中底線在整條基線上滑動。
-/// 選中＝主綠、未選＝淡綠、底線＝橘線。
+/// 分頁標籤（全站共用）：格子平均分佈。
+/// 選中＝主綠 w600，文字底下墊一條淡綠 highlight（高 10、超出下 2 左右 4、圓角 6）。
 class AppSlidingTabs extends StatelessWidget {
   const AppSlidingTabs({
     super.key,
@@ -23,24 +23,34 @@ class AppSlidingTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final n = labels.length;
-    // 選中格中心的對齊 x：0→-1, 中→0, 末→1
-    final x = n == 1 ? 0.0 : -1.0 + 2.0 * selected / (n - 1);
-
-    return Column(
+    return Row(
       children: [
-        Row(
-          children: [
-            for (var i = 0; i < n; i++)
-              Expanded(
-                child: GestureDetector(
-                  onTap: () => onChanged(i),
-                  behavior: HitTestBehavior.opaque,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+        for (var i = 0; i < labels.length; i++)
+          Expanded(
+            child: GestureDetector(
+              onTap: () => onChanged(i),
+              behavior: HitTestBehavior.opaque,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Stack(
+                      clipBehavior: Clip.none,
                       children: [
+                        if (i == selected)
+                          Positioned(
+                            left: -4,
+                            right: -4,
+                            bottom: -2,
+                            height: 10,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: AppColors.greenMist,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                            ),
+                          ),
                         Text(
                           labels[i],
                           style: TextStyle(
@@ -55,50 +65,30 @@ class AppSlidingTabs extends StatelessWidget {
                                 : AppColors.inkSoft,
                           ),
                         ),
-                        if (i == badgeIndex && badgeCount > 0) ...[
-                          const SizedBox(width: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 6, vertical: 1),
-                            decoration: const BoxDecoration(
-                              color: AppColors.orange,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Text('$badgeCount',
-                                style: const TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w800, letterSpacing: AppType.spacingBold,
-                                    color: AppColors.white)),
-                          ),
-                        ],
                       ],
                     ),
-                  ),
-                ),
-              ),
-          ],
-        ),
-        // 基線 + 滑動的橘色底線
-        Stack(
-          children: [
-            Container(height: 1, color: AppColors.lightGray),
-            AnimatedAlign(
-              duration: const Duration(milliseconds: 240),
-              curve: Curves.easeOutCubic,
-              alignment: Alignment(x, 0),
-              child: FractionallySizedBox(
-                widthFactor: 1 / n,
-                child: Container(
-                  height: 2,
-                  decoration: BoxDecoration(
-                    color: AppColors.orangeLine,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
+                    if (i == badgeIndex && badgeCount > 0) ...[
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 1),
+                        decoration: const BoxDecoration(
+                          color: AppColors.orange,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Text('$badgeCount',
+                            style: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: AppType.spacingBold,
+                                color: AppColors.white)),
+                      ),
+                    ],
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
       ],
     );
   }
