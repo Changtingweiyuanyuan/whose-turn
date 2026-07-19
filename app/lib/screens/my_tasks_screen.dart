@@ -162,13 +162,12 @@ class _ConfirmList extends ConsumerWidget {
       itemBuilder: (context, i) {
         final (:task, :completion) = entries[i];
         final doer = repo.userOf(completion.userId);
-        // 與任務詳情「完成紀錄」dark block 完全一致
+        // 與任務詳情「完成紀錄」一致：四色輪替、無邊框
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
-            color: AppColors.diluteInk,
+            color: AppColors.cardCycle[i % AppColors.cardCycle.length],
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.inkSoft, width: 1),
           ),
           child: Row(
             children: [
@@ -182,13 +181,13 @@ class _ConfirmList extends ConsumerWidget {
                       '${doer.displayName} 完成了 ${task.title}',
                       style: const TextStyle(
                           fontWeight: FontWeight.w500,
-                          color: AppColors.white),
+                          color: AppColors.ink),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       DateFormat('MM/dd HH:mm').format(completion.submittedAt),
                       style: const TextStyle(
-                          fontSize: 12, color: AppColors.main),
+                          fontSize: 12, color: AppColors.inkSoft),
                     ),
                   ],
                 ),
