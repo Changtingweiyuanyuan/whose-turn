@@ -9,6 +9,7 @@ import '../widgets/app_back_button.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
 import '../widgets/app_svg_icons.dart';
+import '../widgets/dashed_rule.dart';
 import '../widgets/noise_background.dart';
 import '../widgets/person_avatar.dart';
 import '../widgets/star_progress.dart';
@@ -104,7 +105,7 @@ class TaskDetailScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: AppSpacing.sm), // 圖示↔標題 8（同標題↔發起人）
               Center(
                 child: Text(
                   task.title,
@@ -166,7 +167,7 @@ class TaskDetailScreen extends ConsumerWidget {
                         label: '完成條件',
                         value: '${task.title} ${task.requiredCount} 次',
                       ),
-                      const SizedBox(height: 8),
+                      const _InfoDivider(),
                       task.rewardLabelFor(me.uid) == '???'
                           ? const _InfoRow(
                               label: '獎勵內容',
@@ -226,7 +227,7 @@ class TaskDetailScreen extends ConsumerWidget {
                               valueWeight: FontWeight.w600,
                             ),
                       if (task.deadline != null) ...[
-                        const SizedBox(height: 8),
+                        const _InfoDivider(),
                         _InfoRow(
                           label: '截止日期',
                           value: DateFormat(
@@ -235,13 +236,13 @@ class TaskDetailScreen extends ConsumerWidget {
                         ),
                       ],
                       if (task.assigneeUid != null) ...[
-                        const SizedBox(height: 8),
+                        const _InfoDivider(),
                         _InfoRow(
                           label: '指定給',
                           value: repo.userOf(task.assigneeUid!).displayName,
                         ),
                       ],
-                      const SizedBox(height: 8),
+                      const _InfoDivider(),
                       Row(
                         children: [
                           const SizedBox(
@@ -616,6 +617,19 @@ class _InfoRow extends StatelessWidget {
               Text(value!, style: TextStyle(fontWeight: valueWeight)),
         ),
       ],
+    );
+  }
+}
+
+/// 任務介紹卡的列間分隔：softInk 1px 虛線，置於 8px gap 正中（上下各 4）。
+class _InfoDivider extends StatelessWidget {
+  const _InfoDivider();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.symmetric(vertical: 4),
+      child: DashedRule(color: AppColors.inkSoft, thickness: 1),
     );
   }
 }
