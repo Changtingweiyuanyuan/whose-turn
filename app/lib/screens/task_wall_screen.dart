@@ -206,20 +206,15 @@ class _Masthead extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           const MastheadDivider(),
           const SizedBox(height: AppSpacing.md),
-          // 大標，粗黑無襯線，誰=綠色
-          RichText(
-            text: const TextSpan(
-              style: TextStyle(
-                fontSize: 40,
-                fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
-                height: 1.1,
-                color: AppColors.ink,
-              ),
-              children: [
-                TextSpan(text: '今天換'),
-                TextSpan(text: '誰', style: TextStyle(color: AppColors.green)),
-                TextSpan(text: '?'),
-              ],
+          // 大標：對齊其他頁刊頭（title 20、w600、Ink），問號半形
+          const Text(
+            '今天換誰?',
+            style: TextStyle(
+              fontSize: AppType.title,
+              height: 1.0,
+              fontWeight: FontWeight.w600,
+              letterSpacing: AppType.spacingBold,
+              color: AppColors.ink,
             ),
           ),
           const SizedBox(height: AppSpacing.md),

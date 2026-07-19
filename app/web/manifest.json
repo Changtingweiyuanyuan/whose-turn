@@ -1,6 +1,6 @@
 {
-    "name": "whose_turn",
-    "short_name": "whose_turn",
+    "name": "今天換誰？",
+    "short_name": "今天換誰？",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
