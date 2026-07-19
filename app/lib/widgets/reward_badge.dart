@@ -18,7 +18,7 @@ class RewardBadge extends StatelessWidget {
     final text = task.isMystery && label == '???' ? '神秘禮物' : label;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
       decoration: BoxDecoration(
         color: AppColors.white, // 底：白，讓文字清楚
         borderRadius: BorderRadius.circular(999), // 膠囊
