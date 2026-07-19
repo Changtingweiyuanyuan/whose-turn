@@ -234,7 +234,7 @@ class _Masthead extends StatelessWidget {
               Text(
                 '星期$weekday',
                 style: const TextStyle(
-                    fontSize: AppType.label, color: AppColors.orangeLine),
+                    fontSize: AppType.label, color: AppColors.red),
               ),
             ],
           ),
