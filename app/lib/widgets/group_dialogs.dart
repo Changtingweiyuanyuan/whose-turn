@@ -19,25 +19,29 @@ Future<String?> showCreateGroupDialog(BuildContext context, WidgetRef ref) {
 }
 
 /// 加入群組：輸入邀請碼（debounce 查詢）→ 選個人圖示。已被選走的圖示會 disabled。
-Future<String?> showJoinGroupDialog(BuildContext context, WidgetRef ref) {
-  return _show(context, ref, _GroupDialogMode.join);
+/// [initialCode]（邀請連結帶入）會代填並直接查詢。
+Future<String?> showJoinGroupDialog(BuildContext context, WidgetRef ref,
+    {String? initialCode}) {
+  return _show(context, ref, _GroupDialogMode.join, initialCode: initialCode);
 }
 
 Future<String?> _show(
-    BuildContext context, WidgetRef ref, _GroupDialogMode mode) {
+    BuildContext context, WidgetRef ref, _GroupDialogMode mode,
+    {String? initialCode}) {
   return showShadDialog<String>(
     context: context,
     opaque: false,
     barrierColor: Colors.black54,
-    builder: (_) => _GroupDialog(ref: ref, mode: mode),
+    builder: (_) => _GroupDialog(ref: ref, mode: mode, initialCode: initialCode),
   );
 }
 
 class _GroupDialog extends StatefulWidget {
-  const _GroupDialog({required this.ref, required this.mode});
+  const _GroupDialog({required this.ref, required this.mode, this.initialCode});
 
   final WidgetRef ref;
   final _GroupDialogMode mode;
+  final String? initialCode;
 
   @override
   State<_GroupDialog> createState() => _GroupDialogState();
@@ -74,6 +78,17 @@ class _GroupDialogState extends State<_GroupDialog> {
     if (_selectedIcon == null) return false;
     if (_isCreate) return _controller.text.trim().isNotEmpty;
     return _foundGroup != null;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // 邀請連結帶入的邀請碼：代填並直接查詢
+    final code = widget.initialCode;
+    if (!_isCreate && code != null && code.trim().isNotEmpty) {
+      _controller.text = code.trim();
+      _onCodeChanged(code);
+    }
   }
 
   @override

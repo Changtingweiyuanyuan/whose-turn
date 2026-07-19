@@ -20,6 +20,12 @@ final _router = GoRouter(
       path: '/create-task',
       builder: (context, state) => const CreateTaskScreen(),
     ),
+    // 邀請連結：/j/<邀請碼> → 首頁 + 自動開加入群組（碼已代填）
+    GoRoute(
+      path: '/j/:code',
+      builder: (context, state) =>
+          HomeShell(joinCode: state.pathParameters['code']),
+    ),
   ],
 );
 

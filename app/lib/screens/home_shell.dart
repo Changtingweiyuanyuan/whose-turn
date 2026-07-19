@@ -8,6 +8,7 @@ import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
 import '../widgets/app_svg_icons.dart';
+import '../widgets/group_dialogs.dart';
 import '../widgets/line_bind_sheet.dart';
 import '../widgets/message_bubble_icon.dart';
 import '../widgets/noise_background.dart';
@@ -18,7 +19,10 @@ import 'task_wall_screen.dart';
 
 /// 底部導覽外殼：任務看板／我的任務／(+)／訊息／我的。
 class HomeShell extends ConsumerStatefulWidget {
-  const HomeShell({super.key});
+  const HomeShell({super.key, this.joinCode});
+
+  /// 邀請連結（/j/:code）帶入的邀請碼：進站後自動開加入群組視窗。
+  final String? joinCode;
 
   @override
   ConsumerState<HomeShell> createState() => _HomeShellState();
@@ -43,6 +47,30 @@ class _HomeShellState extends ConsumerState<HomeShell> {
                 : 'LINE 綁定失敗，請再試一次'),
           ),
         );
+      });
+    }
+
+    // 邀請連結進站：自動開「加入群組」並代填邀請碼（已在該群組則略過）。
+    final code = widget.joinCode;
+    if (code != null && code.trim().isNotEmpty) {
+      Future.delayed(const Duration(milliseconds: 800), () async {
+        if (!mounted) return;
+        final repo = ref.read(repositoryProvider);
+        final g = repo.currentGroup;
+        if (g != null &&
+            g.inviteCode.toUpperCase() == code.trim().toUpperCase() &&
+            g.memberUids.contains(repo.currentUser.uid)) {
+          ShadToaster.of(context).show(
+            ShadToast(description: Text('你已經在「${g.name}」裡囉！')),
+          );
+          return;
+        }
+        final message =
+            await showJoinGroupDialog(context, ref, initialCode: code);
+        if (message != null && mounted) {
+          ShadToaster.of(context)
+              .show(ShadToast(description: Text(message)));
+        }
       });
     }
   }

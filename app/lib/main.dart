@@ -11,9 +11,12 @@ import 'data/firebase_app_repository.dart';
 import 'data/line_auth/line_auth.dart';
 import 'firebase_options.dart';
 import 'state/providers.dart';
+import 'url_strategy_stub.dart'
+    if (dart.library.html) 'url_strategy_web.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  configureUrlStrategy();
 
   final AppRepository repo;
   var lineResult = LineRedirectResult.none;
