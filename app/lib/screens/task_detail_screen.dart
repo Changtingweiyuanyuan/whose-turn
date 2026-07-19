@@ -71,7 +71,7 @@ class TaskDetailScreen extends ConsumerWidget {
                   decoration: BoxDecoration(
                     color: AppColors.white,
                     shape: BoxShape.circle,
-                    border: Border.all(color: AppColors.ink, width: 2),
+                    border: Border.all(color: AppColors.ink, width: 1.5),
                   ),
                   alignment: Alignment.center,
                   child: TaskIcon(icon: task.emoji, size: 36),
