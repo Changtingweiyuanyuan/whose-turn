@@ -35,7 +35,7 @@ class AppMasthead extends StatelessWidget {
                     fontSize: AppType.kicker,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 3,
-                    color: AppColors.white,
+                    color: AppColors.greenPale,
                   ),
                 ),
               ),
@@ -46,7 +46,7 @@ class AppMasthead extends StatelessWidget {
                     fontSize: AppType.body,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 2,
-                    color: AppColors.pink,
+                    color: AppColors.green,
                   ),
                 ),
             ],
@@ -55,7 +55,7 @@ class AppMasthead extends StatelessWidget {
           Container(
             height: 2,
             decoration: BoxDecoration(
-              color: AppColors.pink,
+              color: AppColors.orangeLine,
               borderRadius: BorderRadius.circular(2), // 對齊選中 tab 底線
             ),
           ),
@@ -70,7 +70,7 @@ class AppMasthead extends StatelessWidget {
                     fontSize: AppType.title,
                     height: 1.0,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.white,
+                    color: AppColors.green,
                   ),
                 ),
               ),
@@ -78,14 +78,15 @@ class AppMasthead extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const AppSvgIcon(kStarSvg, color: AppColors.pink, size: 20),
+                    const AppSvgIcon(kStarSvg,
+                        color: AppColors.orange, size: 20),
                     const SizedBox(width: 6),
                     Text(
                       '$starTotal',
                       style: const TextStyle(
                           fontSize: AppType.title,
                           fontWeight: FontWeight.w800,
-                          color: AppColors.white),
+                          color: AppColors.inkSoft),
                     ),
                   ],
                 ),
