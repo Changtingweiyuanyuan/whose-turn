@@ -64,18 +64,18 @@ class TaskDetailScreen extends ConsumerWidget {
           children: [
             Center(
               child: Container(
-                width: 120,
-                height: 120,
+                width: 60,
+                height: 60,
                 decoration: BoxDecoration(
                   color: AppColors.white,
                   shape: BoxShape.circle,
                   border: Border.all(color: AppColors.ink, width: 2),
                 ),
                 alignment: Alignment.center,
-                child: TaskIcon(icon: task.emoji, size: 72),
+                child: TaskIcon(icon: task.emoji, size: 36),
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 12),
             Center(
               child: Text(
                 task.title,
