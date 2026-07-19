@@ -47,13 +47,13 @@ abstract final class AppShadTheme {
           radius: BorderRadius.circular(8),
           border: ShadBorder.all(color: AppColors.lightGray, width: 1),
         ),
-        // Toast：對齊 LINE 綁定 modal — F3F3F3 底 + 1.5px 綠邊框 + Ink 字
+        // Toast：F3F3F3 底 + 1px 橘線邊框 + Ink 字
         primaryToastTheme: ShadToastTheme(
           backgroundColor: const Color(0xFFF3F3F3),
           radius: BorderRadius.circular(6),
           border: ShadBorder.all(
-            color: AppColors.green,
-            width: 1.5,
+            color: AppColors.orangeLine,
+            width: 1,
             radius: BorderRadius.circular(6),
           ),
           descriptionStyle: const TextStyle(color: AppColors.ink),
