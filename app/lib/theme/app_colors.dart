@@ -17,7 +17,8 @@ abstract final class AppColors {
   // 已領取（不可再點）的實心暗粉色；雜訊底不用半透明
   static const pinkDark = Color(0xFF6E3F54);
   static const bg = Color(0xFFFDFBFC);
-  static const white = Color(0xFFFFFFFF);
+  /// v3：全站「白」統一為紙白 FDFBFC（與 bg 同）
+  static const white = Color(0xFFFDFBFC);
 
   // ---- v3 改版新色（綠色系；舊色保留至全面改版完成）----
   /// 主綠：愛心 FAB、選中態

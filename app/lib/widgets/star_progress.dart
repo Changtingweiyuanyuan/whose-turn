@@ -63,7 +63,7 @@ class StarProgress extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 4),
             child: i < confirmed
-                ? AppSvgIcon(kStarSvg, color: AppColors.orange, size: size)
+                ? AppSvgIcon(kStarSvg, color: AppColors.red, size: size)
                 : AppSvgIcon(kStarSlashSvg, color: AppColors.main, size: size),
           ),
       ],
