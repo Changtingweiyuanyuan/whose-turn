@@ -34,6 +34,8 @@ abstract final class AppColors {
   static const greenDark = Color(0xFF1D7A4B);
   /// 淡綠字：未選取分頁、星期、刊頭小標
   static const greenPale = Color(0xFF98B2A2);
+  /// 更淡的綠：app bar 底色
+  static const greenMist = Color(0xFFDEEDE4);
   /// 橘線：刊頭分隔線、選中分頁底線
   static const orangeLine = Color(0xFFF2A375);
   /// 卡片輪替色（依序循環）

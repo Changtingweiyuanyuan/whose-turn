@@ -43,16 +43,16 @@ class TaskDetailScreen extends ConsumerWidget {
     return Scaffold(
       backgroundColor: AppColors.paper,
       appBar: AppBar(
-        backgroundColor: AppColors.green,
-        foregroundColor: AppColors.bg,
+        backgroundColor: AppColors.greenMist,
+        foregroundColor: AppColors.ink,
         elevation: 0,
         centerTitle: true,
         leading: const AppBackButton(),
         title: const Text('任務詳情',
             style: TextStyle(
-                color: AppColors.bg,
+                color: AppColors.ink,
                 fontSize: AppType.label,
-                fontWeight: FontWeight.w600)),
+                fontWeight: FontWeight.w500)),
       ),
       body: NoiseBackground(
         child: ListView(
