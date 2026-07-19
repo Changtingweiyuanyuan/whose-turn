@@ -370,6 +370,8 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                 width: double.infinity,
                 backgroundColor: AppColors.green,
                 foregroundColor: AppColors.bg,
+                hoverBackgroundColor: AppColors.greenDark,
+                hoverForegroundColor: AppColors.bg,
                 onPressed: _submit,
                 child: const Text('發佈任務'),
               ),

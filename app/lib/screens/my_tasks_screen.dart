@@ -171,7 +171,10 @@ class _ConfirmList extends ConsumerWidget {
           ),
           child: Row(
             children: [
-              PersonAvatar(doer.avatarEmoji, size: 26),
+              PersonAvatar(doer.avatarEmoji,
+                  size: 26,
+                  fillColor: AppColors.ink,
+                  orangeColor: AppColors.green),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -211,6 +214,8 @@ class _ConfirmList extends ConsumerWidget {
                 size: ShadButtonSize.sm,
                 backgroundColor: AppColors.green,
                 foregroundColor: AppColors.bg,
+                hoverBackgroundColor: AppColors.greenDark,
+                hoverForegroundColor: AppColors.bg,
                 onPressed: () =>
                     repo.confirmCompletion(task.id, completion.id),
                 child: const Text('確認'),

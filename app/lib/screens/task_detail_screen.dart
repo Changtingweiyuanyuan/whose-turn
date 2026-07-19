@@ -50,9 +50,9 @@ class TaskDetailScreen extends ConsumerWidget {
         leading: const AppBackButton(),
         title: const Text('任務詳情',
             style: TextStyle(
-                color: AppColors.ink,
+                color: AppColors.orange,
                 fontSize: AppType.label,
-                fontWeight: FontWeight.w500)),
+                fontWeight: FontWeight.w600)),
       ),
       body: NoiseBackground(
         child: ListView(
@@ -104,7 +104,7 @@ class TaskDetailScreen extends ConsumerWidget {
           const SizedBox(height: 24),
           ShadCard(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            border: ShadBorder.none,
+            border: ShadBorder.all(color: AppColors.pinkLight, width: 1),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -210,7 +210,9 @@ class TaskDetailScreen extends ConsumerWidget {
                   child: Row(
                     children: [
                       PersonAvatar(repo.userOf(c.userId).avatarEmoji,
-                          size: 26),
+                          size: 26,
+                          fillColor: AppColors.ink,
+                          orangeColor: AppColors.green),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Column(
@@ -254,6 +256,8 @@ class TaskDetailScreen extends ConsumerWidget {
                               size: ShadButtonSize.sm,
                               backgroundColor: AppColors.green,
                               foregroundColor: AppColors.bg,
+                              hoverBackgroundColor: AppColors.greenDark,
+                              hoverForegroundColor: AppColors.bg,
                               onPressed: () =>
                                   repo.confirmCompletion(task.id, c.id),
                               child: const Text('確認'),
@@ -294,6 +298,8 @@ class TaskDetailScreen extends ConsumerWidget {
         width: double.infinity,
         backgroundColor: AppColors.green,
         foregroundColor: AppColors.bg,
+        hoverBackgroundColor: AppColors.greenDark,
+        hoverForegroundColor: AppColors.bg,
         onPressed: () => onPressed(),
         child: Text(label),
       );

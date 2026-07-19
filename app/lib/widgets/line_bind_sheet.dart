@@ -72,6 +72,8 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
             width: double.infinity,
             backgroundColor: AppColors.green,
             foregroundColor: AppColors.bg,
+            hoverBackgroundColor: AppColors.greenDark,
+            hoverForegroundColor: AppColors.bg,
             leading: const MessageBubbleIcon(color: AppColors.white, size: 20),
             onPressed: () async {
               await ref.read(repositoryProvider).bindLine();

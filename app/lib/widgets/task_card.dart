@@ -107,7 +107,7 @@ class TaskCard extends StatelessWidget {
                         ? ShadButton(
                             size: ShadButtonSize.sm,
                             backgroundColor: AppColors.green,
-                            foregroundColor: AppColors.white,
+                            foregroundColor: AppColors.bg,
                             hoverBackgroundColor: AppColors.greenDark,
                             hoverForegroundColor: AppColors.white,
                             onPressed: onClaim,

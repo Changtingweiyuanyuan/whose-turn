@@ -150,6 +150,8 @@ class _GroupDialogState extends State<_GroupDialog> {
         ShadButton(
           backgroundColor: AppColors.green,
           foregroundColor: AppColors.bg,
+          hoverBackgroundColor: AppColors.greenDark,
+          hoverForegroundColor: AppColors.bg,
           onPressed: _canConfirm ? _confirm : null,
           child: Text(_isCreate ? '建立' : '加入'),
         ),

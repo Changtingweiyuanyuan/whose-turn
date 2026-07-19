@@ -377,6 +377,8 @@ class ProfileScreen extends ConsumerWidget {
           ShadButton(
             backgroundColor: AppColors.green,
             foregroundColor: AppColors.bg,
+            hoverBackgroundColor: AppColors.greenDark,
+            hoverForegroundColor: AppColors.bg,
             onPressed: () => Navigator.pop(ctx, true),
             child: const Text('離開'),
           ),

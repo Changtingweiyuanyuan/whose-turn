@@ -30,6 +30,8 @@ abstract final class AppColors {
   static const paperNoise = Color(0xFFF6F6EB);
   /// 畫面 1px 外框粉
   static const framePink = Color(0xFFE6CCD9);
+  /// 淺粉線：資訊卡 1px 邊框（同 $ 符號色）
+  static const pinkLight = Color(0xFFFAD3D7);
   /// 主綠壓深版：綠色 CTA 的 hover 底
   static const greenDark = Color(0xFF1D7A4B);
   /// 淡綠字：未選取分頁、星期、刊頭小標

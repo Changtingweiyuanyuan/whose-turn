@@ -25,7 +25,12 @@ class AppSvgIcon extends StatelessWidget {
 /// [color] 給 null 時保留原始配色；給值則整體上色（Streamline Freehand 等）。
 class AppAssetIcon extends StatelessWidget {
   const AppAssetIcon(this.asset,
-      {this.color, this.fillColor, this.accentColor, this.size = 24, super.key});
+      {this.color,
+      this.fillColor,
+      this.accentColor,
+      this.orangeColor,
+      this.size = 24,
+      super.key});
 
   final String asset;
 
@@ -40,6 +45,9 @@ class AppAssetIcon extends StatelessWidget {
   /// 任務圖示雙色化（黑 + 綠）用。
   final Color? accentColor;
 
+  /// 只替換 Streamline 的橘色（#ff8b04）。笑臉頭像換色用。
+  final Color? orangeColor;
+
   final double size;
 
   @override
@@ -51,28 +59,33 @@ class AppAssetIcon extends StatelessWidget {
       colorFilter: color == null
           ? null
           : ColorFilter.mode(color!, BlendMode.srcIn),
-      colorMapper: (fillColor == null && accentColor == null)
-          ? null
-          : _DuotoneMapper(light: fillColor, accent: accentColor),
+      colorMapper:
+          (fillColor == null && accentColor == null && orangeColor == null)
+              ? null
+              : _DuotoneMapper(
+                  light: fillColor, accent: accentColor, orange: orangeColor),
     );
   }
 }
 
-/// Streamline 雙色替換：近白（#f7f7f7）→ [light]、次色（#222222）→ [accent]，
-/// 其餘顏色（橘、#010101 主線）保留。
+/// Streamline 雙色替換：近白（#f7f7f7）→ [light]、次色（#222222）→ [accent]、
+/// 橘（#ff8b04）→ [orange]，其餘顏色（#010101 主線）保留。
 class _DuotoneMapper extends ColorMapper {
-  const _DuotoneMapper({this.light, this.accent});
+  const _DuotoneMapper({this.light, this.accent, this.orange});
 
   final Color? light;
   final Color? accent;
+  final Color? orange;
   static const _lightSrc = Color(0xFFF7F7F7);
   static const _accentSrc = Color(0xFF222222);
+  static const _orangeSrc = Color(0xFFFF8B04);
 
   @override
   Color substitute(
       String? id, String elementName, String attributeName, Color color) {
     if (light != null && color == _lightSrc) return light!;
     if (accent != null && color == _accentSrc) return accent!;
+    if (orange != null && color == _orangeSrc) return orange!;
     return color;
   }
 }
