@@ -45,17 +45,20 @@ class NotificationsScreen extends ConsumerWidget {
                             context.push('/task/${n.taskId}');
                           }
                         },
-                        // 1px 紋理邊框：同任務詳情的任務內容 block
+                        // 1px 邊框：已讀＝紋理、未讀＝愛心綠
                         child: Container(
                           padding: const EdgeInsets.all(1),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(AppRadius.card),
-                            image: const DecorationImage(
-                              image: AssetImage(
-                                  'assets/images/card_border.png'),
-                              repeat: ImageRepeat.repeat,
-                              fit: BoxFit.none,
-                            ),
+                            color: n.read ? null : AppColors.green,
+                            image: n.read
+                                ? const DecorationImage(
+                                    image: AssetImage(
+                                        'assets/images/card_border.png'),
+                                    repeat: ImageRepeat.repeat,
+                                    fit: BoxFit.none,
+                                  )
+                                : null,
                           ),
                           child: Container(
                             padding: const EdgeInsets.symmetric(

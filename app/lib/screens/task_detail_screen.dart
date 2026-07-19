@@ -286,24 +286,31 @@ class TaskDetailScreen extends ConsumerWidget {
                             ),
                             child: Row(
                               children: [
-                                PersonAvatar(
-                                  repo.userOf(c.userId).avatarEmoji,
-                                  size: 26,
-                                  fillColor: AppColors.ink,
-                                  orangeColor: AppColors.green,
-                                ),
-                                const SizedBox(width: 12),
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        '${repo.userOf(c.userId).displayName} 完成了一次',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          color: AppColors.ink,
-                                        ),
+                                      // 笑臉與標題同一 row，gap 4；全 Ink
+                                      Row(
+                                        children: [
+                                          PersonAvatar(
+                                            repo.userOf(c.userId).avatarEmoji,
+                                            size: 26,
+                                            fillColor: AppColors.ink,
+                                            orangeColor: AppColors.ink,
+                                          ),
+                                          const SizedBox(width: 4),
+                                          Expanded(
+                                            child: Text(
+                                              '${repo.userOf(c.userId).displayName} 完成了一次',
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                color: AppColors.ink,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                       const SizedBox(height: 2),
                                       Text(

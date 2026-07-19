@@ -176,7 +176,7 @@ class _ConfirmList extends ConsumerWidget {
               PersonAvatar(doer.avatarEmoji,
                   size: 26,
                   fillColor: AppColors.ink,
-                  orangeColor: AppColors.green),
+                  orangeColor: AppColors.ink),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
