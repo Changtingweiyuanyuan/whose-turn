@@ -31,4 +31,10 @@ abstract final class AppType {
   static const body = 16.0;
   static const label = 14.0;
   static const kicker = 13.0;
+
+  /// 全站字距：一般字重（w500 以下），theme 層預設套用
+  static const spacing = 0.8;
+
+  /// 全站字距：粗體（w600 以上），inline TextStyle 需明確帶上
+  static const spacingBold = 1.2;
 }

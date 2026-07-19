@@ -69,7 +69,7 @@ class TaskCard extends StatelessWidget {
                           task.title,
                           style: const TextStyle(
                             fontSize: AppType.cardTitle,
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
                             color: AppColors.ink,
                           ),
                         ),
@@ -91,7 +91,7 @@ class TaskCard extends StatelessWidget {
                         TextSpan(
                           text: '：',
                           style: const TextStyle(
-                              fontWeight: FontWeight.w600, color: AppColors.inkSoft),
+                              fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold, color: AppColors.inkSoft),
                         ),
                         TextSpan(text: creator.displayName),
                       ],
@@ -149,13 +149,13 @@ class _CountLabel extends StatelessWidget {
         Text(
           '$confirmed',
           style: const TextStyle(
-              fontSize: AppType.heading, fontWeight: FontWeight.w800, height: 1),
+              fontSize: AppType.heading, fontWeight: FontWeight.w800, letterSpacing: AppType.spacingBold, height: 1),
         ),
         Text(
           '/$required',
           style: const TextStyle(
               fontSize: AppType.body,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
               color: AppColors.inkSoft),
         ),
       ],

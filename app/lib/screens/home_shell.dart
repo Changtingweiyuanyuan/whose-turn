@@ -6,6 +6,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 import '../data/line_auth/line_auth_result.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_tokens.dart';
 import '../widgets/app_svg_icons.dart';
 import '../widgets/line_bind_sheet.dart';
 import '../widgets/message_bubble_icon.dart';
@@ -198,7 +199,7 @@ class _NavItem extends StatelessWidget {
                           '$badgeCount',
                           style: const TextStyle(
                             fontSize: 10,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w800, letterSpacing: AppType.spacingBold,
                             color: AppColors.white,
                             height: 1,
                           ),

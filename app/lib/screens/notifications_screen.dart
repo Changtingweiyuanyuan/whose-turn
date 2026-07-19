@@ -62,7 +62,7 @@ class NotificationsScreen extends ConsumerWidget {
                                 n.title,
                                 style: const TextStyle(
                                     fontSize: AppType.body,
-                                    fontWeight: FontWeight.w600,
+                                    fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
                                     color: AppColors.white),
                               ),
                               const SizedBox(height: AppSpacing.sm), // 標題↔內文 8

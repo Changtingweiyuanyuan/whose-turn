@@ -161,7 +161,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
             style: TextStyle(
                 color: AppColors.pink,
                 fontSize: AppType.label,
-                fontWeight: FontWeight.w600)),
+                fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold)),
       ),
       body: NoiseBackground(
         child: ShadForm(

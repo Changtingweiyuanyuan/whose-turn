@@ -52,7 +52,7 @@ class TaskDetailScreen extends ConsumerWidget {
             style: TextStyle(
                 color: AppColors.orange,
                 fontSize: AppType.label,
-                fontWeight: FontWeight.w600)),
+                fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold)),
       ),
       body: NoiseBackground(
         child: ListView(
@@ -78,7 +78,7 @@ class TaskDetailScreen extends ConsumerWidget {
               // 詳情大標＝heading（與卡片標題 cardTitle 脫鉤）
               style: const TextStyle(
                 fontSize: AppType.heading,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
                 color: AppColors.green,
               ),
             ),
@@ -94,7 +94,7 @@ class TaskDetailScreen extends ConsumerWidget {
                   const TextSpan(
                     text: '：',
                     style: TextStyle(
-                        fontWeight: FontWeight.w600, color: AppColors.inkSoft),
+                        fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold, color: AppColors.inkSoft),
                   ),
                   TextSpan(text: creator.displayName),
                 ],
@@ -118,7 +118,7 @@ class TaskDetailScreen extends ConsumerWidget {
                         valueChild: Row(
                           children: [
                             Text('神秘禮物',
-                                style: TextStyle(fontWeight: FontWeight.w600)),
+                                style: TextStyle(fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold)),
                             SizedBox(width: 4),
                             AppSvgIcon(kGiftSlashSvg,
                                 color: AppColors.ink, size: 16),
@@ -126,7 +126,7 @@ class TaskDetailScreen extends ConsumerWidget {
                             Flexible(
                               child: Text('完成才知道',
                                   style:
-                                      TextStyle(fontWeight: FontWeight.w600)),
+                                      TextStyle(fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold)),
                             ),
                           ],
                         ),
@@ -139,7 +139,7 @@ class TaskDetailScreen extends ConsumerWidget {
                               children: [
                                 Text(task.rewardLabel,
                                     style: const TextStyle(
-                                        fontWeight: FontWeight.w600)),
+                                        fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold)),
                                 const SizedBox(width: 4),
                                 const AppSvgIcon(kCashSvg,
                                     color: AppColors.ink, size: 16),
@@ -357,7 +357,7 @@ class TaskDetailScreen extends ConsumerWidget {
                   const TextSpan(text: '🎉 恭喜完成！獎勵已解鎖'),
                   const TextSpan(
                       text: '：',
-                      style: TextStyle(fontWeight: FontWeight.w600)),
+                      style: TextStyle(fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold)),
                   TextSpan(text: task.rewardLabel),
                 ])),
               ),

@@ -36,7 +36,7 @@ class StarProgress extends StatelessWidget {
                   text: '$confirmed',
                   style: const TextStyle(
                     fontSize: AppType.body,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w800, letterSpacing: AppType.spacingBold,
                     color: AppColors.ink,
                   ),
                 ),

@@ -4,6 +4,7 @@ import 'package:shadcn_ui/shadcn_ui.dart';
 
 import '../widgets/app_close_icon.dart';
 import 'app_colors.dart';
+import 'app_tokens.dart';
 
 /// shadcn_ui 主題 —— 品牌色票 v2：
 /// 背景 #F7F7F7、墨黑 #010101、主色 #C2D1D3、橘 #FF8B04、粉 #CF729B。
@@ -93,7 +94,7 @@ abstract final class AppShadTheme {
           dayButtonOutsideMonthTextStyle: TextStyle(color: Colors.white38),
           weekdaysTextStyle: TextStyle(color: Colors.white70),
           headerTextStyle: TextStyle(
-              color: AppColors.white, fontWeight: FontWeight.w600),
+              color: AppColors.white, fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold),
         ),
         textTheme: ShadTextTheme(
           family: GoogleFonts.robotoCondensed().fontFamily!,

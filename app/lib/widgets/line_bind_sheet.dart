@@ -34,7 +34,7 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
             TextSpan(
               style: TextStyle(
                 fontSize: AppType.title,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
                 color: AppColors.white,
                 height: 1.2,
               ),

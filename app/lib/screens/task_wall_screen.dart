@@ -215,7 +215,7 @@ class _Masthead extends StatelessWidget {
             text: const TextSpan(
               style: TextStyle(
                 fontSize: 40,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
                 height: 1.1,
                 color: AppColors.ink,
               ),

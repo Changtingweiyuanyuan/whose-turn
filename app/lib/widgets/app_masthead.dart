@@ -69,7 +69,7 @@ class AppMasthead extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: AppType.title,
                     height: 1.0,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
                     color: AppColors.ink,
                   ),
                 ),
@@ -85,7 +85,7 @@ class AppMasthead extends StatelessWidget {
                       '$starTotal',
                       style: const TextStyle(
                           fontSize: AppType.title,
-                          fontWeight: FontWeight.w800,
+                          fontWeight: FontWeight.w800, letterSpacing: AppType.spacingBold,
                           color: AppColors.inkSoft),
                     ),
                   ],

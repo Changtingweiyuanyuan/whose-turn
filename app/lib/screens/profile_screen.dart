@@ -56,7 +56,7 @@ class ProfileScreen extends ConsumerWidget {
                       Text(me.displayName,
                           style: const TextStyle(
                               fontSize: AppType.body,
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
                               color: AppColors.white)),
 											const SizedBox(height: AppSpacing.xs),
                       Text(
@@ -78,7 +78,7 @@ class ProfileScreen extends ConsumerWidget {
                     Text('${me.starTotal}',
                         style: const TextStyle(
                             fontSize: AppType.title,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w800, letterSpacing: AppType.spacingBold,
                             color: AppColors.white)),
                   ],
                 ),
@@ -106,7 +106,7 @@ class ProfileScreen extends ConsumerWidget {
                       children: [
                         Text('資料尚未備份',
                             style: TextStyle(
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
                                 color: AppColors.ink)),
                         SizedBox(height: 4),
                         Text('綁定 LINE 保存星星與紀錄，換手機也不會消失',
@@ -163,7 +163,7 @@ class ProfileScreen extends ConsumerWidget {
                         child: Text(group.name,
                             style: const TextStyle(
                                 fontSize: AppType.body,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
                                 color: AppColors.white)),
                       ),
                       Text('${group.memberUids.length} 人',
@@ -235,7 +235,7 @@ class ProfileScreen extends ConsumerWidget {
                                       const TextSpan(
                                           text: '：',
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w600)),
+                                              fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold)),
                                       TextSpan(text: group.inviteLink),
                                     ])),
                               ),
@@ -282,7 +282,7 @@ class ProfileScreen extends ConsumerWidget {
             const Text('Demo 視角切換',
                 style: TextStyle(
                     fontSize: AppType.body,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
                     color: AppColors.white)),
             const SizedBox(height: 4),
             const Text(
@@ -448,7 +448,7 @@ class _ActionCard extends StatelessWidget {
                 children: [
                   Text(title,
                       style: const TextStyle(
-                          fontWeight: FontWeight.w600, color: AppColors.ink)),
+                          fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold, color: AppColors.ink)),
                   const SizedBox(height: 4),
                   Text(subtitle,
                       style: const TextStyle(

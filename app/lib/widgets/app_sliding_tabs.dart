@@ -63,7 +63,7 @@ class AppSlidingTabs extends StatelessWidget {
                             child: Text('$badgeCount',
                                 style: const TextStyle(
                                     fontSize: 11,
-                                    fontWeight: FontWeight.w800,
+                                    fontWeight: FontWeight.w800, letterSpacing: AppType.spacingBold,
                                     color: AppColors.white)),
                           ),
                         ],
