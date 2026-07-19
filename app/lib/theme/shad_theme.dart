@@ -14,9 +14,9 @@ abstract final class AppShadTheme {
     foreground: AppColors.ink,
     card: AppColors.white,
     cardForeground: AppColors.ink,
-    // 彈出層（select 選項、日曆）深底白字
-    popover: AppColors.diluteInk,
-    popoverForeground: AppColors.white,
+    // 彈出層（select 選項、日曆）淡灰底 Ink 字
+    popover: Color(0xFFF3F3F3),
+    popoverForeground: AppColors.ink,
     // 主色粉紅（主要按鈕、日曆選中日）
     primary: AppColors.pink,
     primaryForeground: AppColors.white,
@@ -25,14 +25,14 @@ abstract final class AppShadTheme {
     secondaryForeground: AppColors.white,
     muted: AppColors.lightGray,
     mutedForeground: AppColors.inkSoft,
-    // hover surface 用半透明白（與「放棄任務」ghost hover 一致）
-    accent: Color(0x14FFFFFF), // white ~8%
-    accentForeground: AppColors.white,
+    // hover surface：淡灰底上用半透明黑
+    accent: Color(0x0F000000), // black ~6%
+    accentForeground: AppColors.ink,
     destructive: Color(0xFFC0392B),
     destructiveForeground: AppColors.white,
     border: AppColors.lightGray,
     input: AppColors.lightGray,
-    ring: AppColors.ink,
+    ring: AppColors.green,
     selection: AppColors.main,
   );
 
@@ -69,11 +69,18 @@ abstract final class AppShadTheme {
         alertDialogTheme: ShadDialogTheme(
           border: Border.all(color: AppColors.inkSoft, width: 1),
         ),
-        // Input：任務詳情列同款 F3F3F3 淺底 + Ink 字
-        inputTheme: const ShadInputTheme(
-          decoration: ShadDecoration(color: Color(0xFFF3F3F3)),
-          style: TextStyle(color: AppColors.ink),
-          placeholderStyle: TextStyle(color: AppColors.inkSoft),
+        // Input：任務詳情列同款 F3F3F3 淺底 + Ink 字；focus 1.5px 愛心綠框
+        inputTheme: ShadInputTheme(
+          decoration: ShadDecoration(
+            color: const Color(0xFFF3F3F3),
+            focusedBorder: ShadBorder.all(
+              color: AppColors.green,
+              width: 1.5,
+              radius: BorderRadius.circular(6),
+            ),
+          ),
+          style: const TextStyle(color: AppColors.ink),
+          placeholderStyle: const TextStyle(color: AppColors.inkSoft),
           cursorColor: AppColors.ink,
           cursorWidth: 1,
         ),
@@ -81,20 +88,20 @@ abstract final class AppShadTheme {
         outlineButtonTheme: const ShadButtonTheme(
           foregroundColor: AppColors.white,
         ),
-        // 誰都可以接開關：開=pink、關=pinkSoft、把手白
+        // 誰都可以接開關：開=愛心綠、把手白
         switchTheme: const ShadSwitchTheme(
           thumbColor: AppColors.white,
-          checkedTrackColor: AppColors.pink,
+          checkedTrackColor: AppColors.green,
           uncheckedTrackColor: AppColors.main,
         ),
-        // 日曆：深底白字（配合 popover 深色）
+        // 日曆：淡灰底 Ink 字（配合 popover 淺色）
         calendarTheme: const ShadCalendarTheme(
           selectedDayButtonTextStyle: TextStyle(color: AppColors.white),
-          dayButtonTextStyle: TextStyle(color: AppColors.white),
-          dayButtonOutsideMonthTextStyle: TextStyle(color: Colors.white38),
-          weekdaysTextStyle: TextStyle(color: Colors.white70),
+          dayButtonTextStyle: TextStyle(color: AppColors.ink),
+          dayButtonOutsideMonthTextStyle: TextStyle(color: AppColors.inkSoft),
+          weekdaysTextStyle: TextStyle(color: AppColors.inkSoft),
           headerTextStyle: TextStyle(
-              color: AppColors.white, fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold),
+              color: AppColors.ink, fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold),
         ),
         textTheme: ShadTextTheme(
           family: GoogleFonts.robotoCondensed().fontFamily!,

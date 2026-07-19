@@ -198,16 +198,22 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                         height: 44,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color:
-                              _emoji == e ? AppColors.pinkSoft : AppColors.white,
+                          color: AppColors.white,
                           shape: BoxShape.circle,
                           border: Border.all(
                             color: _emoji == e
-                                ? AppColors.pink
+                                ? AppColors.greenMist
                                 : AppColors.lightGray,
                             width: _emoji == e ? 2 : 1,
                           ),
                         ),
+                        // 選中：icon 上蓋一層 50% 淡綠
+                        foregroundDecoration: _emoji == e
+                            ? const BoxDecoration(
+                                color: Color(0x80DEEDE4),
+                                shape: BoxShape.circle,
+                              )
+                            : null,
                         child: TaskIcon(icon: e, size: 26),
                       ),
                     ),
@@ -249,12 +255,11 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               ),
               const SizedBox(height: 16),
               const _FieldLabel('獎勵類型'),
-              // 分段控制：容器同 input（diluteInk 底 + lightGray 1px 框），
-              // 選中格只加粉色細框、微內縮、無填色
+              // 分段控制：容器同 input（F3F3F3 底），選中＝愛心綠
               Container(
                 padding: const EdgeInsets.all(6), // 距容器 6px
                 decoration: BoxDecoration(
-                  color: AppColors.diluteInk,
+                  color: const Color(0xFFF3F3F3),
                   borderRadius: BorderRadius.circular(6),
                   border: Border.all(color: AppColors.lightGray, width: 1),
                 ),
@@ -277,18 +282,20 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                               alignment: Alignment.center,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(6),
-                                // 選中=pink 底、hover=半透明白、其餘透明
+                                // 選中=愛心綠底、hover=半透明黑、其餘透明
                                 color: _rewardType == entry.key
-                                    ? AppColors.pink
+                                    ? AppColors.green
                                     : (_hoveredReward == entry.key
-                                        ? const Color(0x14FFFFFF)
+                                        ? const Color(0x0F000000)
                                         : Colors.transparent),
                               ),
                               child: Text(
                                 entry.value,
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontWeight: FontWeight.w500,
-                                  color: AppColors.white,
+                                  color: _rewardType == entry.key
+                                      ? AppColors.white
+                                      : AppColors.ink,
                                 ),
                               ),
                             ),
@@ -322,7 +329,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                         style: TextStyle(
                             fontSize: AppType.body,
                             fontWeight: FontWeight.w500,
-                            color: AppColors.white)),
+                            color: AppColors.ink)),
                   ),
                   ShadSwitch(
                     value: _anyoneCanClaim,
@@ -340,9 +347,10 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                     // 撐滿：trigger 與 popover 都用可用寬度，不會溢出
                     minWidth: constraints.maxWidth,
                     maxWidth: constraints.maxWidth,
-                    decoration: const ShadDecoration(color: AppColors.diluteInk),
+                    decoration:
+                        const ShadDecoration(color: Color(0xFFF3F3F3)),
                     placeholder: const Text('選擇成員',
-                        style: TextStyle(color: Colors.white54)),
+                        style: TextStyle(color: AppColors.inkSoft)),
                     options: [
                       for (final m in members)
                         ShadOption(
@@ -365,7 +373,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                           PersonAvatar(m.avatarEmoji, size: 20),
                           const SizedBox(width: 6),
                           Text(m.displayName,
-                              style: const TextStyle(color: AppColors.white)),
+                              style: const TextStyle(color: AppColors.ink)),
                         ],
                       );
                     },
@@ -392,8 +400,8 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
   }
 }
 
-/// 數量 stepper 的 +/- 按鈕：diluteInk 底，hover 疊一層半透明白（底色仍 diluteInk）、
-/// 白 icon、邊框對齊次數框（lightGray）。IntrinsicHeight Row 內會撐到輸入框高度。
+/// 數量 stepper 的 +/- 按鈕：愛心綠底、白 icon，hover 壓深綠。
+/// IntrinsicHeight Row 內會撐到輸入框高度。
 class _StepButton extends StatefulWidget {
   const _StepButton({required this.svg, required this.onTap});
 
@@ -409,10 +417,7 @@ class _StepButtonState extends State<_StepButton> {
 
   @override
   Widget build(BuildContext context) {
-    // hover 時：diluteInk 疊上 8% 白 → 略亮
-    final bg = _hover
-        ? Color.alphaBlend(const Color(0x14FFFFFF), AppColors.diluteInk)
-        : AppColors.diluteInk;
+    final bg = _hover ? AppColors.greenDark : AppColors.green;
     return MouseRegion(
       onEnter: (_) => setState(() => _hover = true),
       onExit: (_) => setState(() => _hover = false),
@@ -425,7 +430,6 @@ class _StepButtonState extends State<_StepButton> {
           decoration: BoxDecoration(
             color: bg,
             borderRadius: BorderRadius.circular(6),
-            border: Border.all(color: AppColors.lightGray, width: 1),
           ),
           child: AppSvgIcon(widget.svg, color: AppColors.white, size: 20),
         ),
