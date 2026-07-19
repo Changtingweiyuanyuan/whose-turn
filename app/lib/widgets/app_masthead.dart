@@ -78,8 +78,10 @@ class AppMasthead extends StatelessWidget {
                     const SizedBox(width: 6),
                     Text(
                       '$starTotal',
+                      // height 1.0 對齊標題行高，避免撐高刊頭（各頁 tab 位置才會一致）
                       style: const TextStyle(
                           fontSize: AppType.title,
+                          height: 1.0,
                           fontWeight: FontWeight.w800, letterSpacing: AppType.spacingBold,
                           color: AppColors.inkSoft),
                     ),
