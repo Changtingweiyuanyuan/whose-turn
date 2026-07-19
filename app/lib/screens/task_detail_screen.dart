@@ -51,10 +51,10 @@ class TaskDetailScreen extends ConsumerWidget {
         title: const Text(
           '任務詳情',
           style: TextStyle(
-            color: AppColors.ink,
+            color: AppColors.inkSoft,
             fontSize: AppType.label,
-            fontWeight: FontWeight.w500,
-            letterSpacing: AppType.spacing,
+            fontWeight: FontWeight.w600,
+            letterSpacing: AppType.spacingBold,
           ),
         ),
       ),
@@ -81,9 +81,9 @@ class TaskDetailScreen extends ConsumerWidget {
               Center(
                 child: Text(
                   task.title,
-                  // 詳情大標＝heading（與卡片標題 cardTitle 脫鉤）
+                  // 詳情大標＝title（與卡片標題 cardTitle 脫鉤）
                   style: const TextStyle(
-                    fontSize: AppType.heading,
+                    fontSize: AppType.title,
                     fontWeight: FontWeight.w600,
                     letterSpacing: AppType.spacingBold,
                     color: AppColors.green,
