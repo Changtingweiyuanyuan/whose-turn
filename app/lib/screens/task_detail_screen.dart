@@ -60,7 +60,12 @@ class TaskDetailScreen extends ConsumerWidget {
       ),
       body: NoiseBackground(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
+          padding: const EdgeInsets.fromLTRB(
+            AppSpacing.pagePadding,
+            24,
+            AppSpacing.pagePadding,
+            24,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
