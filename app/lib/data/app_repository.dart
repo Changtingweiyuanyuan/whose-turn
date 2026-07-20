@@ -56,6 +56,10 @@ abstract class AppRepository extends ChangeNotifier {
   // --- 帳號 ---
   Future<void> bindLine();
 
+  /// 刪除帳號：清除此使用者發起的任務（連同完成紀錄）、此人在其他任務的
+  /// 完成紀錄、群組成員資格、user doc 與通知，最後刪除登入帳號。
+  Future<void> deleteAccount();
+
   /// Demo 用：切換目前使用者，方便同時體驗發起人與接單人視角。
   Future<void> switchUser(String uid);
 }

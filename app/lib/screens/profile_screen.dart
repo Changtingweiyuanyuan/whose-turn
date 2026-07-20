@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../app_reload_stub.dart' if (dart.library.html) '../app_reload_web.dart';
 import '../data/fake_app_repository.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
@@ -329,6 +330,21 @@ class ProfileScreen extends ConsumerWidget {
                   ),
                 ],
 
+                // 刪除帳號：樣式同「放棄任務」次要 CTA、佔滿寬度
+                const SizedBox(height: 24),
+                ShadButton(
+                  width: double.infinity,
+                  backgroundColor: AppColors.bg,
+                  foregroundColor: AppColors.green,
+                  hoverBackgroundColor: AppColors.greenSoft,
+                  hoverForegroundColor: AppColors.green,
+                  decoration: ShadDecoration(
+                    border: ShadBorder.all(color: AppColors.green, width: 1),
+                  ),
+                  onPressed: () => _confirmDeleteAccount(context, ref),
+                  child: const Text('刪除帳號'),
+                ),
+
                 // Demo 視角切換：僅雛形（FakeAppRepository）顯示；正式模式不能切身分
                 if (repo is FakeAppRepository) ...[
                   const SizedBox(height: 24),
@@ -462,6 +478,77 @@ class ProfileScreen extends ConsumerWidget {
     if (confirmed == true) {
       await ref.read(repositoryProvider).leaveGroup();
     }
+  }
+
+  Future<void> _confirmDeleteAccount(
+      BuildContext context, WidgetRef ref) async {
+    final confirmed = await showShadDialog<bool>(
+      context: context,
+      opaque: false,
+      barrierColor: Colors.black54,
+      builder: (ctx) => ShadDialog.alert(
+        backgroundColor: AppColors.bg,
+        border: Border.all(color: AppColors.inkSoft, width: 1),
+        radius: BorderRadius.circular(AppRadius.card),
+        removeBorderRadiusWhenTiny: false,
+        gap: AppSpacing.lg,
+        closeIcon: const AppCloseIcon(),
+        closeIconPosition: const ShadPosition(top: 20, right: 20),
+        title: const Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              '確定要刪除帳號？',
+              style: TextStyle(
+                fontSize: AppType.body,
+                fontWeight: FontWeight.w500,
+                color: AppColors.ink,
+              ),
+            ),
+            SizedBox(height: 12),
+            Text(
+              '你發起的任務、完成紀錄與星星都會一起刪除，且無法復原。',
+              style: TextStyle(
+                fontSize: AppType.label,
+                fontWeight: FontWeight.w400,
+                color: AppColors.inkSoft,
+              ),
+            ),
+          ],
+        ),
+        expandActionsWhenTiny: false,
+        actionsAxis: Axis.horizontal,
+        actionsMainAxisAlignment: MainAxisAlignment.end,
+        actionsGap: AppSpacing.sm,
+        actions: [
+          ShadButton(
+            backgroundColor: AppColors.bg,
+            foregroundColor: AppColors.green,
+            hoverBackgroundColor: AppColors.greenSoft,
+            hoverForegroundColor: AppColors.green,
+            decoration: ShadDecoration(
+              border: ShadBorder.all(color: AppColors.green, width: 1),
+            ),
+            onPressed: () => Navigator.pop(ctx, false),
+            child: const Text('取消'),
+          ),
+          // 刪除＝破壞性動作：紅底白字
+          ShadButton(
+            backgroundColor: AppColors.red,
+            foregroundColor: AppColors.bg,
+            hoverBackgroundColor: AppColors.red,
+            hoverForegroundColor: AppColors.bg,
+            onPressed: () => Navigator.pop(ctx, true),
+            child: const Text('刪除帳號'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+    await ref.read(repositoryProvider).deleteAccount();
+    // web：整頁重載回全新訪客；其他平台交由呼叫端（目前僅 web）。
+    reloadApp();
   }
 
   Future<void> _createGroupFlow(BuildContext context, WidgetRef ref) async {

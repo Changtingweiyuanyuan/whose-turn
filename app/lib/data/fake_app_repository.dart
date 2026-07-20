@@ -525,4 +525,33 @@ class FakeAppRepository extends AppRepository {
     _currentUser = _users[uid]!;
     notifyListeners();
   }
+
+  @override
+  Future<void> deleteAccount() async {
+    final uid = _currentUser.uid;
+    // 我發起的任務連任務一起刪；別人任務裡我的完成紀錄一併移除
+    _tasks.removeWhere((t) => t.createdBy == uid);
+    for (var i = 0; i < _tasks.length; i++) {
+      final t = _tasks[i];
+      if (t.completions.any((c) => c.userId == uid)) {
+        _tasks[i] = t.copyWith(
+          completions:
+              t.completions.where((c) => c.userId != uid).toList(),
+        );
+      }
+    }
+    // 退出群組、清通知與使用者
+    if (_group != null) {
+      _group = Group(
+        id: _group!.id,
+        name: _group!.name,
+        inviteCode: _group!.inviteCode,
+        createdBy: _group!.createdBy,
+        memberUids: _group!.memberUids.where((u) => u != uid).toList(),
+      );
+    }
+    _notifications.removeWhere((n) => n.recipientUid == uid);
+    _users.remove(uid);
+    notifyListeners();
+  }
 }

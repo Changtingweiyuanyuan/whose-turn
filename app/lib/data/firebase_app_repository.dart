@@ -608,6 +608,67 @@ class FirebaseAppRepository extends AppRepository {
     throw UnsupportedError('正式模式不提供視角切換');
   }
 
+  @override
+  Future<void> deleteAccount() async {
+    final uid = _uid;
+    final g = _group;
+
+    // 1. 我發起的任務：連同 completions 子集合一起刪
+    final myTasks =
+        await _db.collection('tasks').where('createdBy', isEqualTo: uid).get();
+    for (final t in myTasks.docs) {
+      final comps = await t.reference.collection('completions').get();
+      final batch = _db.batch();
+      for (final c in comps.docs) {
+        batch.delete(c.reference);
+      }
+      batch.delete(t.reference);
+      await batch.commit();
+    }
+
+    // 2. 我在別人任務裡的完成紀錄（collectionGroup 一次撈、分批刪）
+    final myComps = await _db
+        .collectionGroup('completions')
+        .where('userId', isEqualTo: uid)
+        .get();
+    for (var i = 0; i < myComps.docs.length; i += 400) {
+      final batch = _db.batch();
+      for (final c in myComps.docs.skip(i).take(400)) {
+        batch.delete(c.reference);
+      }
+      await batch.commit();
+    }
+
+    // 3. 退出群組（刪成員 doc）
+    if (g != null) {
+      await _db
+          .collection('groups')
+          .doc(g.id)
+          .collection('members')
+          .doc(uid)
+          .delete();
+    }
+
+    // 4. user doc + 通知子集合
+    final notifs =
+        await _db.collection('users').doc(uid).collection('notifications').get();
+    for (var i = 0; i < notifs.docs.length; i += 400) {
+      final batch = _db.batch();
+      for (final n in notifs.docs.skip(i).take(400)) {
+        batch.delete(n.reference);
+      }
+      await batch.commit();
+    }
+    await _db.collection('users').doc(uid).delete();
+
+    // 5. 刪除登入帳號；LINE 帳號可能因需重新登入而失敗，資料已清空故僅登出。
+    try {
+      await _auth.currentUser?.delete();
+    } on fb.FirebaseAuthException {
+      await _auth.signOut();
+    }
+  }
+
   // ----------------------------------------------------------- mappers
 
   AppUser _userFrom(String uid, Map<String, dynamic> d) => AppUser(
