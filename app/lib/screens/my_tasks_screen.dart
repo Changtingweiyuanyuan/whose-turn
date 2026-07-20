@@ -8,6 +8,7 @@ import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
 import '../widgets/app_masthead.dart';
+import '../widgets/app_sliding_tabs.dart';
 import '../widgets/person_avatar.dart';
 import '../widgets/task_card.dart';
 
@@ -34,48 +35,55 @@ class _MyTasksScreenState extends ConsumerState<MyTasksScreen> {
         .where((t) => t.createdBy == me.uid && t.hasPendingCompletion)
         .toList();
     final done = repo.tasks
-        .where((t) =>
-            (t.claimedBy == me.uid || t.createdBy == me.uid) &&
-            (t.status == TaskStatus.completed ||
-                t.status == TaskStatus.rewardClaimed))
+        .where(
+          (t) =>
+              (t.claimedBy == me.uid || t.createdBy == me.uid) &&
+              (t.status == TaskStatus.completed ||
+                  t.status == TaskStatus.rewardClaimed),
+        )
         .toList();
 
     final pendingCount = toConfirm
         .expand((t) => t.completions)
         .where((c) => c.status == CompletionStatus.pending)
         .length;
-    final userNo =
-        (repo.currentGroup?.memberUids.indexOf(me.uid) ?? -1) + 1;
+    final userNo = repo.userNo;
 
     return SafeArea(
       bottom: false,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppMasthead(
-              title: '我的任務', userNo: userNo, starTotal: me.starTotal),
+          AppMasthead(title: '我的任務', userNo: userNo, starTotal: me.starTotal),
           const SizedBox(height: AppSpacing.lg),
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: AppSpacing.pagePadding),
-            child: _SlidingTabs(
-              labels: const ['進行中', '等待確認', '已完成'],
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.pagePadding,
+            ),
+            child: AppSlidingTabs(
+              // 數字直接進標題（同「完成紀錄 (n)」），不用橘色 badge
+              labels: [
+                '進行中',
+                pendingCount > 0 ? '等待確認 ($pendingCount)' : '等待確認',
+                '已完成',
+              ],
               selected: _tab,
               onChanged: (i) => setState(() => _tab = i),
-              badgeIndex: 1,
-              badgeCount: pendingCount,
             ),
           ),
           const SizedBox(height: AppSpacing.md),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.pagePadding),
+                horizontal: AppSpacing.pagePadding,
+              ),
               child: IndexedStack(
                 index: _tab,
                 children: [
                   _TaskList(
-                      tasks: inProgress, emptyText: '還沒接任務\n去任務看板看看今天換誰？'),
+                    tasks: inProgress,
+                    emptyText: '還沒接任務\n去任務看板看看今天換誰？',
+                  ),
                   _ConfirmList(tasks: toConfirm),
                   _TaskList(tasks: done, emptyText: '完成的任務會出現在這裡'),
                 ],
@@ -84,101 +92,6 @@ class _MyTasksScreenState extends ConsumerState<MyTasksScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-
-
-/// 滑動底線分頁（圖二）：三格平均分佈，選中底線在整條基線上滑動。
-class _SlidingTabs extends StatelessWidget {
-  const _SlidingTabs({
-    required this.labels,
-    required this.selected,
-    required this.onChanged,
-    this.badgeIndex = -1,
-    this.badgeCount = 0,
-  });
-
-  final List<String> labels;
-  final int selected;
-  final ValueChanged<int> onChanged;
-  final int badgeIndex;
-  final int badgeCount;
-
-  @override
-  Widget build(BuildContext context) {
-    final n = labels.length;
-    // 選中格中心的對齊 x：0→-1, 中→0, 末→1
-    final x = n == 1 ? 0.0 : -1.0 + 2.0 * selected / (n - 1);
-
-    return Column(
-      children: [
-        Row(
-          children: [
-            for (var i = 0; i < n; i++)
-              Expanded(
-                child: GestureDetector(
-                  onTap: () => onChanged(i),
-                  behavior: HitTestBehavior.opaque,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 8),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          labels[i],
-                          style: TextStyle(
-                            fontSize: AppType.body,
-                            fontWeight: FontWeight.w500,
-                            color:
-                                i == selected ? AppColors.white : AppColors.main,
-                          ),
-                        ),
-                        if (i == badgeIndex && badgeCount > 0) ...[
-                          const SizedBox(width: 8),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 6, vertical: 1),
-                            decoration: const BoxDecoration(
-                              color: AppColors.pink,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Text('$badgeCount',
-                                style: const TextStyle(
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.w800,
-                                    color: AppColors.white)),
-                          ),
-                        ],
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-          ],
-        ),
-        // 基線 + 滑動的粉色底線
-        Stack(
-          children: [
-            Container(height: 1, color: Colors.white24),
-            AnimatedAlign(
-              duration: const Duration(milliseconds: 240),
-              curve: Curves.easeOutCubic,
-              alignment: Alignment(x, 0),
-              child: FractionallySizedBox(
-                widthFactor: 1 / n,
-                child: Container(
-                  height: 3,
-                  decoration: BoxDecoration(
-                    color: AppColors.pink,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }
@@ -199,7 +112,7 @@ class _TaskList extends ConsumerWidget {
           child: Text(
             emptyText,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white70, height: 1.6),
+            style: const TextStyle(color: AppColors.inkSoft, height: 1.6),
           ),
         ),
       );
@@ -209,13 +122,14 @@ class _TaskList extends ConsumerWidget {
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 96),
       itemCount: tasks.length,
-      separatorBuilder: (_, _) => const SizedBox(height: 16),
+      separatorBuilder: (_, _) => const SizedBox(height: 12),
       itemBuilder: (context, i) => TaskCard(
         task: tasks[i],
         viewer: repo.currentUser,
         creator: repo.userOf(tasks[i].createdBy),
-        // 藍/白輪替，與首頁一致
-        backgroundColor: i.isEven ? AppColors.main : AppColors.white,
+        // 底色 = 任務建立時記錄的輪替色，與首頁一致
+        backgroundColor: AppColors
+            .cardCycle[tasks[i].colorIndex % AppColors.cardCycle.length],
         onTap: () => context.push('/task/${tasks[i].id}'),
       ),
     );
@@ -241,8 +155,7 @@ class _ConfirmList extends ConsumerWidget {
       return const Padding(
         padding: EdgeInsets.symmetric(vertical: 48),
         child: Center(
-          child: Text('沒有待確認的完成紀錄',
-              style: TextStyle(color: Colors.white70)),
+          child: Text('沒有待確認的完成紀錄', style: TextStyle(color: AppColors.inkSoft)),
         ),
       );
     }
@@ -252,60 +165,85 @@ class _ConfirmList extends ConsumerWidget {
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 96),
       itemCount: entries.length,
-      separatorBuilder: (_, _) => const SizedBox(height: 16),
+      separatorBuilder: (_, _) => const SizedBox(height: 12),
       itemBuilder: (context, i) {
         final (:task, :completion) = entries[i];
         final doer = repo.userOf(completion.userId);
-        // 與任務詳情「完成紀錄」dark block 完全一致
+        // 與任務詳情「完成紀錄」一致：四色輪替、無邊框
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           decoration: BoxDecoration(
-            color: AppColors.diluteInk,
+            color: AppColors
+                .cardCycle[task.colorIndex % AppColors.cardCycle.length],
             borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: AppColors.inkSoft, width: 1),
           ),
           child: Row(
             children: [
-              PersonAvatar(doer.avatarEmoji, size: 26),
-              const SizedBox(width: 12),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '${doer.displayName} 完成了 ${task.title}',
+                    // 笑臉（16，同家人 tag）行內排版：斷行會繞到 icon 下方
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.middle,
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: PersonAvatar(
+                                doer.avatarEmoji,
+                                size: 16,
+                                fillColor: AppColors.ink,
+                                orangeColor: AppColors.ink,
+                              ),
+                            ),
+                          ),
+                          TextSpan(
+                            text: '${doer.displayName} 完成了 ${task.title}',
+                          ),
+                        ],
+                      ),
                       style: const TextStyle(
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.white),
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.ink,
+                      ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       DateFormat('MM/dd HH:mm').format(completion.submittedAt),
                       style: const TextStyle(
-                          fontSize: 12, color: AppColors.main),
+                        fontSize: 12,
+                        color: AppColors.inkSoft,
+                      ),
                     ),
                   ],
                 ),
               ),
+              // 文字↔按鈕 gap 對齊按鈕之間的 8
+              const SizedBox(width: 8),
               // 退回 = 次要 CTA：ink 底、hover inkHover
               ShadButton(
                 size: ShadButtonSize.sm,
-                backgroundColor: AppColors.ink,
-                foregroundColor: AppColors.white,
-                hoverBackgroundColor: AppColors.inkHover,
-                hoverForegroundColor: AppColors.white,
-                onPressed: () =>
-                    repo.rejectCompletion(task.id, completion.id),
+                backgroundColor: AppColors.bg,
+                foregroundColor: AppColors.green,
+                hoverBackgroundColor: AppColors.greenSoft,
+                hoverForegroundColor: AppColors.green,
+                decoration: ShadDecoration(
+                  border: ShadBorder.all(color: AppColors.green, width: 1),
+                ),
+                onPressed: () => repo.rejectCompletion(task.id, completion.id),
                 child: const Text('退回'),
               ),
               const SizedBox(width: 8),
               // 確認 對齊「完成一次」：粉底白字
               ShadButton(
                 size: ShadButtonSize.sm,
-                backgroundColor: AppColors.pink,
-                foregroundColor: AppColors.white,
-                onPressed: () =>
-                    repo.confirmCompletion(task.id, completion.id),
+                backgroundColor: AppColors.green,
+                foregroundColor: AppColors.bg,
+                hoverBackgroundColor: AppColors.greenDark,
+                hoverForegroundColor: AppColors.bg,
+                onPressed: () => repo.confirmCompletion(task.id, completion.id),
                 child: const Text('確認'),
               ),
             ],

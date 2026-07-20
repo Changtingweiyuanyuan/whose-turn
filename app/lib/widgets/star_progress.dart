@@ -37,6 +37,7 @@ class StarProgress extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: AppType.body,
                     fontWeight: FontWeight.w800,
+                    letterSpacing: AppType.spacingBold,
                     color: AppColors.ink,
                   ),
                 ),
@@ -63,7 +64,7 @@ class StarProgress extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(right: 4),
             child: i < confirmed
-                ? AppSvgIcon(kStarSvg, color: AppColors.pink, size: size)
+                ? AppSvgIcon(kStarSvg, color: AppColors.red, size: size)
                 : AppSvgIcon(kStarSlashSvg, color: AppColors.main, size: size),
           ),
       ],
@@ -97,7 +98,7 @@ class _SegmentBar extends StatelessWidget {
               children: [
                 Expanded(
                   flex: confirmed,
-                  child: Container(height: height, color: AppColors.pink),
+                  child: Container(height: height, color: AppColors.orange),
                 ),
                 Expanded(
                   flex: (required - confirmed).clamp(0, required),

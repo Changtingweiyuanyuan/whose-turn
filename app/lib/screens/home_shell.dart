@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
+import '../data/line_auth/line_auth_result.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_tokens.dart';
 import '../widgets/app_svg_icons.dart';
+import '../widgets/group_dialogs.dart';
 import '../widgets/line_bind_sheet.dart';
 import '../widgets/message_bubble_icon.dart';
 import '../widgets/noise_background.dart';
@@ -15,7 +19,10 @@ import 'task_wall_screen.dart';
 
 /// 底部導覽外殼：任務看板／我的任務／(+)／訊息／我的。
 class HomeShell extends ConsumerStatefulWidget {
-  const HomeShell({super.key});
+  const HomeShell({super.key, this.joinCode});
+
+  /// 邀請連結（/j/:code）帶入的邀請碼：進站後自動開加入群組視窗。
+  final String? joinCode;
 
   @override
   ConsumerState<HomeShell> createState() => _HomeShellState();
@@ -23,6 +30,55 @@ class HomeShell extends ConsumerStatefulWidget {
 
 class _HomeShellState extends ConsumerState<HomeShell> {
   int _index = 0;
+  bool _fabHover = false;
+
+  @override
+  void initState() {
+    super.initState();
+    // LINE 授權回跳的結果，成功或失敗都要讓使用者知道。
+    // 延遲到首幀之後再 show：ShadToaster 的進場動畫在第一幀尚未就緒。
+    final lineResult = ref.read(lineRedirectResultProvider);
+    if (lineResult != LineRedirectResult.none) {
+      Future.delayed(const Duration(milliseconds: 800), () {
+        if (!mounted) return;
+        ShadToaster.of(context).show(
+          ShadToast(
+            description: Text(
+              lineResult == LineRedirectResult.success
+                  ? 'LINE 綁定成功！'
+                  : 'LINE 綁定失敗，請再試一次',
+            ),
+          ),
+        );
+      });
+    }
+
+    // 邀請連結進站：自動開「加入群組」並代填邀請碼（已在該群組則略過）。
+    final code = widget.joinCode;
+    if (code != null && code.trim().isNotEmpty) {
+      Future.delayed(const Duration(milliseconds: 800), () async {
+        if (!mounted) return;
+        final repo = ref.read(repositoryProvider);
+        final g = repo.currentGroup;
+        if (g != null &&
+            g.inviteCode.toUpperCase() == code.trim().toUpperCase() &&
+            g.memberUids.contains(repo.currentUser.uid)) {
+          ShadToaster.of(
+            context,
+          ).show(ShadToast(description: Text('你已經在「${g.name}」裡囉！')));
+          return;
+        }
+        final message = await showJoinGroupDialog(
+          context,
+          ref,
+          initialCode: code,
+        );
+        if (message != null && mounted) {
+          ShadToaster.of(context).show(ShadToast(description: Text(message)));
+        }
+      });
+    }
+  }
 
   Future<void> _startCreateTask() async {
     final repo = ref.read(repositoryProvider);
@@ -53,18 +109,38 @@ class _HomeShellState extends ConsumerState<HomeShell> {
           ],
         ),
       ),
-      // 中央建立鍵：粉色圓形大鍵，坐落在圓弧 notch 上
-      floatingActionButton: GestureDetector(
-        onTap: _startCreateTask,
-        child: Container(
-          width: 60,
-          height: 60,
-          decoration: const BoxDecoration(
-            color: AppColors.pink,
-            shape: BoxShape.circle,
+      // 中央建立鍵：綠色愛心大鍵，浮在導覽列上；hover 變紅 D5665C
+      floatingActionButton: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        onEnter: (_) => setState(() => _fabHover = true),
+        onExit: (_) => setState(() => _fabHover = false),
+        child: GestureDetector(
+          onTap: _startCreateTask,
+          child: SizedBox(
+            width: 70,
+            height: 70,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                // 4px 淡綠光暈（放大版愛心墊底）
+                const AppAssetIcon(
+                  'assets/icons/heart.svg',
+                  color: AppColors.greenMist,
+                  size: 70,
+                ),
+                AppAssetIcon(
+                  'assets/icons/heart.svg',
+                  color: _fabHover ? AppColors.red : null,
+                  size: 62,
+                ),
+                // 愛心視覺重心略偏上，加號往上微調置中
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 3),
+                  child: AppSvgIcon(kAddSvg, color: AppColors.white, size: 26),
+                ),
+              ],
+            ),
           ),
-          alignment: Alignment.center,
-          child: const AppSvgIcon(kAddSvg, color: AppColors.white, size: 28),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -73,41 +149,40 @@ class _HomeShellState extends ConsumerState<HomeShell> {
           //border: Border(top: BorderSide(color: AppColors.inkSoft, width: 0.5)),
         ),
         child: BottomAppBar(
-          color: AppColors.diluteInk,
-          shape: const CircularNotchedRectangle(),
-          notchMargin: 8,
+          color: AppColors.greenSoft,
           height: 62 + MediaQuery.of(context).padding.bottom,
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).padding.bottom,
+          ),
           child: Row(
             children: [
               _NavItem(
                 iconBuilder: (color) => AppSvgIcon(kHomeBoardSvg, color: color),
-              label: '任務看板',
-              selected: _index == 0,
-              onTap: () => setState(() => _index = 0),
-            ),
-            _NavItem(
-              iconBuilder: (color) => AppSvgIcon(kTaskListSvg, color: color),
-              label: '我的任務',
-              selected: _index == 1,
-              onTap: () => setState(() => _index = 1),
-            ),
-            const Expanded(child: SizedBox()), // FAB 缺口
-            _NavItem(
-              iconBuilder: (color) =>
-                  MessageBubbleIcon(color: color, size: 24),
-              label: '通知',
-              selected: _index == 2,
-              badgeCount: unread,
-              onTap: () => setState(() => _index = 2),
-            ),
-            _NavItem(
-              iconBuilder: (color) => AppSvgIcon(kSettingsSvg, color: color),
-              label: '個人設定',
-              selected: _index == 3,
-              onTap: () => setState(() => _index = 3),
-            ),
+                label: '任務看板',
+                selected: _index == 0,
+                onTap: () => setState(() => _index = 0),
+              ),
+              _NavItem(
+                iconBuilder: (color) => AppSvgIcon(kTaskListSvg, color: color),
+                label: '我的任務',
+                selected: _index == 1,
+                onTap: () => setState(() => _index = 1),
+              ),
+              const Expanded(child: SizedBox()), // FAB 缺口
+              _NavItem(
+                iconBuilder: (color) =>
+                    MessageBubbleIcon(color: color, size: 24),
+                label: '通知',
+                selected: _index == 2,
+                badgeCount: unread,
+                onTap: () => setState(() => _index = 2),
+              ),
+              _NavItem(
+                iconBuilder: (color) => AppSvgIcon(kSettingsSvg, color: color),
+                label: '個人設定',
+                selected: _index == 3,
+                onTap: () => setState(() => _index = 3),
+              ),
             ],
           ),
         ),
@@ -138,16 +213,17 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = selected ? AppColors.pink : Colors.white54;
+    final color = selected ? AppColors.green : AppColors.ink;
     return Expanded(
       child: InkWell(
         onTap: onTap,
+        borderRadius: BorderRadius.circular(6),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 6),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // 自訂 badge：粉圓 + 1.5px diluteInk 邊框（與導覽底同色，做出切割感）
+              // 自訂 badge：橘圓 + 1.5px 邊框（與導覽底同色，做出切割感）
               Stack(
                 clipBehavior: Clip.none,
                 children: [
@@ -162,16 +238,19 @@ class _NavItem extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 5),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: AppColors.pink,
+                          color: AppColors.orange,
                           borderRadius: BorderRadius.circular(999),
                           border: Border.all(
-                              color: AppColors.diluteInk, width: 1.5),
+                            color: AppColors.greenSoft,
+                            width: 1.5,
+                          ),
                         ),
                         child: Text(
                           '$badgeCount',
                           style: const TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w800,
+                            letterSpacing: AppType.spacingBold,
                             color: AppColors.white,
                             height: 1,
                           ),

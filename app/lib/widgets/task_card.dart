@@ -32,92 +32,125 @@ class TaskCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final canClaim = task.canClaimBy(viewer.uid);
 
-    return GestureDetector(
-      onTap: onTap,
-      child: ShadCard(
-        backgroundColor: backgroundColor,
-        radius: BorderRadius.circular(AppRadius.card),
-        border: ShadBorder.none,
-        padding: const EdgeInsets.all(AppSpacing.md),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // 左側插圖（emoji 或手繪圖）；與內容間距 12
-            Padding(
-              padding: const EdgeInsets.only(top: 2, right: 12),
-              child: TaskIcon(icon: task.emoji, size: 44),
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      child: GestureDetector(
+        onTap: onTap,
+        // 1px 紋理邊框：外層鋪滿重複的紋理圖、內縮 1px 露出邊。
+        child: Container(
+          padding: const EdgeInsets.all(1),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppRadius.card),
+            image: const DecorationImage(
+              image: AssetImage('assets/images/card_border.png'),
+              repeat: ImageRepeat.repeat,
+              fit: BoxFit.none,
             ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // 標題 + 次數（右上角）：標題底部對齊次數底部
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+          ),
+          child: ShadCard(
+            backgroundColor: backgroundColor,
+            radius: BorderRadius.circular(AppRadius.card - 1),
+            border: ShadBorder.none,
+            padding: const EdgeInsets.all(AppSpacing.md),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 左側插圖（emoji 或手繪圖）白圓底；與內容間距 12
+                Padding(
+                  padding: const EdgeInsets.only(top: 2, right: 12),
+                  child: Container(
+                    width: 44,
+                    height: 44,
+                    alignment: Alignment.center,
+                    decoration: const BoxDecoration(
+                      color: AppColors.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: TaskIcon(icon: task.emoji, size: 30),
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Text(
-                          task.title,
-                          style: const TextStyle(
-                            fontSize: AppType.cardTitle,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.ink,
+                      // 標題 + 次數（右上角）：標題底部對齊次數底部
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              task.title,
+                              style: const TextStyle(
+                                fontSize: AppType.cardTitle,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: AppType.spacingBold,
+                                color: AppColors.ink,
+                              ),
+                            ),
                           ),
+                          const SizedBox(width: AppSpacing.sm),
+                          _CountLabel(
+                            confirmed: task.confirmedCount,
+                            required: task.requiredCount,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: AppSpacing.sm), // 標題↔發起人 8
+                      Text.rich(
+                        TextSpan(
+                          style: const TextStyle(
+                            fontSize: AppType.label,
+                            color: AppColors.inkSoft,
+                          ),
+                          children: [
+                            const TextSpan(text: '發起人'),
+                            TextSpan(
+                              text: '：',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: AppType.spacingBold,
+                                color: AppColors.inkSoft,
+                              ),
+                            ),
+                            TextSpan(text: creator.displayName),
+                          ],
                         ),
                       ),
-                      const SizedBox(width: AppSpacing.sm),
-                      _CountLabel(
-                        confirmed: task.confirmedCount,
-                        required: task.requiredCount,
+                      const SizedBox(height: AppSpacing.sm), // 發起人↔獎勵 8
+                      RewardBadge(task: task, viewerUid: viewer.uid),
+                      const SizedBox(height: AppSpacing.sm), // 獎勵↔動作 8
+                      // 動作（右下角）
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: canClaim
+                            ? ShadButton(
+                                size: ShadButtonSize.sm,
+                                backgroundColor: AppColors.green,
+                                foregroundColor: AppColors.bg,
+                                hoverBackgroundColor: AppColors.greenDark,
+                                hoverForegroundColor: AppColors.white,
+                                onPressed: onClaim,
+                                child: const Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text('我要接'),
+                                    SizedBox(width: 8),
+                                    AppSvgIcon(
+                                      kArrowRightSvg,
+                                      color: AppColors.white,
+                                      size: 20,
+                                    ),
+                                  ],
+                                ),
+                              )
+                            : _StatusChip(task: task, viewerUid: viewer.uid),
                       ),
                     ],
                   ),
-                  const SizedBox(height: AppSpacing.sm), // 標題↔發起人 8
-                  Text.rich(
-                    TextSpan(
-                      style: const TextStyle(
-                          fontSize: AppType.label, color: AppColors.inkSoft),
-                      children: [
-                        const TextSpan(text: '發起人'),
-                        TextSpan(
-                          text: '：',
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w600, color: AppColors.inkSoft),
-                        ),
-                        TextSpan(text: creator.displayName),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: AppSpacing.sm), // 發起人↔獎勵 8
-                  RewardBadge(task: task, viewerUid: viewer.uid),
-                  const SizedBox(height: AppSpacing.sm), // 獎勵↔動作 8
-                  // 動作（右下角）
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: canClaim
-                        ? ShadButton(
-                            size: ShadButtonSize.sm,
-                            backgroundColor: AppColors.ink,
-                            foregroundColor: AppColors.white,
-                            hoverBackgroundColor: AppColors.inkHover,
-                            hoverForegroundColor: AppColors.white,
-                            onPressed: onClaim,
-                            child: const Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text('我要接'),
-                                SizedBox(width: 8),
-                                AppSvgIcon(kArrowRightSvg,
-                                    color: AppColors.white, size: 20),
-                              ],
-                            ),
-                          )
-                        : _StatusChip(task: task, viewerUid: viewer.uid),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
@@ -140,12 +173,20 @@ class _CountLabel extends StatelessWidget {
         Text(
           '$confirmed',
           style: const TextStyle(
-              fontSize: AppType.heading, fontWeight: FontWeight.w800, height: 1),
+            fontSize: AppType.heading,
+            fontWeight: FontWeight.w800,
+            letterSpacing: AppType.spacingBold,
+            height: 1,
+          ),
         ),
         Text(
           '/$required',
           style: const TextStyle(
-              fontSize: AppType.body, fontWeight: FontWeight.w600, color: AppColors.ink),
+            fontSize: AppType.body,
+            fontWeight: FontWeight.w600,
+            letterSpacing: AppType.spacingBold,
+            color: AppColors.inkSoft,
+          ),
         ),
       ],
     );
@@ -161,11 +202,15 @@ class _StatusChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (label, color) = switch (task.status) {
-      TaskStatus.open when task.createdBy == viewerUid =>
-        ('等人接單', AppColors.inkSoft),
+      TaskStatus.open when task.createdBy == viewerUid => (
+        '等人接單',
+        AppColors.inkSoft,
+      ),
       TaskStatus.open => ('指定任務', AppColors.inkSoft),
-      TaskStatus.claimed when task.claimedBy == viewerUid =>
-        ('進行中', const Color(0xFF9F353A)),
+      TaskStatus.claimed when task.claimedBy == viewerUid => (
+        '進行中',
+        AppColors.red,
+      ),
       TaskStatus.claimed => ('已被接走', AppColors.inkSoft),
       TaskStatus.completed => ('已完成', AppColors.ink),
       TaskStatus.rewardClaimed => ('已領取', AppColors.ink),
@@ -175,17 +220,18 @@ class _StatusChip extends StatelessWidget {
     final text = Text(
       label,
       style: TextStyle(
-          fontSize: AppType.label,
-          // 「已被接走」較輕 w500，其餘 w600
-          fontWeight:
-              label == '已被接走' ? FontWeight.w500 : FontWeight.w600,
-          color: color),
+        fontSize: AppType.kicker,
+        // 狀態字一律 w500
+        fontWeight: FontWeight.w500,
+        color: color,
+      ),
     );
 
     // 已領取：文字後帶獎勵 icon（現金 / 禮物），gap 對齊詳情神秘禮物 4px。
     if (task.status == TaskStatus.rewardClaimed) {
-      final rewardIcon =
-          task.rewardType == RewardType.money ? kCashSvg : kGiftSlashSvg;
+      final rewardIcon = task.rewardType == RewardType.money
+          ? kCashSvg
+          : kGiftSlashSvg;
       return Row(
         mainAxisSize: MainAxisSize.min,
         children: [

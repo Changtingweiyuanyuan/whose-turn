@@ -44,8 +44,10 @@ class FirebaseAppRepository extends AppRepository {
   // --------------------------------------------------------- bootstrap
 
   static Future<FirebaseAppRepository> bootstrap() async {
-    final repo =
-        FirebaseAppRepository._(FirebaseFirestore.instance, fb.FirebaseAuth.instance);
+    final repo = FirebaseAppRepository._(
+      FirebaseFirestore.instance,
+      fb.FirebaseAuth.instance,
+    );
     await repo._ensureUserDoc();
     repo._attachRootListeners();
     return repo;
@@ -59,7 +61,8 @@ class FirebaseAppRepository extends AppRepository {
     if (!snap.exists) {
       final isAnon = user.isAnonymous;
       await ref.set({
-        'displayName': user.displayName ?? (isAnon ? '我（訪客）' : '我'),
+        'displayName':
+            user.displayName ?? (isAnon ? guestDisplayName(user.uid) : '我'),
         'avatarEmoji': kPersonalIcons.first,
         'provider': isAnon ? 'anonymous' : 'line',
         'starTotal': 0,
@@ -89,11 +92,11 @@ class FirebaseAppRepository extends AppRepository {
           .limit(100)
           .snapshots()
           .listen((snap) {
-        _notifications = [
-          for (final d in snap.docs) _notificationFrom(d.id, d.data()),
-        ];
-        notifyListeners();
-      }),
+            _notifications = [
+              for (final d in snap.docs) _notificationFrom(d.id, d.data()),
+            ];
+            notifyListeners();
+          }),
     );
     // 我所屬的群組（membership → group）
     _rootSubs.add(
@@ -103,12 +106,14 @@ class FirebaseAppRepository extends AppRepository {
           .limit(1)
           .snapshots()
           .listen((snap) {
-        final groupId =
-            snap.docs.isEmpty ? null : snap.docs.first.reference.parent.parent!.id;
-        if (groupId != _group?.id || (groupId == null) != (_group == null)) {
-          _attachGroupListeners(groupId);
-        }
-      }),
+            final groupId = snap.docs.isEmpty
+                ? null
+                : snap.docs.first.reference.parent.parent!.id;
+            if (groupId != _group?.id ||
+                (groupId == null) != (_group == null)) {
+              _attachGroupListeners(groupId);
+            }
+          }),
     );
   }
 
@@ -133,26 +138,32 @@ class FirebaseAppRepository extends AppRepository {
     final groupRef = _db.collection('groups').doc(groupId);
 
     // group doc + members
-    _groupSubs.add(groupRef.snapshots().listen((snap) {
-      if (!snap.exists) return;
-      final memberUids = _group?.id == groupId ? _group!.memberUids : <String>[];
-      _group = _groupFrom(snap.id, snap.data()!, memberUids);
-      notifyListeners();
-    }));
-    _groupSubs.add(groupRef.collection('members').snapshots().listen((snap) {
-      final uids = [for (final d in snap.docs) d.id];
-      if (_group != null && _group!.id == groupId) {
-        _group = Group(
-          id: _group!.id,
-          name: _group!.name,
-          inviteCode: _group!.inviteCode,
-          createdBy: _group!.createdBy,
-          memberUids: uids,
-        );
-      }
-      _watchMemberUsers(uids);
-      notifyListeners();
-    }));
+    _groupSubs.add(
+      groupRef.snapshots().listen((snap) {
+        if (!snap.exists) return;
+        final memberUids = _group?.id == groupId
+            ? _group!.memberUids
+            : <String>[];
+        _group = _groupFrom(snap.id, snap.data()!, memberUids);
+        notifyListeners();
+      }),
+    );
+    _groupSubs.add(
+      groupRef.collection('members').snapshots().listen((snap) {
+        final uids = [for (final d in snap.docs) d.id];
+        if (_group != null && _group!.id == groupId) {
+          _group = Group(
+            id: _group!.id,
+            name: _group!.name,
+            inviteCode: _group!.inviteCode,
+            createdBy: _group!.createdBy,
+            memberUids: uids,
+          );
+        }
+        _watchMemberUsers(uids);
+        notifyListeners();
+      }),
+    );
 
     // tasks + completions（collectionGroup、以 groupId 過濾）
     _groupSubs.add(
@@ -161,9 +172,9 @@ class FirebaseAppRepository extends AppRepository {
           .where('groupId', isEqualTo: groupId)
           .snapshots()
           .listen((snap) {
-        _rawTasks = [for (final d in snap.docs) _taskFrom(d.id, d.data())];
-        notifyListeners();
-      }),
+            _rawTasks = [for (final d in snap.docs) _taskFrom(d.id, d.data())];
+            notifyListeners();
+          }),
     );
     _groupSubs.add(
       _db
@@ -171,17 +182,18 @@ class FirebaseAppRepository extends AppRepository {
           .where('groupId', isEqualTo: groupId)
           .snapshots()
           .listen((snap) {
-        _completionsByTask.clear();
-        for (final d in snap.docs) {
-          final taskId = d.reference.parent.parent!.id;
-          (_completionsByTask[taskId] ??= [])
-              .add(_completionFrom(d.id, d.data()));
-        }
-        for (final list in _completionsByTask.values) {
-          list.sort((a, b) => a.submittedAt.compareTo(b.submittedAt));
-        }
-        notifyListeners();
-      }),
+            _completionsByTask.clear();
+            for (final d in snap.docs) {
+              final taskId = d.reference.parent.parent!.id;
+              (_completionsByTask[taskId] ??= []).add(
+                _completionFrom(d.id, d.data()),
+              );
+            }
+            for (final list in _completionsByTask.values) {
+              list.sort((a, b) => a.submittedAt.compareTo(b.submittedAt));
+            }
+            notifyListeners();
+          }),
     );
   }
 
@@ -195,13 +207,16 @@ class FirebaseAppRepository extends AppRepository {
     // 新成員掛 listener
     for (final uid in uids) {
       if (_memberUserSubs.containsKey(uid)) continue;
-      _memberUserSubs[uid] =
-          _db.collection('users').doc(uid).snapshots().listen((snap) {
-        if (snap.exists) {
-          _users[uid] = _userFrom(snap.id, snap.data()!);
-          notifyListeners();
-        }
-      });
+      _memberUserSubs[uid] = _db
+          .collection('users')
+          .doc(uid)
+          .snapshots()
+          .listen((snap) {
+            if (snap.exists) {
+              _users[uid] = _userFrom(snap.id, snap.data()!);
+              notifyListeners();
+            }
+          });
     }
   }
 
@@ -218,24 +233,28 @@ class FirebaseAppRepository extends AppRepository {
   @override
   AppUser get currentUser =>
       _me ??
-      AppUser(uid: _uid, displayName: '我', provider: AuthProvider.anonymous);
+      AppUser(
+        uid: _uid,
+        displayName: guestDisplayName(_uid),
+        provider: AuthProvider.anonymous,
+      );
 
   @override
-  List<AppUser> get knownUsers => List.unmodifiable(
-      [for (final uid in _group?.memberUids ?? const <String>[]) userOf(uid)]);
+  List<AppUser> get knownUsers => List.unmodifiable([
+    for (final uid in _group?.memberUids ?? const <String>[]) userOf(uid),
+  ]);
 
   @override
   Group? get currentGroup => _group;
 
   @override
   List<Task> get tasks => List.unmodifiable([
-        for (final t in _rawTasks)
-          t.copyWith(completions: _completionsByTask[t.id] ?? const []),
-      ]);
+    for (final t in _rawTasks)
+      t.copyWith(completions: _completionsByTask[t.id] ?? const []),
+  ]);
 
   @override
-  List<NotificationItem> get notifications =>
-      List.unmodifiable(_notifications);
+  List<NotificationItem> get notifications => List.unmodifiable(_notifications);
 
   @override
   int get unreadCount => _notifications.where((n) => !n.read).length;
@@ -245,8 +264,7 @@ class FirebaseAppRepository extends AppRepository {
       _users[uid] ??
       AppUser(uid: uid, displayName: '成員', provider: AuthProvider.line);
 
-  Task _task(String taskId) =>
-      tasks.firstWhere((t) => t.id == taskId);
+  Task _task(String taskId) => tasks.firstWhere((t) => t.id == taskId);
 
   // ------------------------------------------------------------- 群組
 
@@ -254,8 +272,10 @@ class FirebaseAppRepository extends AppRepository {
 
   String _newInviteCode() {
     final rand = Random.secure();
-    return List.generate(6, (_) => _codeChars[rand.nextInt(_codeChars.length)])
-        .join();
+    return List.generate(
+      6,
+      (_) => _codeChars[rand.nextInt(_codeChars.length)],
+    ).join();
   }
 
   @override
@@ -276,8 +296,9 @@ class FirebaseAppRepository extends AppRepository {
       'joinedAt': FieldValue.serverTimestamp(),
     });
     if (personalIcon != null) {
-      batch.update(
-          _db.collection('users').doc(_uid), {'avatarEmoji': personalIcon});
+      batch.update(_db.collection('users').doc(_uid), {
+        'avatarEmoji': personalIcon,
+      });
     }
     await batch.commit();
     return Group(
@@ -310,21 +331,25 @@ class FirebaseAppRepository extends AppRepository {
   }
 
   @override
-  Future<Group?> joinGroupByCode(String inviteCode,
-      {String? personalIcon}) async {
+  Future<Group?> joinGroupByCode(
+    String inviteCode, {
+    String? personalIcon,
+  }) async {
     final group = await findGroupByCode(inviteCode);
     if (group == null) return null;
     final batch = _db.batch();
     batch.set(
-        _db.collection('groups').doc(group.id).collection('members').doc(_uid),
-        {
-          'userId': _uid,
-          'role': 'member',
-          'joinedAt': FieldValue.serverTimestamp(),
-        });
+      _db.collection('groups').doc(group.id).collection('members').doc(_uid),
+      {
+        'userId': _uid,
+        'role': 'member',
+        'joinedAt': FieldValue.serverTimestamp(),
+      },
+    );
     if (personalIcon != null) {
-      batch.update(
-          _db.collection('users').doc(_uid), {'avatarEmoji': personalIcon});
+      batch.update(_db.collection('users').doc(_uid), {
+        'avatarEmoji': personalIcon,
+      });
     }
     await batch.commit();
     return group;
@@ -356,10 +381,13 @@ class FirebaseAppRepository extends AppRepository {
   }) async {
     if (currentUser.isGuest) throw const GuestNotAllowedException('發起任務');
     final g = _group!;
+    // 建立時記錄卡片底色：依群組現有任務數輪替
+    final colorIndex = tasks.length % Task.cardColorCount;
     final ref = await _db.collection('tasks').add({
       'groupId': g.id,
       'title': title,
       'emoji': emoji,
+      'colorIndex': colorIndex,
       'rewardType': rewardType.name,
       'rewardLabel': rewardLabel,
       'requiredCount': requiredCount,
@@ -390,6 +418,7 @@ class FirebaseAppRepository extends AppRepository {
       createdBy: _uid,
       createdAt: DateTime.now(),
       assigneeUid: assigneeUid,
+      colorIndex: colorIndex,
     );
   }
 
@@ -446,8 +475,7 @@ class FirebaseAppRepository extends AppRepository {
   @override
   Future<void> confirmCompletion(String taskId, String completionId) async {
     final task = _task(taskId);
-    final completion =
-        task.completions.firstWhere((c) => c.id == completionId);
+    final completion = task.completions.firstWhere((c) => c.id == completionId);
     final newCount = task.confirmedCount + 1;
     final done = newCount >= task.requiredCount;
 
@@ -487,17 +515,16 @@ class FirebaseAppRepository extends AppRepository {
   @override
   Future<void> rejectCompletion(String taskId, String completionId) async {
     final task = _task(taskId);
-    final completion =
-        task.completions.firstWhere((c) => c.id == completionId);
+    final completion = task.completions.firstWhere((c) => c.id == completionId);
     await _db
         .collection('tasks')
         .doc(taskId)
         .collection('completions')
         .doc(completionId)
         .update({
-      'status': CompletionStatus.rejected.name,
-      'resolvedAt': FieldValue.serverTimestamp(),
-    });
+          'status': CompletionStatus.rejected.name,
+          'resolvedAt': FieldValue.serverTimestamp(),
+        });
     _notifyUser(
       completion.userId,
       type: NotificationType.pendingConfirm,
@@ -534,18 +561,20 @@ class FirebaseAppRepository extends AppRepository {
     String? taskId,
   }) {
     if (recipientUid == _uid) return; // 自己的動作不通知自己
-    unawaited(_db
-        .collection('users')
-        .doc(recipientUid)
-        .collection('notifications')
-        .add({
-      'type': type.name,
-      'title': title,
-      'body': body,
-      'taskId': taskId,
-      'read': false,
-      'createdAt': FieldValue.serverTimestamp(),
-    }));
+    unawaited(
+      _db
+          .collection('users')
+          .doc(recipientUid)
+          .collection('notifications')
+          .add({
+            'type': type.name,
+            'title': title,
+            'body': body,
+            'taskId': taskId,
+            'read': false,
+            'createdAt': FieldValue.serverTimestamp(),
+          }),
+    );
   }
 
   void _notifyGroup({
@@ -567,9 +596,11 @@ class FirebaseAppRepository extends AppRepository {
       throw UnsupportedError('LINE 綁定目前僅支援 Web');
     }
     // 整頁導向 LINE 授權頁；回來後由 main() 的 maybeHandleLineRedirect 接手。
-    await startLineLogin(anonymousUid: _auth.currentUser?.isAnonymous == true
-        ? _auth.currentUser!.uid
-        : null);
+    await startLineLogin(
+      anonymousUid: _auth.currentUser?.isAnonymous == true
+          ? _auth.currentUser!.uid
+          : null,
+    );
   }
 
   @override
@@ -580,14 +611,17 @@ class FirebaseAppRepository extends AppRepository {
   // ----------------------------------------------------------- mappers
 
   AppUser _userFrom(String uid, Map<String, dynamic> d) => AppUser(
-        uid: uid,
-        displayName: (d['displayName'] as String?) ?? '成員',
-        provider: d['provider'] == 'line'
-            ? AuthProvider.line
-            : AuthProvider.anonymous,
-        avatarEmoji: (d['avatarEmoji'] as String?) ?? kPersonalIcons.first,
-        starTotal: (d['starTotal'] as num?)?.toInt() ?? 0,
-      );
+    uid: uid,
+    // 訪客一律顯示「訪客 XXXX」（uid 推導），不用 DB 裡的名字
+    displayName: d['provider'] == 'line'
+        ? (d['displayName'] as String?) ?? '成員'
+        : guestDisplayName(uid),
+    provider: d['provider'] == 'line'
+        ? AuthProvider.line
+        : AuthProvider.anonymous,
+    avatarEmoji: (d['avatarEmoji'] as String?) ?? kPersonalIcons.first,
+    starTotal: (d['starTotal'] as num?)?.toInt() ?? 0,
+  );
 
   Group _groupFrom(String id, Map<String, dynamic> d, List<String> uids) =>
       Group(
@@ -599,38 +633,39 @@ class FirebaseAppRepository extends AppRepository {
       );
 
   Task _taskFrom(String id, Map<String, dynamic> d) => Task(
-        id: id,
-        groupId: (d['groupId'] as String?) ?? '',
-        title: (d['title'] as String?) ?? '',
-        emoji: (d['emoji'] as String?) ?? 'asset:cleaning',
-        rewardType: RewardType.values.asNameMap()[d['rewardType']] ??
-            RewardType.normal,
-        rewardLabel: (d['rewardLabel'] as String?) ?? '',
-        requiredCount: (d['requiredCount'] as num?)?.toInt() ?? 1,
-        deadline: (d['deadline'] as Timestamp?)?.toDate(),
-        createdBy: (d['createdBy'] as String?) ?? '',
-        createdAt: (d['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
-        assigneeUid: d['assigneeUid'] as String?,
-        claimedBy: d['claimedBy'] as String?,
-        status:
-            TaskStatus.values.asNameMap()[d['status']] ?? TaskStatus.open,
-      );
+    id: id,
+    groupId: (d['groupId'] as String?) ?? '',
+    title: (d['title'] as String?) ?? '',
+    emoji: (d['emoji'] as String?) ?? 'asset:cleaning',
+    rewardType:
+        RewardType.values.asNameMap()[d['rewardType']] ?? RewardType.normal,
+    rewardLabel: (d['rewardLabel'] as String?) ?? '',
+    requiredCount: (d['requiredCount'] as num?)?.toInt() ?? 1,
+    deadline: (d['deadline'] as Timestamp?)?.toDate(),
+    createdBy: (d['createdBy'] as String?) ?? '',
+    createdAt: (d['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+    assigneeUid: d['assigneeUid'] as String?,
+    claimedBy: d['claimedBy'] as String?,
+    status: TaskStatus.values.asNameMap()[d['status']] ?? TaskStatus.open,
+    colorIndex: (d['colorIndex'] as num?)?.toInt() ?? Task.colorIndexFromId(id),
+  );
 
   Completion _completionFrom(String id, Map<String, dynamic> d) => Completion(
-        id: id,
-        userId: (d['userId'] as String?) ?? '',
-        submittedAt:
-            (d['submittedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
-        status: CompletionStatus.values.asNameMap()[d['status']] ??
-            CompletionStatus.pending,
-        resolvedAt: (d['resolvedAt'] as Timestamp?)?.toDate(),
-      );
+    id: id,
+    userId: (d['userId'] as String?) ?? '',
+    submittedAt: (d['submittedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+    status:
+        CompletionStatus.values.asNameMap()[d['status']] ??
+        CompletionStatus.pending,
+    resolvedAt: (d['resolvedAt'] as Timestamp?)?.toDate(),
+  );
 
   NotificationItem _notificationFrom(String id, Map<String, dynamic> d) =>
       NotificationItem(
         id: id,
         recipientUid: _uid,
-        type: NotificationType.values.asNameMap()[d['type']] ??
+        type:
+            NotificationType.values.asNameMap()[d['type']] ??
             NotificationType.newTask,
         title: (d['title'] as String?) ?? '',
         body: (d['body'] as String?) ?? '',

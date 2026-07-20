@@ -71,7 +71,11 @@ async function findDocsByUserId(
       }),
     },
   );
-  if (!res.ok) throw new Error(`Firestore runQuery failed: ${res.status}`);
+  if (!res.ok) {
+    throw new Error(
+      `Firestore runQuery failed: ${res.status} ${await res.text()}`,
+    );
+  }
   const rows = (await res.json()) as Array<{ document?: { name: string } }>;
   return rows.filter((r) => r.document).map((r) => r.document!.name);
 }

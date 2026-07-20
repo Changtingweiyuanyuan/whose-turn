@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
 import 'app_svg_icons.dart';
+import 'masthead_divider.dart';
 
 /// 雜誌刊頭：WHOSE TURN TODAY / NO.xx + 粉色分隔線 + 大標題。
-/// [starTotal] 為 null 時右側不顯示星星。
+/// [starTotal] 為 null 時右側不顯示星星；[userNo] 為 null（未加入群組）時不顯示編號。
 class AppMasthead extends StatelessWidget {
   const AppMasthead({
     super.key,
@@ -15,14 +16,18 @@ class AppMasthead extends StatelessWidget {
   });
 
   final String title;
-  final int userNo;
+  final int? userNo;
   final int? starTotal;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-          AppSpacing.pagePadding, AppSpacing.md, AppSpacing.pagePadding, 0),
+        AppSpacing.pagePadding,
+        AppSpacing.md,
+        AppSpacing.pagePadding,
+        0,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -35,29 +40,24 @@ class AppMasthead extends StatelessWidget {
                     fontSize: AppType.kicker,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 3,
-                    color: AppColors.white,
+                    color: AppColors.green,
                   ),
                 ),
               ),
-              Text(
-                'NO.${userNo.toString().padLeft(2, '0')}',
-                style: const TextStyle(
-                  fontSize: AppType.body,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 2,
-                  color: AppColors.pink,
+              if (userNo != null)
+                Text(
+                  'NO.${userNo.toString().padLeft(2, '0')}',
+                  style: const TextStyle(
+                    fontSize: AppType.body,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 2,
+                    color: AppColors.green,
+                  ),
                 ),
-              ),
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
-          Container(
-            height: 2,
-            decoration: BoxDecoration(
-              color: AppColors.pink,
-              borderRadius: BorderRadius.circular(2), // 對齊選中 tab 底線
-            ),
-          ),
+          const MastheadDivider(),
           const SizedBox(height: AppSpacing.md),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -69,7 +69,8 @@ class AppMasthead extends StatelessWidget {
                     fontSize: AppType.title,
                     height: 1.0,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.white,
+                    letterSpacing: AppType.spacingBold,
+                    color: AppColors.ink,
                   ),
                 ),
               ),
@@ -77,14 +78,18 @@ class AppMasthead extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const AppSvgIcon(kStarSvg, color: AppColors.pink, size: 20),
+                    const AppSvgIcon(kStarSvg, color: AppColors.red, size: 20),
                     const SizedBox(width: 6),
                     Text(
                       '$starTotal',
+                      // height 1.0 對齊標題行高，避免撐高刊頭（各頁 tab 位置才會一致）
                       style: const TextStyle(
-                          fontSize: AppType.title,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.white),
+                        fontSize: AppType.title,
+                        height: 1.0,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: AppType.spacingBold,
+                        color: AppColors.inkSoft,
+                      ),
                     ),
                   ],
                 ),

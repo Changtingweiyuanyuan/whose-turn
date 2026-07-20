@@ -8,7 +8,7 @@ import 'app_repository.dart';
 /// 讓六大功能在沒有 Firebase 的情況下完整可玩。
 class FakeAppRepository extends AppRepository {
   FakeAppRepository({DateTime Function()? clock})
-      : _now = clock ?? DateTime.now {
+    : _now = clock ?? DateTime.now {
     _seed();
   }
 
@@ -41,7 +41,7 @@ class FakeAppRepository extends AppRepository {
     );
     final me = AppUser(
       uid: 'anon-me',
-      displayName: '我（訪客）',
+      displayName: guestDisplayName('anon-me'),
       provider: AuthProvider.anonymous,
       avatarEmoji: 'asset:smiley_wink',
       starTotal: 3,
@@ -65,6 +65,7 @@ class FakeAppRepository extends AppRepository {
         id: _nextId('t'),
         groupId: 'g-home',
         title: '洗碗一次',
+        colorIndex: 1,
         emoji: 'asset:cleaning',
         rewardType: RewardType.normal,
         rewardLabel: '珍奶一杯',
@@ -101,6 +102,7 @@ class FakeAppRepository extends AppRepository {
         id: _nextId('t'),
         groupId: 'g-home',
         title: '倒垃圾',
+        colorIndex: 2,
         emoji: 'asset:trash',
         rewardType: RewardType.money,
         rewardLabel: '50 元',
@@ -113,6 +115,7 @@ class FakeAppRepository extends AppRepository {
         id: _nextId('t'),
         groupId: 'g-home',
         title: '整理客廳',
+        colorIndex: 0,
         emoji: 'asset:home',
         rewardType: RewardType.mystery,
         rewardLabel: '神秘禮物',
@@ -124,6 +127,7 @@ class FakeAppRepository extends AppRepository {
         id: _nextId('t'),
         groupId: 'g-home',
         title: '遛狗',
+        colorIndex: 3,
         emoji: 'asset:lucky_cat',
         rewardType: RewardType.experience,
         rewardLabel: '週末火鍋',
@@ -137,6 +141,7 @@ class FakeAppRepository extends AppRepository {
         id: _nextId('t'),
         groupId: 'g-home',
         title: '背英文單字',
+        colorIndex: 4,
         emoji: 'asset:book',
         rewardType: RewardType.normal,
         rewardLabel: 'Switch 遊戲一片',
@@ -158,15 +163,17 @@ class FakeAppRepository extends AppRepository {
       ),
     ]);
 
-    _notifications.add(NotificationItem(
-      id: _nextId('n'),
-      recipientUid: me.uid,
-      type: NotificationType.newTask,
-      title: '有人發起了新任務！',
-      body: '哥哥 發起了「整理客廳」，獎勵是神秘禮物',
-      taskId: _tasks[2].id,
-      createdAt: now.subtract(const Duration(minutes: 30)),
-    ));
+    _notifications.add(
+      NotificationItem(
+        id: _nextId('n'),
+        recipientUid: me.uid,
+        type: NotificationType.newTask,
+        title: '有人發起了新任務！',
+        body: '哥哥 發起了「整理客廳」，獎勵是神秘禮物',
+        taskId: _tasks[2].id,
+        createdAt: now.subtract(const Duration(minutes: 30)),
+      ),
+    );
   }
 
   // ------------------------------------------------------------- getters
@@ -185,8 +192,8 @@ class FakeAppRepository extends AppRepository {
 
   @override
   List<NotificationItem> get notifications => List.unmodifiable(
-        _notifications.where((n) => n.recipientUid == _currentUser.uid),
-      );
+    _notifications.where((n) => n.recipientUid == _currentUser.uid),
+  );
 
   @override
   int get unreadCount => notifications.where((n) => !n.read).length;
@@ -270,8 +277,10 @@ class FakeAppRepository extends AppRepository {
   }
 
   @override
-  Future<Group?> joinGroupByCode(String inviteCode,
-      {String? personalIcon}) async {
+  Future<Group?> joinGroupByCode(
+    String inviteCode, {
+    String? personalIcon,
+  }) async {
     if (_group != null &&
         _group!.inviteCode.toUpperCase() == inviteCode.trim().toUpperCase()) {
       if (personalIcon != null) _setMyAvatar(personalIcon);
@@ -304,8 +313,9 @@ class FakeAppRepository extends AppRepository {
       name: _group!.name,
       inviteCode: _group!.inviteCode,
       createdBy: _group!.createdBy,
-      memberUids:
-          _group!.memberUids.where((u) => u != _currentUser.uid).toList(),
+      memberUids: _group!.memberUids
+          .where((u) => u != _currentUser.uid)
+          .toList(),
     );
     notifyListeners();
   }
@@ -335,6 +345,8 @@ class FakeAppRepository extends AppRepository {
       assigneeUid: assigneeUid,
       createdBy: _currentUser.uid,
       createdAt: _now(),
+      // 建立時記錄卡片底色：依現有任務數輪替
+      colorIndex: _tasks.length % Task.cardColorCount,
     );
     _tasks.insert(0, task);
     _notifyGroup(
@@ -403,9 +415,14 @@ class FakeAppRepository extends AppRepository {
   Future<void> confirmCompletion(String taskId, String completionId) async {
     final task = _task(taskId);
     final completions = task.completions
-        .map((c) => c.id == completionId
-            ? c.copyWith(status: CompletionStatus.confirmed, resolvedAt: _now())
-            : c)
+        .map(
+          (c) => c.id == completionId
+              ? c.copyWith(
+                  status: CompletionStatus.confirmed,
+                  resolvedAt: _now(),
+                )
+              : c,
+        )
         .toList();
 
     var updated = task.copyWith(completions: completions);
@@ -432,7 +449,8 @@ class FakeAppRepository extends AppRepository {
         recipientUid: doneUid,
         type: NotificationType.starEarned,
         title: '確認成功，進度更新！',
-        body: '「${task.title}」${updated.confirmedCount} / ${updated.requiredCount}',
+        body:
+            '「${task.title}」${updated.confirmedCount} / ${updated.requiredCount}',
         taskId: taskId,
       );
     }
@@ -444,13 +462,19 @@ class FakeAppRepository extends AppRepository {
   Future<void> rejectCompletion(String taskId, String completionId) async {
     final task = _task(taskId);
     final completions = task.completions
-        .map((c) => c.id == completionId
-            ? c.copyWith(status: CompletionStatus.rejected, resolvedAt: _now())
-            : c)
+        .map(
+          (c) => c.id == completionId
+              ? c.copyWith(
+                  status: CompletionStatus.rejected,
+                  resolvedAt: _now(),
+                )
+              : c,
+        )
         .toList();
     _replaceTask(task.copyWith(completions: completions));
-    final doneUid =
-        task.completions.firstWhere((c) => c.id == completionId).userId;
+    final doneUid = task.completions
+        .firstWhere((c) => c.id == completionId)
+        .userId;
     _notify(
       recipientUid: doneUid,
       type: NotificationType.pendingConfirm,

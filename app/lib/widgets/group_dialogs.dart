@@ -19,25 +19,36 @@ Future<String?> showCreateGroupDialog(BuildContext context, WidgetRef ref) {
 }
 
 /// 加入群組：輸入邀請碼（debounce 查詢）→ 選個人圖示。已被選走的圖示會 disabled。
-Future<String?> showJoinGroupDialog(BuildContext context, WidgetRef ref) {
-  return _show(context, ref, _GroupDialogMode.join);
+/// [initialCode]（邀請連結帶入）會代填並直接查詢。
+Future<String?> showJoinGroupDialog(
+  BuildContext context,
+  WidgetRef ref, {
+  String? initialCode,
+}) {
+  return _show(context, ref, _GroupDialogMode.join, initialCode: initialCode);
 }
 
 Future<String?> _show(
-    BuildContext context, WidgetRef ref, _GroupDialogMode mode) {
+  BuildContext context,
+  WidgetRef ref,
+  _GroupDialogMode mode, {
+  String? initialCode,
+}) {
   return showShadDialog<String>(
     context: context,
     opaque: false,
     barrierColor: Colors.black54,
-    builder: (_) => _GroupDialog(ref: ref, mode: mode),
+    builder: (_) =>
+        _GroupDialog(ref: ref, mode: mode, initialCode: initialCode),
   );
 }
 
 class _GroupDialog extends StatefulWidget {
-  const _GroupDialog({required this.ref, required this.mode});
+  const _GroupDialog({required this.ref, required this.mode, this.initialCode});
 
   final WidgetRef ref;
   final _GroupDialogMode mode;
+  final String? initialCode;
 
   @override
   State<_GroupDialog> createState() => _GroupDialogState();
@@ -77,6 +88,17 @@ class _GroupDialogState extends State<_GroupDialog> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // 邀請連結帶入的邀請碼：代填並直接查詢
+    final code = widget.initialCode;
+    if (!_isCreate && code != null && code.trim().isNotEmpty) {
+      _controller.text = code.trim();
+      _onCodeChanged(code);
+    }
+  }
+
+  @override
   void dispose() {
     _debounce?.cancel();
     _controller.dispose();
@@ -92,8 +114,9 @@ class _GroupDialogState extends State<_GroupDialog> {
     });
     if (value.trim().isEmpty) return;
     _debounce = Timer(const Duration(milliseconds: 400), () async {
-      final g =
-          await widget.ref.read(repositoryProvider).findGroupByCode(value);
+      final g = await widget.ref
+          .read(repositoryProvider)
+          .findGroupByCode(value);
       if (!mounted) return;
       setState(() {
         _foundGroup = g;
@@ -109,11 +132,15 @@ class _GroupDialogState extends State<_GroupDialog> {
       await repo.createGroup(name, personalIcon: _selectedIcon);
       if (mounted) Navigator.pop(context, '群組「$name」建立完成 🎉');
     } else {
-      final group = await repo.joinGroupByCode(_controller.text,
-          personalIcon: _selectedIcon);
+      final group = await repo.joinGroupByCode(
+        _controller.text,
+        personalIcon: _selectedIcon,
+      );
       if (mounted) {
         Navigator.pop(
-            context, group == null ? '找不到這個邀請碼 🙈' : '歡迎加入「${group.name}」！');
+          context,
+          group == null ? '找不到這個邀請碼 🙈' : '歡迎加入「${group.name}」！',
+        );
       }
     }
   }
@@ -121,33 +148,43 @@ class _GroupDialogState extends State<_GroupDialog> {
   @override
   Widget build(BuildContext context) {
     return ShadDialog(
-      backgroundColor: AppColors.diluteInk,
+      // 對齊 toast：紙白底 + softInk 1px 框
+      backgroundColor: AppColors.bg,
+      border: Border.all(color: AppColors.inkSoft, width: 1),
       radius: BorderRadius.circular(AppRadius.card),
       removeBorderRadiusWhenTiny: false,
       gap: AppSpacing.md,
-      closeIcon: const AppCloseIcon(color: AppColors.white, size: 22),
+      closeIcon: const AppCloseIcon(),
       closeIconPosition: const ShadPosition(top: 20, right: 20),
-      title: Text(_isCreate ? '建立群組' : '加入群組',
-          style: const TextStyle(
-              fontSize: AppType.body,
-              fontWeight: FontWeight.w500,
-              color: AppColors.white)),
+      title: Text(
+        _isCreate ? '建立群組' : '加入群組',
+        style: const TextStyle(
+          fontSize: AppType.body,
+          fontWeight: FontWeight.w500,
+          color: AppColors.ink,
+        ),
+      ),
       expandActionsWhenTiny: false,
       actionsAxis: Axis.horizontal,
       actionsMainAxisAlignment: MainAxisAlignment.end,
       actionsGap: AppSpacing.sm,
       actions: [
         ShadButton(
-          backgroundColor: AppColors.ink,
-          foregroundColor: AppColors.white,
-          hoverBackgroundColor: AppColors.inkHover,
-          hoverForegroundColor: AppColors.white,
+          backgroundColor: AppColors.bg,
+          foregroundColor: AppColors.green,
+          hoverBackgroundColor: AppColors.greenSoft,
+          hoverForegroundColor: AppColors.green,
+          decoration: ShadDecoration(
+            border: ShadBorder.all(color: AppColors.green, width: 1),
+          ),
           onPressed: () => Navigator.pop(context),
           child: const Text('取消'),
         ),
         ShadButton(
-          backgroundColor: AppColors.pink,
-          foregroundColor: AppColors.white,
+          backgroundColor: AppColors.green,
+          foregroundColor: AppColors.bg,
+          hoverBackgroundColor: AppColors.greenDark,
+          hoverForegroundColor: AppColors.bg,
           onPressed: _canConfirm ? _confirm : null,
           child: Text(_isCreate ? '建立' : '加入'),
         ),
@@ -160,15 +197,15 @@ class _GroupDialogState extends State<_GroupDialog> {
           ShadInput(
             controller: _controller,
             autofocus: true,
-            placeholder: Text(_isCreate ? '例如：我們家' : '例如 HOME2026'),
-            onChanged: _isCreate
-                ? (_) => setState(() {})
-                : _onCodeChanged,
+            placeholder: Text(_isCreate ? '例如：可愛的家、305 室...' : '例如 HOME2026'),
+            onChanged: _isCreate ? (_) => setState(() {}) : _onCodeChanged,
           ),
           if (!_isCreate && _notFound) ...[
             const SizedBox(height: 8),
-            const Text('找不到這個邀請碼 🙈',
-                style: TextStyle(color: AppColors.pink, fontSize: AppType.label)),
+            const Text(
+              '找不到這個邀請碼 🙈',
+              style: TextStyle(color: AppColors.red, fontSize: AppType.label),
+            ),
           ],
           if (_showPicker) ...[
             const SizedBox(height: AppSpacing.md),
@@ -199,7 +236,7 @@ class _DialogLabel extends StatelessWidget {
         style: const TextStyle(
           fontSize: AppType.body,
           fontWeight: FontWeight.w500,
-          color: AppColors.white,
+          color: AppColors.ink,
         ),
       ),
     );

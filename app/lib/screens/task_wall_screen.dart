@@ -1,3 +1,4 @@
+// ignore_for_file: unused_element
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,6 +9,8 @@ import '../models/task.dart';
 import '../state/providers.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_tokens.dart';
+import '../widgets/app_sliding_tabs.dart';
+import '../widgets/masthead_divider.dart';
 import '../widgets/task_card.dart';
 
 enum TaskWallFilter { all, mine, claimed }
@@ -26,8 +29,6 @@ const _sortLabels = {
   TaskWallSort.mystery: '神秘獎勵',
   TaskWallSort.reward: '現金',
 };
-
-const _weekdays = ['一', '二', '三', '四', '五', '六', '日'];
 
 // Iconsax arrow-down2（broken 樣式）—— 直接用官方 SVG，最精準
 const _sortArrowSvg =
@@ -48,30 +49,38 @@ class TaskWallScreen extends ConsumerStatefulWidget {
 
 class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
   TaskWallFilter _filter = TaskWallFilter.all;
-  TaskWallSort _sort = TaskWallSort.newest;
+  final TaskWallSort _sort = TaskWallSort.newest;
 
   List<Task> _visibleTasks() {
     final repo = ref.watch(repositoryProvider);
     final me = repo.currentUser.uid;
     final list = repo.tasks
-        .where((t) =>
-            t.status != TaskStatus.cancelled &&
-            t.status != TaskStatus.rewardClaimed)
-        .where((t) => switch (_filter) {
-              TaskWallFilter.all => true,
-              TaskWallFilter.mine => t.createdBy == me,
-              TaskWallFilter.claimed => t.claimedBy == me,
-            })
+        .where(
+          (t) =>
+              t.status != TaskStatus.cancelled &&
+              t.status != TaskStatus.rewardClaimed,
+        )
+        .where(
+          (t) => switch (_filter) {
+            TaskWallFilter.all => true,
+            TaskWallFilter.mine => t.createdBy == me,
+            TaskWallFilter.claimed => t.claimedBy == me,
+          },
+        )
         .toList();
 
-    list.sort((a, b) => switch (_sort) {
-          TaskWallSort.newest => b.createdAt.compareTo(a.createdAt),
-          TaskWallSort.deadline => (a.deadline ?? DateTime(2999))
-              .compareTo(b.deadline ?? DateTime(2999)),
-          TaskWallSort.mystery =>
-            (b.isMystery ? 1 : 0).compareTo(a.isMystery ? 1 : 0),
-          TaskWallSort.reward => b.requiredCount.compareTo(a.requiredCount),
-        });
+    list.sort(
+      (a, b) => switch (_sort) {
+        TaskWallSort.newest => b.createdAt.compareTo(a.createdAt),
+        TaskWallSort.deadline => (a.deadline ?? DateTime(2999)).compareTo(
+          b.deadline ?? DateTime(2999),
+        ),
+        TaskWallSort.mystery => (b.isMystery ? 1 : 0).compareTo(
+          a.isMystery ? 1 : 0,
+        ),
+        TaskWallSort.reward => b.requiredCount.compareTo(a.requiredCount),
+      },
+    );
     return list;
   }
 
@@ -79,10 +88,15 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
   Widget build(BuildContext context) {
     final repo = ref.watch(repositoryProvider);
     final tasks = _visibleTasks();
-    final openCount = repo.tasks.where((t) => t.status == TaskStatus.open).length;
-    // 目前使用者是群組裡第幾位（1-based）
-    final userNo =
-        (repo.currentGroup?.memberUids.indexOf(repo.currentUser.uid) ?? -1) + 1;
+    // 全部任務 tab 的數量（看板上會出現的任務）
+    final allCount = repo.tasks
+        .where(
+          (t) =>
+              t.status != TaskStatus.cancelled &&
+              t.status != TaskStatus.rewardClaimed,
+        )
+        .length;
+    final userNo = repo.userNo;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
@@ -91,96 +105,96 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _Masthead(openCount: openCount, userNo: userNo),
-              const SizedBox(height: AppSpacing.md),
-              // 排版式分頁 + 行內排序
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.pagePadding),
-                // spaceBetween（無 flex widget）避免干擾分頁的 IntrinsicWidth
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        for (final f in TaskWallFilter.values)
-                          _TabLabel(
-                            label: _filterLabels[f]!,
-                            selected: _filter == f,
-                            onTap: () => setState(() => _filter = f),
-                          ),
-                      ],
-                    ),
-                    _SortControl(
-                      value: _sort,
-                      onChanged: (v) => setState(() => _sort = v),
-                    ),
-                  ],
-                ),
+            _Masthead(userNo: userNo),
+            // 刊頭↔tab 間距對齊其他頁（24；-2 補償視覺落差）
+            const SizedBox(height: AppSpacing.lg - 2),
+            // 排版式分頁 + 行內排序
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.pagePadding,
               ),
-              const SizedBox(height: AppSpacing.md),
-              Expanded(
-                child: tasks.isEmpty
-                    ? const _EmptyWall()
-                    : ListView.separated(
-                        padding: const EdgeInsets.fromLTRB(
-                            AppSpacing.pagePadding,
-                            0,
-                            AppSpacing.pagePadding,
-                            AppSpacing.bottomNavClearance),
-                        itemCount: tasks.length,
-                        separatorBuilder: (_, _) =>
-                            const SizedBox(height: AppSpacing.md),
-                        itemBuilder: (context, i) {
-                          final task = tasks[i];
-                          return TaskCard(
-                            task: task,
-                            viewer: repo.currentUser,
-                            creator: repo.userOf(task.createdBy),
-                            // 藍/白輪替
-                            backgroundColor:
-                                i.isEven ? AppColors.main : AppColors.white,
-                            onTap: () => context.push('/task/${task.id}'),
-                            onClaim: () async {
-                              await repo.claimTask(task.id);
-                              if (context.mounted) {
-                                ShadToaster.of(context).show(
-                                  ShadToast(
-                                    description: Text('接下「${task.title}」！加油 💪🏻'),
-                                  ),
-                                );
-                              }
-                            },
-                          );
-                        },
+              // 與「我的任務」共用同一種滑動分頁
+              child: AppSlidingTabs(
+                labels: [
+                  for (final f in TaskWallFilter.values)
+                    f == TaskWallFilter.all && allCount > 1
+                        ? '${_filterLabels[f]!} ($allCount)'
+                        : _filterLabels[f]!,
+                ],
+                selected: TaskWallFilter.values.indexOf(_filter),
+                onChanged: (i) =>
+                    setState(() => _filter = TaskWallFilter.values[i]),
+              ),
+              // 排序控制先收起來（保留程式碼，之後要用再打開）
+              // _SortControl(
+              //   value: _sort,
+              //   onChanged: (v) => setState(() => _sort = v),
+              // ),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            Expanded(
+              child: tasks.isEmpty
+                  ? const _EmptyWall()
+                  : ListView.separated(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.pagePadding,
+                        0,
+                        AppSpacing.pagePadding,
+                        AppSpacing.bottomNavClearance,
                       ),
-              ),
-            ],
-          ),
+                      itemCount: tasks.length,
+                      // 任務卡間距 12
+                      separatorBuilder: (_, _) => const SizedBox(height: 12),
+                      itemBuilder: (context, i) {
+                        final task = tasks[i];
+                        return TaskCard(
+                          task: task,
+                          viewer: repo.currentUser,
+                          creator: repo.userOf(task.createdBy),
+                          // 底色 = 任務建立時記錄的輪替色
+                          backgroundColor:
+                              AppColors.cardCycle[task.colorIndex %
+                                  AppColors.cardCycle.length],
+                          onTap: () => context.push('/task/${task.id}'),
+                          onClaim: () async {
+                            await repo.claimTask(task.id);
+                            if (context.mounted) {
+                              ShadToaster.of(context).show(
+                                ShadToast(
+                                  description: Text(
+                                    '接下「${task.title}」！加油 💪🏻',
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        );
+                      },
+                    ),
+            ),
+          ],
         ),
+      ),
     );
   }
 }
 
-/// 雜誌刊頭：WHOSE TURN TODAY / NO.xx + 大標「今天換誰？」+ 副標。
+/// 雜誌刊頭：WHOSE TURN TODAY / NO.xx + 大標「今天換誰？」。
 class _Masthead extends StatelessWidget {
-  const _Masthead({required this.openCount, required this.userNo});
+  const _Masthead({required this.userNo});
 
-  final int openCount;
-
-  /// 目前使用者是第幾位（最少兩位數、不足補 0）
-  final int userNo;
+  /// 目前使用者是第幾位（最少兩位數、不足補 0）；null＝未加入群組，不顯示。
+  final int? userNo;
 
   @override
   Widget build(BuildContext context) {
-    final now = DateTime.now();
-    final weekday = _weekdays[(now.weekday - 1) % 7];
-
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-          AppSpacing.pagePadding, AppSpacing.md, AppSpacing.pagePadding, 0),
+        AppSpacing.pagePadding,
+        AppSpacing.md,
+        AppSpacing.pagePadding,
+        0,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -193,62 +207,35 @@ class _Masthead extends StatelessWidget {
                     fontSize: AppType.kicker,
                     fontWeight: FontWeight.w600,
                     letterSpacing: 3,
-                    color: AppColors.white,
+                    color: AppColors.green,
                   ),
                 ),
               ),
-              Text(
-                'NO.${userNo.toString().padLeft(2, '0')}',
-                style: TextStyle(
-                  fontSize: AppType.body,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 2,
-                  color: AppColors.pink,
+              if (userNo != null)
+                Text(
+                  'NO.${userNo.toString().padLeft(2, '0')}',
+                  style: const TextStyle(
+                    fontSize: AppType.body,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 2,
+                    color: AppColors.green,
+                  ),
                 ),
-              ),
             ],
           ),
           const SizedBox(height: AppSpacing.sm),
-          Container(
-            height: 2,
-            decoration: BoxDecoration(
-              color: AppColors.pink,
-              borderRadius: BorderRadius.circular(2), // 對齊選中 tab 底線
-            ),
-          ),
+          const MastheadDivider(),
           const SizedBox(height: AppSpacing.md),
-          // 大標，粗黑無襯線，誰=粉色
-          RichText(
-            text: const TextSpan(
-              style: TextStyle(
-                fontSize: 60,
-                fontWeight: FontWeight.w600,
-                height: 1.1,
-                color: AppColors.white,
-              ),
-              children: [
-                TextSpan(text: '今天換'),
-                TextSpan(text: '誰', style: TextStyle(color: AppColors.pink)),
-                TextSpan(text: '?'),
-              ],
+          // 大標：對齊其他頁刊頭（title 20、w600、Ink），問號半形
+          const Text(
+            '今天換誰?',
+            style: TextStyle(
+              fontSize: AppType.title,
+              height: 1.0,
+              fontWeight: FontWeight.w600,
+              letterSpacing: AppType.spacingBold,
+              color: AppColors.ink,
             ),
-          ),
-          const SizedBox(height: AppSpacing.md),
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  '本週待接任務 · ${openCount.toString().padLeft(2, '0')}',
-                  style: const TextStyle(
-                      fontSize: AppType.label, color: Colors.white70),
-                ),
-              ),
-              Text(
-                '星期$weekday',
-                style: const TextStyle(
-                    fontSize: AppType.label, color: Colors.white70),
-              ),
-            ],
           ),
         ],
       ),
@@ -296,7 +283,7 @@ class _TabLabel extends StatelessWidget {
                 child: Container(
                   height: 3,
                   decoration: BoxDecoration(
-                    color: AppColors.pink,
+                    color: AppColors.orangeLine,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -310,7 +297,7 @@ class _TabLabel extends StatelessWidget {
                 style: TextStyle(
                   fontSize: AppType.body,
                   fontWeight: FontWeight.w500,
-                  color: selected ? AppColors.white : AppColors.main,
+                  color: selected ? AppColors.green : AppColors.greenPale,
                 ),
               ),
             ),
@@ -398,7 +385,7 @@ class _SortControlState extends State<_SortControl> {
                 style: const TextStyle(
                   fontSize: AppType.label,
                   fontWeight: FontWeight.w500,
-                  color: Colors.white70,
+                  color: AppColors.inkSoft,
                 ),
               ),
               const SizedBox(width: 4),
@@ -406,8 +393,10 @@ class _SortControlState extends State<_SortControl> {
                 _sortArrowSvg,
                 width: 16,
                 height: 16,
-                colorFilter:
-                    const ColorFilter.mode(Colors.white70, BlendMode.srcIn),
+                colorFilter: const ColorFilter.mode(
+                  AppColors.inkSoft,
+                  BlendMode.srcIn,
+                ),
               ),
             ],
           ),
@@ -489,7 +478,7 @@ class _EmptyWall extends StatelessWidget {
           Text(
             '目前沒有任務\n發起一個，看看今天換誰？',
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white70, height: 1.6),
+            style: TextStyle(color: AppColors.inkSoft, height: 1.6),
           ),
         ],
       ),

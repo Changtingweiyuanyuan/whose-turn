@@ -20,6 +20,12 @@ final _router = GoRouter(
       path: '/create-task',
       builder: (context, state) => const CreateTaskScreen(),
     ),
+    // 邀請連結：/j/<邀請碼> → 首頁 + 自動開加入群組（碼已代填）
+    GoRoute(
+      path: '/j/:code',
+      builder: (context, state) =>
+          HomeShell(joinCode: state.pathParameters['code']),
+    ),
   ],
 );
 
@@ -41,7 +47,7 @@ class WhoseTurnApp extends StatelessWidget {
         // 全站文字加一點字距，緩解 Roboto Condensed 的擁擠感
         builder: (context, child) => ShadAppBuilder(
           child: DefaultTextStyle.merge(
-            style: const TextStyle(letterSpacing: 0.5),
+            style: const TextStyle(letterSpacing: 0.8),
             child: child ?? const SizedBox.shrink(),
           ),
         ),
