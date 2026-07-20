@@ -416,6 +416,7 @@ class ProfileScreen extends ConsumerWidget {
         // 對齊 toast：紙白底 + softInk 1px 框，左右各留 16 邊距
         backgroundColor: AppColors.bg,
         border: Border.all(color: AppColors.inkSoft, width: 1),
+        shadows: const [],
         constraints: BoxConstraints(
             maxWidth: math.min(512, MediaQuery.of(ctx).size.width - 32)),
         radius: BorderRadius.circular(AppRadius.card),
@@ -492,6 +493,7 @@ class ProfileScreen extends ConsumerWidget {
       builder: (ctx) => ShadDialog.alert(
         backgroundColor: AppColors.bg,
         border: Border.all(color: AppColors.inkSoft, width: 1),
+        shadows: const [],
         constraints: BoxConstraints(
             maxWidth: math.min(512, MediaQuery.of(ctx).size.width - 32)),
         radius: BorderRadius.circular(AppRadius.card),
