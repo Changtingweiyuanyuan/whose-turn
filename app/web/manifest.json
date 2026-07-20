@@ -3,9 +3,9 @@
     "short_name": "今天換誰？",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#FDFBFC",
+    "theme_color": "#DBE7DB",
+    "description": "家事輪流分配：發任務、接任務、集星星。",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
