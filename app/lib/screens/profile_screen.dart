@@ -27,12 +27,10 @@ class ProfileScreen extends ConsumerWidget {
     final me = repo.currentUser;
     final group = repo.currentGroup;
     final isMember = group?.memberUids.contains(me.uid) ?? false;
-    final userNo = repo.userNo;
-
     return SafeArea(
       child: Column(
         children: [
-          AppMasthead(title: '個人設定', userNo: userNo),
+          const AppMasthead(title: '個人設定'),
           const SizedBox(height: AppSpacing.lg),
           Expanded(
             child: ListView(

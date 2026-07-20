@@ -27,13 +27,12 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
     final all = repo.notifications;
     final items = all.where((n) => _tab == 0 ? !n.read : n.read).toList();
     final unread = all.where((n) => !n.read).toList();
-    final userNo = repo.userNo;
 
     return SafeArea(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppMasthead(title: '通知', userNo: userNo),
+          const AppMasthead(title: '通知'),
           const SizedBox(height: AppSpacing.lg),
           Padding(
             padding: const EdgeInsets.symmetric(

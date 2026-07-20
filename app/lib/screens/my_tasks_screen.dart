@@ -47,14 +47,13 @@ class _MyTasksScreenState extends ConsumerState<MyTasksScreen> {
         .expand((t) => t.completions)
         .where((c) => c.status == CompletionStatus.pending)
         .length;
-    final userNo = repo.userNo;
 
     return SafeArea(
       bottom: false,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppMasthead(title: '我的任務', userNo: userNo, starTotal: me.starTotal),
+          AppMasthead(title: '我的任務', starTotal: me.starTotal),
           const SizedBox(height: AppSpacing.lg),
           Padding(
             padding: const EdgeInsets.symmetric(

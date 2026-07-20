@@ -96,7 +96,6 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
               t.status != TaskStatus.rewardClaimed,
         )
         .length;
-    final userNo = repo.userNo;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
@@ -105,7 +104,7 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _Masthead(userNo: userNo),
+            const _Masthead(),
             // 刊頭↔tab 間距對齊其他頁（24；-2 補償視覺落差）
             const SizedBox(height: AppSpacing.lg - 2),
             // 排版式分頁 + 行內排序
@@ -179,12 +178,9 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
   }
 }
 
-/// 雜誌刊頭：WHOSE TURN TODAY / NO.xx + 大標「今天換誰？」。
+/// 雜誌刊頭：WHOSE TURN TODAY + 大標「今天換誰？」。
 class _Masthead extends StatelessWidget {
-  const _Masthead({required this.userNo});
-
-  /// 目前使用者是第幾位（最少兩位數、不足補 0）；null＝未加入群組，不顯示。
-  final int? userNo;
+  const _Masthead();
 
   @override
   Widget build(BuildContext context) {
@@ -198,30 +194,14 @@ class _Masthead extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              const Expanded(
-                child: Text(
-                  'WHOSE TURN TODAY',
-                  style: TextStyle(
-                    fontSize: AppType.kicker,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 3,
-                    color: AppColors.green,
-                  ),
-                ),
-              ),
-              if (userNo != null)
-                Text(
-                  'NO.${userNo.toString().padLeft(2, '0')}',
-                  style: const TextStyle(
-                    fontSize: AppType.body,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: 2,
-                    color: AppColors.green,
-                  ),
-                ),
-            ],
+          const Text(
+            'WHOSE TURN TODAY',
+            style: TextStyle(
+              fontSize: AppType.kicker,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 3,
+              color: AppColors.green,
+            ),
           ),
           const SizedBox(height: AppSpacing.sm),
           const MastheadDivider(),
