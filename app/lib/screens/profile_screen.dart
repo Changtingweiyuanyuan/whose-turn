@@ -411,7 +411,7 @@ class ProfileScreen extends ConsumerWidget {
       // opaque 預設 true 會遮蔽背後頁面（底層變白畫布）；設 false 才看得到原頁
       opaque: false,
       // 套件預設 barrier 0xcc000000 太濃，改回正常半透明遮罩
-      barrierColor: Colors.black54,
+      barrierColor: Colors.black26, // 淡遮罩，讓 modal 的 softInk 邊框讀得出來
       builder: (ctx) => ShadDialog.alert(
         // 對齊 toast：紙白底 + softInk 1px 框，左右各留 16 邊距
         backgroundColor: AppColors.bg,
@@ -489,7 +489,7 @@ class ProfileScreen extends ConsumerWidget {
     final confirmed = await showShadDialog<bool>(
       context: context,
       opaque: false,
-      barrierColor: Colors.black54,
+      barrierColor: Colors.black26, // 淡遮罩，讓 modal 的 softInk 邊框讀得出來
       builder: (ctx) => ShadDialog.alert(
         backgroundColor: AppColors.bg,
         border: Border.all(color: AppColors.inkSoft, width: 1),

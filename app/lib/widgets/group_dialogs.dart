@@ -38,7 +38,7 @@ Future<String?> _show(
   return showShadDialog<String>(
     context: context,
     opaque: false,
-    barrierColor: Colors.black54,
+    barrierColor: Colors.black26, // 淡遮罩，讓 modal 的 softInk 邊框讀得出來
     builder: (_) =>
         _GroupDialog(ref: ref, mode: mode, initialCode: initialCode),
   );
