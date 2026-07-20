@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -411,9 +413,11 @@ class ProfileScreen extends ConsumerWidget {
       // 套件預設 barrier 0xcc000000 太濃，改回正常半透明遮罩
       barrierColor: Colors.black54,
       builder: (ctx) => ShadDialog.alert(
-        // 對齊 toast：紙白底 + softInk 1px 框
+        // 對齊 toast：紙白底 + softInk 1px 框，左右各留 16 邊距
         backgroundColor: AppColors.bg,
         border: Border.all(color: AppColors.inkSoft, width: 1),
+        constraints: BoxConstraints(
+            maxWidth: math.min(512, MediaQuery.of(ctx).size.width - 32)),
         radius: BorderRadius.circular(AppRadius.card),
         // tiny 斷點預設會拿掉圓角，關掉才會保留 8px
         removeBorderRadiusWhenTiny: false,
@@ -487,6 +491,8 @@ class ProfileScreen extends ConsumerWidget {
       builder: (ctx) => ShadDialog.alert(
         backgroundColor: AppColors.bg,
         border: Border.all(color: AppColors.inkSoft, width: 1),
+        constraints: BoxConstraints(
+            maxWidth: math.min(512, MediaQuery.of(ctx).size.width - 32)),
         radius: BorderRadius.circular(AppRadius.card),
         removeBorderRadiusWhenTiny: false,
         gap: AppSpacing.lg,

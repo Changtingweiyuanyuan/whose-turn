@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -148,9 +149,11 @@ class _GroupDialogState extends State<_GroupDialog> {
   @override
   Widget build(BuildContext context) {
     return ShadDialog(
-      // 對齊 toast：紙白底 + softInk 1px 框
+      // 對齊 toast：紙白底 + softInk 1px 框，左右各留 16 邊距
       backgroundColor: AppColors.bg,
       border: Border.all(color: AppColors.inkSoft, width: 1),
+      constraints: BoxConstraints(
+          maxWidth: math.min(512, MediaQuery.of(context).size.width - 32)),
       radius: BorderRadius.circular(AppRadius.card),
       removeBorderRadiusWhenTiny: false,
       gap: AppSpacing.md,
