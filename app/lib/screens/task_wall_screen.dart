@@ -106,8 +106,8 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _Masthead(userNo: userNo),
-            // 刊頭↔tab 間距對齊其他頁（24）
-            const SizedBox(height: AppSpacing.lg),
+            // 刊頭↔tab 間距對齊其他頁（24；-2 補償視覺落差）
+            const SizedBox(height: AppSpacing.lg - 2),
             // 排版式分頁 + 行內排序
             Padding(
               padding: const EdgeInsets.symmetric(
