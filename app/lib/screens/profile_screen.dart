@@ -441,6 +441,7 @@ class ProfileScreen extends ConsumerWidget {
             SizedBox(height: 12),
             Text(
               '離開後看不到群組的任務看板。',
+              textAlign: TextAlign.start,
               style: TextStyle(
                 fontSize: AppType.label,
                 fontWeight: FontWeight.w400,
@@ -513,6 +514,7 @@ class ProfileScreen extends ConsumerWidget {
             SizedBox(height: 12),
             Text(
               '你發起的任務、完成紀錄與星星都會一起刪除，且無法復原。',
+              textAlign: TextAlign.start,
               style: TextStyle(
                 fontSize: AppType.label,
                 fontWeight: FontWeight.w400,
