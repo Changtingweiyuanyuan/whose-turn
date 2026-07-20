@@ -206,9 +206,9 @@ class _Masthead extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           const MastheadDivider(),
           const SizedBox(height: AppSpacing.md),
-          // 大標：對齊其他頁刊頭（title 20、w600、Ink），問號半形
+          // 大標：對齊其他頁刊頭（title 20、w600、Ink）
           const Text(
-            '今天換誰?',
+            '任務看板',
             style: TextStyle(
               fontSize: AppType.title,
               height: 1.0,
