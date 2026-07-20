@@ -20,9 +20,7 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
       // 同任務詳情列的背景色
       backgroundColor: const Color(0xFFF3F3F3),
       radius: const BorderRadius.vertical(top: Radius.circular(8)),
-      border: const Border(
-        top: BorderSide(color: AppColors.green, width: 1.5),
-      ),
+      border: const Border(top: BorderSide(color: AppColors.green, width: 1.5)),
       closeIcon: const AppCloseIcon(),
       closeIconPosition: const ShadPosition(top: 20, right: 20),
       padding: const EdgeInsets.fromLTRB(24, 32, 24, 32),
@@ -41,14 +39,17 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
             TextSpan(
               style: TextStyle(
                 fontSize: AppType.title,
-                fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
+                fontWeight: FontWeight.w600,
+                letterSpacing: AppType.spacingBold,
                 color: AppColors.ink,
                 height: 1.2,
               ),
               children: [
                 TextSpan(text: '先綁定 '),
                 TextSpan(
-                    text: 'LINE', style: TextStyle(color: AppColors.green)),
+                  text: 'LINE',
+                  style: TextStyle(color: AppColors.green),
+                ),
                 TextSpan(text: ' 再繼續'),
               ],
             ),
@@ -90,8 +91,8 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
                   hoverBackgroundColor: AppColors.greenSoft,
                   hoverForegroundColor: AppColors.green,
                   decoration: ShadDecoration(
-                      border:
-                          ShadBorder.all(color: AppColors.green, width: 1)),
+                    border: ShadBorder.all(color: AppColors.green, width: 1),
+                  ),
                   onPressed: () => Navigator.of(sheetContext).pop(false),
                   child: const Text('下次再說'),
                 ),
@@ -103,8 +104,10 @@ Future<bool> showLineBindSheet(BuildContext context, WidgetRef ref) async {
                   foregroundColor: AppColors.bg,
                   hoverBackgroundColor: AppColors.greenDark,
                   hoverForegroundColor: AppColors.bg,
-                  leading:
-                      const MessageBubbleIcon(color: AppColors.white, size: 20),
+                  leading: const MessageBubbleIcon(
+                    color: AppColors.white,
+                    size: 20,
+                  ),
                   onPressed: () async {
                     await ref.read(repositoryProvider).bindLine();
                     if (sheetContext.mounted) {

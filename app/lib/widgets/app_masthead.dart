@@ -23,7 +23,11 @@ class AppMasthead extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-          AppSpacing.pagePadding, AppSpacing.md, AppSpacing.pagePadding, 0),
+        AppSpacing.pagePadding,
+        AppSpacing.md,
+        AppSpacing.pagePadding,
+        0,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -64,7 +68,8 @@ class AppMasthead extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: AppType.title,
                     height: 1.0,
-                    fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
+                    fontWeight: FontWeight.w600,
+                    letterSpacing: AppType.spacingBold,
                     color: AppColors.ink,
                   ),
                 ),
@@ -73,17 +78,18 @@ class AppMasthead extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const AppSvgIcon(kStarSvg,
-                        color: AppColors.red, size: 20),
+                    const AppSvgIcon(kStarSvg, color: AppColors.red, size: 20),
                     const SizedBox(width: 6),
                     Text(
                       '$starTotal',
                       // height 1.0 對齊標題行高，避免撐高刊頭（各頁 tab 位置才會一致）
                       style: const TextStyle(
-                          fontSize: AppType.title,
-                          height: 1.0,
-                          fontWeight: FontWeight.w800, letterSpacing: AppType.spacingBold,
-                          color: AppColors.inkSoft),
+                        fontSize: AppType.title,
+                        height: 1.0,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: AppType.spacingBold,
+                        color: AppColors.inkSoft,
+                      ),
                     ),
                   ],
                 ),

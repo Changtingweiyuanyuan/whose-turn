@@ -25,8 +25,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   Widget build(BuildContext context) {
     final repo = ref.watch(repositoryProvider);
     final all = repo.notifications;
-    final items =
-        all.where((n) => _tab == 0 ? !n.read : n.read).toList();
+    final items = all.where((n) => _tab == 0 ? !n.read : n.read).toList();
     final unread = all.where((n) => !n.read).toList();
     final userNo = repo.userNo;
 
@@ -38,7 +37,8 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
           const SizedBox(height: AppSpacing.lg),
           Padding(
             padding: const EdgeInsets.symmetric(
-                horizontal: AppSpacing.pagePadding),
+              horizontal: AppSpacing.pagePadding,
+            ),
             child: Row(
               children: [
                 Expanded(
@@ -74,10 +74,13 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
             child: items.isEmpty
                 ? Center(
                     child: Text(
-                        _tab == 0 ? '沒有未讀訊息 🎉' : '還沒有訊息\n有人發起任務時會通知你 👀',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            color: AppColors.inkSoft, height: 1.6)),
+                      _tab == 0 ? '沒有未讀訊息 🎉' : '還沒有訊息\n有人發起任務時會通知你 👀',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: AppColors.inkSoft,
+                        height: 1.6,
+                      ),
+                    ),
                   )
                 : ListView.separated(
                     padding: const EdgeInsets.fromLTRB(20, 0, 20, 96),
@@ -85,68 +88,84 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                     separatorBuilder: (_, _) => const SizedBox(height: 16),
                     itemBuilder: (context, i) {
                       final n = items[i];
-                      return GestureDetector(
-                        onTap: () async {
-                          await repo.markNotificationRead(n.id);
-                          if (n.taskId != null && context.mounted) {
-                            context.push('/task/${n.taskId}');
-                          }
-                        },
-                        // 1px 邊框：已讀＝紋理、未讀＝紅 D5665C
-                        child: Container(
-                          padding: const EdgeInsets.all(1),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(AppRadius.card),
-                            color: n.read ? null : AppColors.red,
-                            image: n.read
-                                ? const DecorationImage(
-                                    image: AssetImage(
-                                        'assets/images/card_border.png'),
-                                    repeat: ImageRepeat.repeat,
-                                    fit: BoxFit.none,
-                                  )
-                                : null,
-                          ),
+                      return MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: GestureDetector(
+                          onTap: () async {
+                            await repo.markNotificationRead(n.id);
+                            if (n.taskId != null && context.mounted) {
+                              context.push('/task/${n.taskId}');
+                            }
+                          },
+                          // 1px 邊框：已讀＝紋理、未讀＝紅 D5665C
                           child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 12),
+                            padding: const EdgeInsets.all(1),
                             decoration: BoxDecoration(
-                              color: AppColors.white,
-                              borderRadius:
-                                  BorderRadius.circular(AppRadius.card - 1),
+                              borderRadius: BorderRadius.circular(
+                                AppRadius.card,
+                              ),
+                              color: n.read ? null : AppColors.red,
+                              image: n.read
+                                  ? const DecorationImage(
+                                      image: AssetImage(
+                                        'assets/images/card_border.png',
+                                      ),
+                                      repeat: ImageRepeat.repeat,
+                                      fit: BoxFit.none,
+                                    )
+                                  : null,
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  n.title,
-                                  style: const TextStyle(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 12,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.white,
+                                borderRadius: BorderRadius.circular(
+                                  AppRadius.card - 1,
+                                ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    n.title,
+                                    style: const TextStyle(
                                       fontSize: AppType.body,
                                       fontWeight: FontWeight.w600,
                                       letterSpacing: AppType.spacingBold,
-                                      color: AppColors.ink),
-                                ),
-                                // 標題下虛線：同任務內容 block（上下 gap 6）
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 6),
-                                  child: DashedRule(
-                                      color: Color(0xFFF3F3F3), thickness: 1),
-                                ),
-                                Text(
-                                  n.body,
-                                  style: const TextStyle(
+                                      color: AppColors.ink,
+                                    ),
+                                  ),
+                                  // 標題下虛線：同任務內容 block（上下 gap 6）
+                                  const Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 6),
+                                    child: DashedRule(
+                                      color: Color(0xFFF3F3F3),
+                                      thickness: 1,
+                                    ),
+                                  ),
+                                  Text(
+                                    n.body,
+                                    style: const TextStyle(
                                       fontSize: AppType.kicker,
                                       fontWeight: FontWeight.w500,
-                                      color: AppColors.inkSoft),
-                                ),
-                                const SizedBox(height: 2),
-                                Text(
-                                  DateFormat('MM/dd HH:mm')
-                                      .format(n.createdAt),
-                                  style: const TextStyle(
-                                      fontSize: 12, color: AppColors.inkSoft),
-                                ),
-                              ],
+                                      color: AppColors.inkSoft,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    DateFormat(
+                                      'MM/dd HH:mm',
+                                    ).format(n.createdAt),
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: AppColors.inkSoft,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),

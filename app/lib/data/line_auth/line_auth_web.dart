@@ -21,11 +21,11 @@ String get _redirectUri {
 Future<void> startLineLogin({String? anonymousUid}) async {
   if (kLineChannelId.isEmpty) {
     throw StateError(
-        '缺少 LINE_CHANNEL_ID（build 時 --dart-define=LINE_CHANNEL_ID=...）');
+      '缺少 LINE_CHANNEL_ID（build 時 --dart-define=LINE_CHANNEL_ID=...）',
+    );
   }
   final rand = Random.secure();
-  final state =
-      base64UrlEncode(List.generate(24, (_) => rand.nextInt(256)));
+  final state = base64UrlEncode(List.generate(24, (_) => rand.nextInt(256)));
   web.window.localStorage.setItem(_kStateKey, state);
   if (anonymousUid != null) {
     web.window.localStorage.setItem(_kAnonUidKey, anonymousUid);

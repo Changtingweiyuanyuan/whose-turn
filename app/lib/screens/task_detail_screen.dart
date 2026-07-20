@@ -280,8 +280,9 @@ class TaskDetailScreen extends ConsumerWidget {
                             ),
                             decoration: BoxDecoration(
                               // 完成紀錄底色一致＝任務卡的底色
-                              color: AppColors.cardCycle[task.colorIndex %
-                                  AppColors.cardCycle.length],
+                              color:
+                                  AppColors.cardCycle[task.colorIndex %
+                                      AppColors.cardCycle.length],
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Row(
@@ -296,12 +297,12 @@ class TaskDetailScreen extends ConsumerWidget {
                                         TextSpan(
                                           children: [
                                             WidgetSpan(
-                                              alignment: PlaceholderAlignment
-                                                  .middle,
+                                              alignment:
+                                                  PlaceholderAlignment.middle,
                                               child: Padding(
-                                                padding:
-                                                    const EdgeInsets.only(
-                                                        right: 4),
+                                                padding: const EdgeInsets.only(
+                                                  right: 4,
+                                                ),
                                                 child: PersonAvatar(
                                                   repo
                                                       .userOf(c.userId)

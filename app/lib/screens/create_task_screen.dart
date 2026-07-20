@@ -97,53 +97,55 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
     );
     if (mounted) {
       context.pop();
-      ShadToaster.of(context).show(
-        const ShadToast(description: Text('任務已發佈到任務看板！')),
-      );
+      ShadToaster.of(
+        context,
+      ).show(const ShadToast(description: Text('任務已發佈到任務看板！')));
     }
   }
 
   /// 獎勵內容欄位標題依類型變化
   String get _rewardFieldLabel => switch (_rewardType) {
-        RewardType.money => '獎勵金額',
-        RewardType.mystery => '獎勵內容［內容將保密］',
-        _ => '獎勵內容',
-      };
+    RewardType.money => '獎勵金額',
+    RewardType.mystery => '獎勵內容［內容將保密］',
+    _ => '獎勵內容',
+  };
 
   /// 獎勵內容欄位依獎勵類型變化（label 已移到外層 _FieldLabel）
   Widget _buildRewardField() {
     return switch (_rewardType) {
       RewardType.money => ShadInputFormField(
-          id: 'reward',
-          placeholder: const Text('例如：50'),
-          keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          trailing: const Text('元',
-              style: TextStyle(
-                  fontSize: AppType.kicker, color: AppColors.inkSoft)),
-          validator: (v) {
-            final n = int.tryParse(v.trim());
-            if (n == null || n < 1) return '請輸入獎勵金額';
-            return null;
-          },
+        id: 'reward',
+        placeholder: const Text('例如：50'),
+        keyboardType: TextInputType.number,
+        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+        trailing: const Text(
+          '元',
+          style: TextStyle(fontSize: AppType.kicker, color: AppColors.inkSoft),
         ),
+        validator: (v) {
+          final n = int.tryParse(v.trim());
+          if (n == null || n < 1) return '請輸入獎勵金額';
+          return null;
+        },
+      ),
       RewardType.mystery => ShadInputFormField(
-          id: 'reward',
-          placeholder: const Text('例如：神秘禮物、驚喜行程...'),
-          validator: (v) => v.trim().isEmpty ? '請輸入獎勵內容' : null,
-        ),
+        id: 'reward',
+        placeholder: const Text('例如：神秘禮物、驚喜行程...'),
+        validator: (v) => v.trim().isEmpty ? '請輸入獎勵內容' : null,
+      ),
       _ => ShadInputFormField(
-          id: 'reward',
-          placeholder: const Text('例如：珍奶一杯、看一場電影...'),
-          validator: (v) => v.trim().isEmpty ? '請輸入獎勵內容' : null,
-        ),
+        id: 'reward',
+        placeholder: const Text('例如：珍奶一杯、看一場電影...'),
+        validator: (v) => v.trim().isEmpty ? '請輸入獎勵內容' : null,
+      ),
     };
   }
 
   @override
   Widget build(BuildContext context) {
     final repo = ref.watch(repositoryProvider);
-    final members = repo.currentGroup?.memberUids
+    final members =
+        repo.currentGroup?.memberUids
             .where((uid) => uid != repo.currentUser.uid)
             .map(repo.userOf)
             .toList() ??
@@ -163,12 +165,15 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
           children: [
             AppAssetIcon('assets/icons/flower_green.svg', size: 16),
             SizedBox(width: 6),
-            Text('發起任務',
-                style: TextStyle(
-                    color: AppColors.green,
-                    fontSize: AppType.label,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: AppType.spacing)),
+            Text(
+              '發起任務',
+              style: TextStyle(
+                color: AppColors.green,
+                fontSize: AppType.label,
+                fontWeight: FontWeight.w500,
+                letterSpacing: AppType.spacing,
+              ),
+            ),
           ],
         ),
       ),
@@ -193,28 +198,31 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                   for (final e in _emojiChoices)
                     GestureDetector(
                       onTap: () => setState(() => _emoji = e),
-                      child: Container(
-                        width: 44,
-                        height: 44,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: AppColors.white,
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                            color: _emoji == e
-                                ? AppColors.greenMist
-                                : AppColors.lightGray,
-                            width: _emoji == e ? 2 : 1,
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: Container(
+                          width: 44,
+                          height: 44,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                              color: _emoji == e
+                                  ? AppColors.greenMist
+                                  : AppColors.lightGray,
+                              width: _emoji == e ? 2 : 1,
+                            ),
                           ),
+                          // 選中：icon 上蓋一層 50% 淡綠
+                          foregroundDecoration: _emoji == e
+                              ? const BoxDecoration(
+                                  color: Color(0x80DEEDE4),
+                                  shape: BoxShape.circle,
+                                )
+                              : null,
+                          child: TaskIcon(icon: e, size: 26),
                         ),
-                        // 選中：icon 上蓋一層 50% 淡綠
-                        foregroundDecoration: _emoji == e
-                            ? const BoxDecoration(
-                                color: Color(0x80DEEDE4),
-                                shape: BoxShape.circle,
-                              )
-                            : null,
-                        child: TaskIcon(icon: e, size: 26),
                       ),
                     ),
                 ],
@@ -238,9 +246,13 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                           FilteringTextInputFormatter.digitsOnly,
                           LengthLimitingTextInputFormatter(2),
                         ],
-                        trailing: const Text('次',
-                            style: TextStyle(
-                  fontSize: AppType.kicker, color: AppColors.inkSoft)),
+                        trailing: const Text(
+                          '次',
+                          style: TextStyle(
+                            fontSize: AppType.kicker,
+                            color: AppColors.inkSoft,
+                          ),
+                        ),
                         validator: (v) {
                           final n = int.tryParse(v);
                           if (n == null || n < 1) return '至少 1 次';
@@ -258,8 +270,7 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
               // 分段控制：容器同 input（F3F3F3 底），選中＝愛心綠
               Container(
                 // 選中塊與容器：左右 4、上下 2
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                 decoration: BoxDecoration(
                   color: const Color(0xFFF3F3F3),
                   borderRadius: BorderRadius.circular(6),
@@ -271,10 +282,10 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                     for (final entry in _rewardTypeLabels.entries)
                       Expanded(
                         child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
                           onEnter: (_) =>
                               setState(() => _hoveredReward = entry.key),
-                          onExit: (_) =>
-                              setState(() => _hoveredReward = null),
+                          onExit: (_) => setState(() => _hoveredReward = null),
                           child: GestureDetector(
                             behavior: HitTestBehavior.opaque,
                             onTap: () =>
@@ -288,8 +299,8 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                                 color: _rewardType == entry.key
                                     ? AppColors.green
                                     : (_hoveredReward == entry.key
-                                        ? const Color(0x0F000000)
-                                        : Colors.transparent),
+                                          ? const Color(0x0F000000)
+                                          : Colors.transparent),
                               ),
                               child: Text(
                                 entry.value,
@@ -320,18 +331,24 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                 hoverBackgroundColor: const Color(0xFFF3F3F3),
                 hoverForegroundColor: AppColors.ink,
                 placeholder: const Text('選擇日期'),
-                leading: const AppSvgIcon(kCalendarSvg,
-                    color: AppColors.inkSoft, size: 18),
+                leading: const AppSvgIcon(
+                  kCalendarSvg,
+                  color: AppColors.inkSoft,
+                  size: 18,
+                ),
               ),
               const SizedBox(height: 16),
               Row(
                 children: [
                   const Expanded(
-                    child: Text('誰都可以接',
-                        style: TextStyle(
-                            fontSize: AppType.body,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.ink)),
+                    child: Text(
+                      '誰都可以接',
+                      style: TextStyle(
+                        fontSize: AppType.body,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.ink,
+                      ),
+                    ),
                   ),
                   ShadSwitch(
                     value: _anyoneCanClaim,
@@ -345,49 +362,58 @@ class _CreateTaskScreenState extends ConsumerState<CreateTaskScreen> {
                 LayoutBuilder(
                   builder: (context, constraints) =>
                       ShadSelectFormField<String>(
-                    id: 'assignee',
-                    // 撐滿：trigger 與 popover 都用可用寬度，不會溢出
-                    minWidth: constraints.maxWidth,
-                    maxWidth: constraints.maxWidth,
-                    decoration:
-                        const ShadDecoration(color: Color(0xFFF3F3F3)),
-                    placeholder: const Text('選擇成員',
-                        style: TextStyle(color: AppColors.inkSoft)),
-                    options: [
-                      for (final m in members)
-                        ShadOption(
-                          value: m.uid,
-                          child: Row(
+                        id: 'assignee',
+                        // 撐滿：trigger 與 popover 都用可用寬度，不會溢出
+                        minWidth: constraints.maxWidth,
+                        maxWidth: constraints.maxWidth,
+                        decoration: const ShadDecoration(
+                          color: Color(0xFFF3F3F3),
+                        ),
+                        placeholder: const Text(
+                          '選擇成員',
+                          style: TextStyle(color: AppColors.inkSoft),
+                        ),
+                        options: [
+                          for (final m in members)
+                            ShadOption(
+                              value: m.uid,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  PersonAvatar(
+                                    m.avatarEmoji,
+                                    size: 20,
+                                    fillColor: AppColors.ink,
+                                    orangeColor: AppColors.green,
+                                  ),
+                                  const SizedBox(width: 6),
+                                  Text(m.displayName),
+                                ],
+                              ),
+                            ),
+                        ],
+                        selectedOptionBuilder: (context, value) {
+                          final m = repo.userOf(value);
+                          return Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              PersonAvatar(m.avatarEmoji,
-                                  size: 20,
-                                  fillColor: AppColors.ink,
-                                  orangeColor: AppColors.green),
+                              PersonAvatar(
+                                m.avatarEmoji,
+                                size: 20,
+                                fillColor: AppColors.ink,
+                                orangeColor: AppColors.green,
+                              ),
                               const SizedBox(width: 6),
-                              Text(m.displayName),
+                              Text(
+                                m.displayName,
+                                style: const TextStyle(color: AppColors.ink),
+                              ),
                             ],
-                          ),
-                        ),
-                    ],
-                    selectedOptionBuilder: (context, value) {
-                      final m = repo.userOf(value);
-                      return Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          PersonAvatar(m.avatarEmoji,
-                              size: 20,
-                              fillColor: AppColors.ink,
-                              orangeColor: AppColors.green),
-                          const SizedBox(width: 6),
-                          Text(m.displayName,
-                              style: const TextStyle(color: AppColors.ink)),
-                        ],
-                      );
-                    },
-                    validator: (v) =>
-                        !_anyoneCanClaim && v == null ? '請選擇成員' : null,
-                  ),
+                          );
+                        },
+                        validator: (v) =>
+                            !_anyoneCanClaim && v == null ? '請選擇成員' : null,
+                      ),
                 ),
               ],
               const SizedBox(height: 28),
@@ -427,6 +453,7 @@ class _StepButtonState extends State<_StepButton> {
   Widget build(BuildContext context) {
     final bg = _hover ? AppColors.greenDark : AppColors.green;
     return MouseRegion(
+      cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _hover = true),
       onExit: (_) => setState(() => _hover = false),
       child: GestureDetector(

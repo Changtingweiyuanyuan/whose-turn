@@ -28,7 +28,8 @@ class RewardBadge extends StatelessWidget {
         text,
         style: const TextStyle(
           fontSize: AppType.kicker,
-          fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
+          fontWeight: FontWeight.w600,
+          letterSpacing: AppType.spacingBold,
           color: AppColors.ink, // 文字：墨黑
         ),
       ),

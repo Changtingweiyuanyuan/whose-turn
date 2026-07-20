@@ -11,8 +11,12 @@ import '../theme/app_colors.dart';
 /// 與排序選單的 broken 箭頭風格一致。顏色透過 [color] 以 srcIn 濾鏡上色，
 /// 深色底傳白色、淺色底傳墨黑。
 class AppCloseIcon extends StatelessWidget {
-  const AppCloseIcon(
-      {super.key, this.color = AppColors.green, this.size = 22, this.forToast = false});
+  const AppCloseIcon({
+    super.key,
+    this.color = AppColors.green,
+    this.size = 22,
+    this.forToast = false,
+  });
 
   /// 全站預設愛心綠。
   final Color color;

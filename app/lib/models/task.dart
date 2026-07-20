@@ -103,7 +103,8 @@ class Task {
   /// 對接單人顯示的獎勵文字：神秘任務完成前只看得到 ???
   String rewardLabelFor(String viewerUid) {
     if (!isMystery) return rewardLabel;
-    final revealed = viewerUid == createdBy ||
+    final revealed =
+        viewerUid == createdBy ||
         status == TaskStatus.completed ||
         status == TaskStatus.rewardClaimed;
     return revealed ? rewardLabel : '???';

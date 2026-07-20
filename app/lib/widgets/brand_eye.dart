@@ -11,10 +11,7 @@ class BrandEye extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomPaint(
-      size: Size(size * 1.6, size),
-      painter: _EyePainter(),
-    );
+    return CustomPaint(size: Size(size * 1.6, size), painter: _EyePainter());
   }
 }
 

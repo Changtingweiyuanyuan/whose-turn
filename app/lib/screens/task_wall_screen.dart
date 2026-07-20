@@ -30,7 +30,6 @@ const _sortLabels = {
   TaskWallSort.reward: '現金',
 };
 
-
 // Iconsax arrow-down2（broken 樣式）—— 直接用官方 SVG，最精準
 const _sortArrowSvg =
     '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" '
@@ -56,24 +55,32 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
     final repo = ref.watch(repositoryProvider);
     final me = repo.currentUser.uid;
     final list = repo.tasks
-        .where((t) =>
-            t.status != TaskStatus.cancelled &&
-            t.status != TaskStatus.rewardClaimed)
-        .where((t) => switch (_filter) {
-              TaskWallFilter.all => true,
-              TaskWallFilter.mine => t.createdBy == me,
-              TaskWallFilter.claimed => t.claimedBy == me,
-            })
+        .where(
+          (t) =>
+              t.status != TaskStatus.cancelled &&
+              t.status != TaskStatus.rewardClaimed,
+        )
+        .where(
+          (t) => switch (_filter) {
+            TaskWallFilter.all => true,
+            TaskWallFilter.mine => t.createdBy == me,
+            TaskWallFilter.claimed => t.claimedBy == me,
+          },
+        )
         .toList();
 
-    list.sort((a, b) => switch (_sort) {
-          TaskWallSort.newest => b.createdAt.compareTo(a.createdAt),
-          TaskWallSort.deadline => (a.deadline ?? DateTime(2999))
-              .compareTo(b.deadline ?? DateTime(2999)),
-          TaskWallSort.mystery =>
-            (b.isMystery ? 1 : 0).compareTo(a.isMystery ? 1 : 0),
-          TaskWallSort.reward => b.requiredCount.compareTo(a.requiredCount),
-        });
+    list.sort(
+      (a, b) => switch (_sort) {
+        TaskWallSort.newest => b.createdAt.compareTo(a.createdAt),
+        TaskWallSort.deadline => (a.deadline ?? DateTime(2999)).compareTo(
+          b.deadline ?? DateTime(2999),
+        ),
+        TaskWallSort.mystery => (b.isMystery ? 1 : 0).compareTo(
+          a.isMystery ? 1 : 0,
+        ),
+        TaskWallSort.reward => b.requiredCount.compareTo(a.requiredCount),
+      },
+    );
     return list;
   }
 
@@ -83,9 +90,11 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
     final tasks = _visibleTasks();
     // 全部任務 tab 的數量（看板上會出現的任務）
     final allCount = repo.tasks
-        .where((t) =>
-            t.status != TaskStatus.cancelled &&
-            t.status != TaskStatus.rewardClaimed)
+        .where(
+          (t) =>
+              t.status != TaskStatus.cancelled &&
+              t.status != TaskStatus.rewardClaimed,
+        )
         .length;
     final userNo = repo.userNo;
 
@@ -97,71 +106,75 @@ class _TaskWallScreenState extends ConsumerState<TaskWallScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _Masthead(userNo: userNo),
-              // 刊頭↔tab 間距對齊其他頁（24）
-              const SizedBox(height: AppSpacing.lg),
-              // 排版式分頁 + 行內排序
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.pagePadding),
-                // 與「我的任務」共用同一種滑動分頁
-                child: AppSlidingTabs(
-                  labels: [
-                    for (final f in TaskWallFilter.values)
-                      f == TaskWallFilter.all && allCount > 1
-                          ? '${_filterLabels[f]!} ($allCount)'
-                          : _filterLabels[f]!,
-                  ],
-                  selected: TaskWallFilter.values.indexOf(_filter),
-                  onChanged: (i) =>
-                      setState(() => _filter = TaskWallFilter.values[i]),
-                ),
-                // 排序控制先收起來（保留程式碼，之後要用再打開）
-                // _SortControl(
-                //   value: _sort,
-                //   onChanged: (v) => setState(() => _sort = v),
-                // ),
+            // 刊頭↔tab 間距對齊其他頁（24）
+            const SizedBox(height: AppSpacing.lg),
+            // 排版式分頁 + 行內排序
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.pagePadding,
               ),
-              const SizedBox(height: AppSpacing.md),
-              Expanded(
-                child: tasks.isEmpty
-                    ? const _EmptyWall()
-                    : ListView.separated(
-                        padding: const EdgeInsets.fromLTRB(
-                            AppSpacing.pagePadding,
-                            0,
-                            AppSpacing.pagePadding,
-                            AppSpacing.bottomNavClearance),
-                        itemCount: tasks.length,
-                        // 任務卡間距 12
-                        separatorBuilder: (_, _) =>
-                            const SizedBox(height: 12),
-                        itemBuilder: (context, i) {
-                          final task = tasks[i];
-                          return TaskCard(
-                            task: task,
-                            viewer: repo.currentUser,
-                            creator: repo.userOf(task.createdBy),
-                            // 底色 = 任務建立時記錄的輪替色
-                            backgroundColor: AppColors.cardCycle[
-                                task.colorIndex % AppColors.cardCycle.length],
-                            onTap: () => context.push('/task/${task.id}'),
-                            onClaim: () async {
-                              await repo.claimTask(task.id);
-                              if (context.mounted) {
-                                ShadToaster.of(context).show(
-                                  ShadToast(
-                                    description: Text('接下「${task.title}」！加油 💪🏻'),
-                                  ),
-                                );
-                              }
-                            },
-                          );
-                        },
+              // 與「我的任務」共用同一種滑動分頁
+              child: AppSlidingTabs(
+                labels: [
+                  for (final f in TaskWallFilter.values)
+                    f == TaskWallFilter.all && allCount > 1
+                        ? '${_filterLabels[f]!} ($allCount)'
+                        : _filterLabels[f]!,
+                ],
+                selected: TaskWallFilter.values.indexOf(_filter),
+                onChanged: (i) =>
+                    setState(() => _filter = TaskWallFilter.values[i]),
+              ),
+              // 排序控制先收起來（保留程式碼，之後要用再打開）
+              // _SortControl(
+              //   value: _sort,
+              //   onChanged: (v) => setState(() => _sort = v),
+              // ),
+            ),
+            const SizedBox(height: AppSpacing.md),
+            Expanded(
+              child: tasks.isEmpty
+                  ? const _EmptyWall()
+                  : ListView.separated(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.pagePadding,
+                        0,
+                        AppSpacing.pagePadding,
+                        AppSpacing.bottomNavClearance,
                       ),
-              ),
-            ],
-          ),
+                      itemCount: tasks.length,
+                      // 任務卡間距 12
+                      separatorBuilder: (_, _) => const SizedBox(height: 12),
+                      itemBuilder: (context, i) {
+                        final task = tasks[i];
+                        return TaskCard(
+                          task: task,
+                          viewer: repo.currentUser,
+                          creator: repo.userOf(task.createdBy),
+                          // 底色 = 任務建立時記錄的輪替色
+                          backgroundColor:
+                              AppColors.cardCycle[task.colorIndex %
+                                  AppColors.cardCycle.length],
+                          onTap: () => context.push('/task/${task.id}'),
+                          onClaim: () async {
+                            await repo.claimTask(task.id);
+                            if (context.mounted) {
+                              ShadToaster.of(context).show(
+                                ShadToast(
+                                  description: Text(
+                                    '接下「${task.title}」！加油 💪🏻',
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        );
+                      },
+                    ),
+            ),
+          ],
         ),
+      ),
     );
   }
 }
@@ -177,7 +190,11 @@ class _Masthead extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(
-          AppSpacing.pagePadding, AppSpacing.md, AppSpacing.pagePadding, 0),
+        AppSpacing.pagePadding,
+        AppSpacing.md,
+        AppSpacing.pagePadding,
+        0,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -376,8 +393,10 @@ class _SortControlState extends State<_SortControl> {
                 _sortArrowSvg,
                 width: 16,
                 height: 16,
-                colorFilter:
-                    const ColorFilter.mode(AppColors.inkSoft, BlendMode.srcIn),
+                colorFilter: const ColorFilter.mode(
+                  AppColors.inkSoft,
+                  BlendMode.srcIn,
+                ),
               ),
             ],
           ),

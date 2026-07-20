@@ -35,10 +35,12 @@ class _MyTasksScreenState extends ConsumerState<MyTasksScreen> {
         .where((t) => t.createdBy == me.uid && t.hasPendingCompletion)
         .toList();
     final done = repo.tasks
-        .where((t) =>
-            (t.claimedBy == me.uid || t.createdBy == me.uid) &&
-            (t.status == TaskStatus.completed ||
-                t.status == TaskStatus.rewardClaimed))
+        .where(
+          (t) =>
+              (t.claimedBy == me.uid || t.createdBy == me.uid) &&
+              (t.status == TaskStatus.completed ||
+                  t.status == TaskStatus.rewardClaimed),
+        )
         .toList();
 
     final pendingCount = toConfirm
@@ -52,12 +54,12 @@ class _MyTasksScreenState extends ConsumerState<MyTasksScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AppMasthead(
-              title: '我的任務', userNo: userNo, starTotal: me.starTotal),
+          AppMasthead(title: '我的任務', userNo: userNo, starTotal: me.starTotal),
           const SizedBox(height: AppSpacing.lg),
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: AppSpacing.pagePadding),
+            padding: const EdgeInsets.symmetric(
+              horizontal: AppSpacing.pagePadding,
+            ),
             child: AppSlidingTabs(
               // 數字直接進標題（同「完成紀錄 (n)」），不用橘色 badge
               labels: [
@@ -73,12 +75,15 @@ class _MyTasksScreenState extends ConsumerState<MyTasksScreen> {
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.pagePadding),
+                horizontal: AppSpacing.pagePadding,
+              ),
               child: IndexedStack(
                 index: _tab,
                 children: [
                   _TaskList(
-                      tasks: inProgress, emptyText: '還沒接任務\n去任務看板看看今天換誰？'),
+                    tasks: inProgress,
+                    emptyText: '還沒接任務\n去任務看板看看今天換誰？',
+                  ),
                   _ConfirmList(tasks: toConfirm),
                   _TaskList(tasks: done, emptyText: '完成的任務會出現在這裡'),
                 ],
@@ -90,7 +95,6 @@ class _MyTasksScreenState extends ConsumerState<MyTasksScreen> {
     );
   }
 }
-
 
 class _TaskList extends ConsumerWidget {
   const _TaskList({required this.tasks, required this.emptyText});
@@ -151,8 +155,7 @@ class _ConfirmList extends ConsumerWidget {
       return const Padding(
         padding: EdgeInsets.symmetric(vertical: 48),
         child: Center(
-          child: Text('沒有待確認的完成紀錄',
-              style: TextStyle(color: AppColors.inkSoft)),
+          child: Text('沒有待確認的完成紀錄', style: TextStyle(color: AppColors.inkSoft)),
         ),
       );
     }
@@ -188,24 +191,31 @@ class _ConfirmList extends ConsumerWidget {
                             alignment: PlaceholderAlignment.middle,
                             child: Padding(
                               padding: const EdgeInsets.only(right: 4),
-                              child: PersonAvatar(doer.avatarEmoji,
-                                  size: 16,
-                                  fillColor: AppColors.ink,
-                                  orangeColor: AppColors.ink),
+                              child: PersonAvatar(
+                                doer.avatarEmoji,
+                                size: 16,
+                                fillColor: AppColors.ink,
+                                orangeColor: AppColors.ink,
+                              ),
                             ),
                           ),
                           TextSpan(
-                              text: '${doer.displayName} 完成了 ${task.title}'),
+                            text: '${doer.displayName} 完成了 ${task.title}',
+                          ),
                         ],
                       ),
                       style: const TextStyle(
-                          fontWeight: FontWeight.w500, color: AppColors.ink),
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.ink,
+                      ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       DateFormat('MM/dd HH:mm').format(completion.submittedAt),
                       style: const TextStyle(
-                          fontSize: 12, color: AppColors.inkSoft),
+                        fontSize: 12,
+                        color: AppColors.inkSoft,
+                      ),
                     ),
                   ],
                 ),
@@ -220,9 +230,9 @@ class _ConfirmList extends ConsumerWidget {
                 hoverBackgroundColor: AppColors.greenSoft,
                 hoverForegroundColor: AppColors.green,
                 decoration: ShadDecoration(
-                    border: ShadBorder.all(color: AppColors.green, width: 1)),
-                onPressed: () =>
-                    repo.rejectCompletion(task.id, completion.id),
+                  border: ShadBorder.all(color: AppColors.green, width: 1),
+                ),
+                onPressed: () => repo.rejectCompletion(task.id, completion.id),
                 child: const Text('退回'),
               ),
               const SizedBox(width: 8),
@@ -233,8 +243,7 @@ class _ConfirmList extends ConsumerWidget {
                 foregroundColor: AppColors.bg,
                 hoverBackgroundColor: AppColors.greenDark,
                 hoverForegroundColor: AppColors.bg,
-                onPressed: () =>
-                    repo.confirmCompletion(task.id, completion.id),
+                onPressed: () => repo.confirmCompletion(task.id, completion.id),
                 child: const Text('確認'),
               ),
             ],

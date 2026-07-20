@@ -18,7 +18,8 @@ class AppBackButton extends StatelessWidget {
     return ShadButton.ghost(
       foregroundColor: color,
       hoverForegroundColor: color,
-      hoverBackgroundColor: Colors.transparent,
+      // hover 對齊 footer 導覽：淡黑色塊 + 6px 圓角（按鈕預設圓角即 6）
+      hoverBackgroundColor: const Color(0x0A000000),
       pressedBackgroundColor: Colors.transparent,
       onPressed: () {
         if (context.canPop()) {

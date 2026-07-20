@@ -30,61 +30,69 @@ class AppSlidingTabs extends StatelessWidget {
             child: GestureDetector(
               onTap: () => onChanged(i),
               behavior: HitTestBehavior.opaque,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10, bottom: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        if (i == selected)
-                          Positioned(
-                            left: -4,
-                            right: -4,
-                            bottom: -2,
-                            height: 10,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: AppColors.greenMist,
-                                borderRadius: BorderRadius.circular(6),
+              child: MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10, bottom: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Stack(
+                        clipBehavior: Clip.none,
+                        children: [
+                          if (i == selected)
+                            Positioned(
+                              left: -4,
+                              right: -4,
+                              bottom: -2,
+                              height: 10,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: AppColors.greenMist,
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
                               ),
                             ),
+                          Text(
+                            labels[i],
+                            style: TextStyle(
+                              fontWeight: i == selected
+                                  ? FontWeight.w600
+                                  : FontWeight.w500,
+                              letterSpacing: i == selected
+                                  ? AppType.spacingBold
+                                  : AppType.spacing,
+                              color: i == selected
+                                  ? AppColors.green
+                                  : AppColors.inkSoft,
+                            ),
                           ),
-                        Text(
-                          labels[i],
-                          style: TextStyle(
-                            fontWeight: i == selected
-                                ? FontWeight.w600
-                                : FontWeight.w500,
-                            letterSpacing: i == selected
-                                ? AppType.spacingBold
-                                : AppType.spacing,
-                            color: i == selected
-                                ? AppColors.green
-                                : AppColors.inkSoft,
+                        ],
+                      ),
+                      if (i == badgeIndex && badgeCount > 0) ...[
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 1,
+                          ),
+                          decoration: const BoxDecoration(
+                            color: AppColors.orange,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            '$badgeCount',
+                            style: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: AppType.spacingBold,
+                              color: AppColors.white,
+                            ),
                           ),
                         ),
                       ],
-                    ),
-                    if (i == badgeIndex && badgeCount > 0) ...[
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 1),
-                        decoration: const BoxDecoration(
-                          color: AppColors.orange,
-                          shape: BoxShape.circle,
-                        ),
-                        child: Text('$badgeCount',
-                            style: const TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: AppType.spacingBold,
-                                color: AppColors.white)),
-                      ),
                     ],
-                  ],
+                  ),
                 ),
               ),
             ),

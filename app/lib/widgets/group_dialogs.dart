@@ -20,19 +20,26 @@ Future<String?> showCreateGroupDialog(BuildContext context, WidgetRef ref) {
 
 /// 加入群組：輸入邀請碼（debounce 查詢）→ 選個人圖示。已被選走的圖示會 disabled。
 /// [initialCode]（邀請連結帶入）會代填並直接查詢。
-Future<String?> showJoinGroupDialog(BuildContext context, WidgetRef ref,
-    {String? initialCode}) {
+Future<String?> showJoinGroupDialog(
+  BuildContext context,
+  WidgetRef ref, {
+  String? initialCode,
+}) {
   return _show(context, ref, _GroupDialogMode.join, initialCode: initialCode);
 }
 
 Future<String?> _show(
-    BuildContext context, WidgetRef ref, _GroupDialogMode mode,
-    {String? initialCode}) {
+  BuildContext context,
+  WidgetRef ref,
+  _GroupDialogMode mode, {
+  String? initialCode,
+}) {
   return showShadDialog<String>(
     context: context,
     opaque: false,
     barrierColor: Colors.black54,
-    builder: (_) => _GroupDialog(ref: ref, mode: mode, initialCode: initialCode),
+    builder: (_) =>
+        _GroupDialog(ref: ref, mode: mode, initialCode: initialCode),
   );
 }
 
@@ -107,8 +114,9 @@ class _GroupDialogState extends State<_GroupDialog> {
     });
     if (value.trim().isEmpty) return;
     _debounce = Timer(const Duration(milliseconds: 400), () async {
-      final g =
-          await widget.ref.read(repositoryProvider).findGroupByCode(value);
+      final g = await widget.ref
+          .read(repositoryProvider)
+          .findGroupByCode(value);
       if (!mounted) return;
       setState(() {
         _foundGroup = g;
@@ -124,11 +132,15 @@ class _GroupDialogState extends State<_GroupDialog> {
       await repo.createGroup(name, personalIcon: _selectedIcon);
       if (mounted) Navigator.pop(context, '群組「$name」建立完成 🎉');
     } else {
-      final group = await repo.joinGroupByCode(_controller.text,
-          personalIcon: _selectedIcon);
+      final group = await repo.joinGroupByCode(
+        _controller.text,
+        personalIcon: _selectedIcon,
+      );
       if (mounted) {
         Navigator.pop(
-            context, group == null ? '找不到這個邀請碼 🙈' : '歡迎加入「${group.name}」！');
+          context,
+          group == null ? '找不到這個邀請碼 🙈' : '歡迎加入「${group.name}」！',
+        );
       }
     }
   }
@@ -144,11 +156,14 @@ class _GroupDialogState extends State<_GroupDialog> {
       gap: AppSpacing.md,
       closeIcon: const AppCloseIcon(),
       closeIconPosition: const ShadPosition(top: 20, right: 20),
-      title: Text(_isCreate ? '建立群組' : '加入群組',
-          style: const TextStyle(
-              fontSize: AppType.body,
-              fontWeight: FontWeight.w500,
-              color: AppColors.ink)),
+      title: Text(
+        _isCreate ? '建立群組' : '加入群組',
+        style: const TextStyle(
+          fontSize: AppType.body,
+          fontWeight: FontWeight.w500,
+          color: AppColors.ink,
+        ),
+      ),
       expandActionsWhenTiny: false,
       actionsAxis: Axis.horizontal,
       actionsMainAxisAlignment: MainAxisAlignment.end,
@@ -160,7 +175,8 @@ class _GroupDialogState extends State<_GroupDialog> {
           hoverBackgroundColor: AppColors.greenSoft,
           hoverForegroundColor: AppColors.green,
           decoration: ShadDecoration(
-              border: ShadBorder.all(color: AppColors.green, width: 1)),
+            border: ShadBorder.all(color: AppColors.green, width: 1),
+          ),
           onPressed: () => Navigator.pop(context),
           child: const Text('取消'),
         ),
@@ -182,14 +198,14 @@ class _GroupDialogState extends State<_GroupDialog> {
             controller: _controller,
             autofocus: true,
             placeholder: Text(_isCreate ? '例如：可愛的家、305 室...' : '例如 HOME2026'),
-            onChanged: _isCreate
-                ? (_) => setState(() {})
-                : _onCodeChanged,
+            onChanged: _isCreate ? (_) => setState(() {}) : _onCodeChanged,
           ),
           if (!_isCreate && _notFound) ...[
             const SizedBox(height: 8),
-            const Text('找不到這個邀請碼 🙈',
-                style: TextStyle(color: AppColors.red, fontSize: AppType.label)),
+            const Text(
+              '找不到這個邀請碼 🙈',
+              style: TextStyle(color: AppColors.red, fontSize: AppType.label),
+            ),
           ],
           if (_showPicker) ...[
             const SizedBox(height: AppSpacing.md),

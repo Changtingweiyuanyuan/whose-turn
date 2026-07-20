@@ -30,6 +30,7 @@ class HomeShell extends ConsumerStatefulWidget {
 
 class _HomeShellState extends ConsumerState<HomeShell> {
   int _index = 0;
+  bool _fabHover = false;
 
   @override
   void initState() {
@@ -42,9 +43,11 @@ class _HomeShellState extends ConsumerState<HomeShell> {
         if (!mounted) return;
         ShadToaster.of(context).show(
           ShadToast(
-            description: Text(lineResult == LineRedirectResult.success
-                ? 'LINE 綁定成功！'
-                : 'LINE 綁定失敗，請再試一次'),
+            description: Text(
+              lineResult == LineRedirectResult.success
+                  ? 'LINE 綁定成功！'
+                  : 'LINE 綁定失敗，請再試一次',
+            ),
           ),
         );
       });
@@ -60,21 +63,22 @@ class _HomeShellState extends ConsumerState<HomeShell> {
         if (g != null &&
             g.inviteCode.toUpperCase() == code.trim().toUpperCase() &&
             g.memberUids.contains(repo.currentUser.uid)) {
-          ShadToaster.of(context).show(
-            ShadToast(description: Text('你已經在「${g.name}」裡囉！')),
-          );
+          ShadToaster.of(
+            context,
+          ).show(ShadToast(description: Text('你已經在「${g.name}」裡囉！')));
           return;
         }
-        final message =
-            await showJoinGroupDialog(context, ref, initialCode: code);
+        final message = await showJoinGroupDialog(
+          context,
+          ref,
+          initialCode: code,
+        );
         if (message != null && mounted) {
-          ShadToaster.of(context)
-              .show(ShadToast(description: Text(message)));
+          ShadToaster.of(context).show(ShadToast(description: Text(message)));
         }
       });
     }
   }
-
 
   Future<void> _startCreateTask() async {
     final repo = ref.read(repositoryProvider);
@@ -105,25 +109,37 @@ class _HomeShellState extends ConsumerState<HomeShell> {
           ],
         ),
       ),
-      // 中央建立鍵：綠色愛心大鍵，浮在導覽列上
-      floatingActionButton: GestureDetector(
-        onTap: _startCreateTask,
-        child: SizedBox(
-          width: 70,
-          height: 70,
-          child: Stack(
-            alignment: Alignment.center,
-            children: const [
-              // 4px 淡綠光暈（放大版愛心墊底）
-              AppAssetIcon('assets/icons/heart.svg',
-                  color: AppColors.greenMist, size: 70),
-              AppAssetIcon('assets/icons/heart.svg', size: 62),
-              // 愛心視覺重心略偏上，加號往上微調置中
-              Padding(
-                padding: EdgeInsets.only(bottom: 3),
-                child: AppSvgIcon(kAddSvg, color: AppColors.white, size: 26),
-              ),
-            ],
+      // 中央建立鍵：綠色愛心大鍵，浮在導覽列上；hover 變紅 D5665C
+      floatingActionButton: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        onEnter: (_) => setState(() => _fabHover = true),
+        onExit: (_) => setState(() => _fabHover = false),
+        child: GestureDetector(
+          onTap: _startCreateTask,
+          child: SizedBox(
+            width: 70,
+            height: 70,
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                // 4px 淡綠光暈（放大版愛心墊底）
+                const AppAssetIcon(
+                  'assets/icons/heart.svg',
+                  color: AppColors.greenMist,
+                  size: 70,
+                ),
+                AppAssetIcon(
+                  'assets/icons/heart.svg',
+                  color: _fabHover ? AppColors.red : null,
+                  size: 62,
+                ),
+                // 愛心視覺重心略偏上，加號往上微調置中
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 3),
+                  child: AppSvgIcon(kAddSvg, color: AppColors.white, size: 26),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -135,37 +151,38 @@ class _HomeShellState extends ConsumerState<HomeShell> {
         child: BottomAppBar(
           color: AppColors.greenSoft,
           height: 62 + MediaQuery.of(context).padding.bottom,
-          padding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).padding.bottom),
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).padding.bottom,
+          ),
           child: Row(
             children: [
               _NavItem(
                 iconBuilder: (color) => AppSvgIcon(kHomeBoardSvg, color: color),
-              label: '任務看板',
-              selected: _index == 0,
-              onTap: () => setState(() => _index = 0),
-            ),
-            _NavItem(
-              iconBuilder: (color) => AppSvgIcon(kTaskListSvg, color: color),
-              label: '我的任務',
-              selected: _index == 1,
-              onTap: () => setState(() => _index = 1),
-            ),
-            const Expanded(child: SizedBox()), // FAB 缺口
-            _NavItem(
-              iconBuilder: (color) =>
-                  MessageBubbleIcon(color: color, size: 24),
-              label: '通知',
-              selected: _index == 2,
-              badgeCount: unread,
-              onTap: () => setState(() => _index = 2),
-            ),
-            _NavItem(
-              iconBuilder: (color) => AppSvgIcon(kSettingsSvg, color: color),
-              label: '個人設定',
-              selected: _index == 3,
-              onTap: () => setState(() => _index = 3),
-            ),
+                label: '任務看板',
+                selected: _index == 0,
+                onTap: () => setState(() => _index = 0),
+              ),
+              _NavItem(
+                iconBuilder: (color) => AppSvgIcon(kTaskListSvg, color: color),
+                label: '我的任務',
+                selected: _index == 1,
+                onTap: () => setState(() => _index = 1),
+              ),
+              const Expanded(child: SizedBox()), // FAB 缺口
+              _NavItem(
+                iconBuilder: (color) =>
+                    MessageBubbleIcon(color: color, size: 24),
+                label: '通知',
+                selected: _index == 2,
+                badgeCount: unread,
+                onTap: () => setState(() => _index = 2),
+              ),
+              _NavItem(
+                iconBuilder: (color) => AppSvgIcon(kSettingsSvg, color: color),
+                label: '個人設定',
+                selected: _index == 3,
+                onTap: () => setState(() => _index = 3),
+              ),
             ],
           ),
         ),
@@ -224,13 +241,16 @@ class _NavItem extends StatelessWidget {
                           color: AppColors.orange,
                           borderRadius: BorderRadius.circular(999),
                           border: Border.all(
-                              color: AppColors.greenSoft, width: 1.5),
+                            color: AppColors.greenSoft,
+                            width: 1.5,
+                          ),
                         ),
                         child: Text(
                           '$badgeCount',
                           style: const TextStyle(
                             fontSize: 10,
-                            fontWeight: FontWeight.w800, letterSpacing: AppType.spacingBold,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: AppType.spacingBold,
                             color: AppColors.white,
                             height: 1,
                           ),

@@ -25,6 +25,7 @@ abstract final class AppType {
   /// 刊頭大標（今天換誰？）
   static const display = 40.0;
   static const heading = 26.0;
+
   /// 頁級標題：刊頭大標、彈窗/sheet 標題、慶祝副標
   static const title = 20.0;
   static const cardTitle = 16.0;

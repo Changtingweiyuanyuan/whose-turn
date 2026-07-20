@@ -51,38 +51,46 @@ class PersonalIconPicker extends StatelessWidget {
                   color: AppColors.inkSoft,
                   shape: BoxShape.circle,
                 ),
-                child: PersonAvatar(icon,
-                    size: _icon, fillColor: AppColors.ink),
+                child: PersonAvatar(
+                  icon,
+                  size: _icon,
+                  fillColor: AppColors.ink,
+                ),
               ),
             )
           else
             GestureDetector(
               onTap: () => onSelect(icon),
-              child: Container(
-                width: _cell,
-                height: _cell,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: AppColors.white,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: selected == icon
-                        ? AppColors.greenMist
-                        : AppColors.lightGray,
-                    width: selected == icon ? 2 : 1,
+              child: MouseRegion(
+                cursor: SystemMouseCursors.click,
+                child: Container(
+                  width: _cell,
+                  height: _cell,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: AppColors.white,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: selected == icon
+                          ? AppColors.greenMist
+                          : AppColors.lightGray,
+                      width: selected == icon ? 2 : 1,
+                    ),
                   ),
-                ),
-                // 選中：icon 上蓋一層 50% 淡綠（同發起任務）
-                foregroundDecoration: selected == icon
-                    ? const BoxDecoration(
-                        color: Color(0x80DEEDE4),
-                        shape: BoxShape.circle,
-                      )
-                    : null,
-                child: PersonAvatar(icon,
+                  // 選中：icon 上蓋一層 50% 淡綠（同發起任務）
+                  foregroundDecoration: selected == icon
+                      ? const BoxDecoration(
+                          color: Color(0x80DEEDE4),
+                          shape: BoxShape.circle,
+                        )
+                      : null,
+                  child: PersonAvatar(
+                    icon,
                     size: _icon,
                     fillColor: AppColors.ink,
-                    orangeColor: AppColors.green),
+                    orangeColor: AppColors.green,
+                  ),
+                ),
               ),
             ),
       ],

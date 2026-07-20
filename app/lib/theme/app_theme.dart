@@ -7,8 +7,9 @@ import 'app_tokens.dart';
 abstract final class AppTheme {
   /// 英數用 Roboto Condensed，中文 fallback 到 Noto Sans TC。
   static String get _fontFamily => GoogleFonts.robotoCondensed().fontFamily!;
-  static List<String> get _fontFallback =>
-      [GoogleFonts.notoSansTc().fontFamily!];
+  static List<String> get _fontFallback => [
+    GoogleFonts.notoSansTc().fontFamily!,
+  ];
 
   /// 全站字距（theme 層套用，AppBar／按鈕等自帶樣式的元件也吃得到）。
   static const letterSpacing = 0.8;
@@ -49,12 +50,14 @@ abstract final class AppTheme {
       scaffoldBackgroundColor: AppColors.bg,
     );
 
-    final textTheme = _spaced(base.textTheme.apply(
-      fontFamily: _fontFamily,
-      fontFamilyFallback: _fontFallback,
-      bodyColor: AppColors.ink,
-      displayColor: AppColors.ink,
-    ));
+    final textTheme = _spaced(
+      base.textTheme.apply(
+        fontFamily: _fontFamily,
+        fontFamilyFallback: _fontFallback,
+        bodyColor: AppColors.ink,
+        displayColor: AppColors.ink,
+      ),
+    );
 
     return base.copyWith(
       textTheme: textTheme,
@@ -64,7 +67,8 @@ abstract final class AppTheme {
         elevation: 0,
         centerTitle: true,
         titleTextStyle: textTheme.titleLarge?.copyWith(
-          fontWeight: FontWeight.w600, letterSpacing: AppType.spacingBold,
+          fontWeight: FontWeight.w600,
+          letterSpacing: AppType.spacingBold,
         ),
       ),
     );

@@ -68,8 +68,9 @@ class _NoisePainter extends CustomPainter {
     final paint = Paint();
     final count = (size.width * size.height * density).toInt();
     for (var i = 0; i < count; i++) {
-      paint.color =
-          AppColors.paperNoise.withValues(alpha: rng.nextDouble() * opacity);
+      paint.color = AppColors.paperNoise.withValues(
+        alpha: rng.nextDouble() * opacity,
+      );
       canvas.drawRect(
         Rect.fromLTWH(
           rng.nextDouble() * size.width,

@@ -12,11 +12,11 @@ class DefaultFirebaseOptions {
   static const bool isPlaceholder = false;
 
   static FirebaseOptions get currentPlatform => const FirebaseOptions(
-        apiKey: 'AIzaSyAfXOCy8ZZd9jH9JI7cBZrcLM-cx1JWnLk',
-        appId: '1:606077342691:web:ddbd77ccae8098bc9b46d6',
-        messagingSenderId: '606077342691',
-        projectId: 'whose-turn-f19dc',
-        authDomain: 'whose-turn-f19dc.firebaseapp.com',
-        storageBucket: 'whose-turn-f19dc.firebasestorage.app',
-      );
+    apiKey: 'AIzaSyAfXOCy8ZZd9jH9JI7cBZrcLM-cx1JWnLk',
+    appId: '1:606077342691:web:ddbd77ccae8098bc9b46d6',
+    messagingSenderId: '606077342691',
+    projectId: 'whose-turn-f19dc',
+    authDomain: 'whose-turn-f19dc.firebaseapp.com',
+    storageBucket: 'whose-turn-f19dc.firebasestorage.app',
+  );
 }

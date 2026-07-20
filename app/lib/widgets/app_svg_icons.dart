@@ -24,13 +24,15 @@ class AppSvgIcon extends StatelessWidget {
 /// 通用：把 assets 內的 SVG 檔以指定顏色渲染（srcIn 上色）。
 /// [color] 給 null 時保留原始配色；給值則整體上色（Streamline Freehand 等）。
 class AppAssetIcon extends StatelessWidget {
-  const AppAssetIcon(this.asset,
-      {this.color,
-      this.fillColor,
-      this.accentColor,
-      this.orangeColor,
-      this.size = 24,
-      super.key});
+  const AppAssetIcon(
+    this.asset, {
+    this.color,
+    this.fillColor,
+    this.accentColor,
+    this.orangeColor,
+    this.size = 24,
+    super.key,
+  });
 
   final String asset;
 
@@ -61,9 +63,12 @@ class AppAssetIcon extends StatelessWidget {
           : ColorFilter.mode(color!, BlendMode.srcIn),
       colorMapper:
           (fillColor == null && accentColor == null && orangeColor == null)
-              ? null
-              : _DuotoneMapper(
-                  light: fillColor, accent: accentColor, orange: orangeColor),
+          ? null
+          : _DuotoneMapper(
+              light: fillColor,
+              accent: accentColor,
+              orange: orangeColor,
+            ),
     );
   }
 }
@@ -82,7 +87,11 @@ class _DuotoneMapper extends ColorMapper {
 
   @override
   Color substitute(
-      String? id, String elementName, String attributeName, Color color) {
+    String? id,
+    String elementName,
+    String attributeName,
+    Color color,
+  ) {
     if (light != null && color == _lightSrc) return light!;
     if (accent != null && color == _accentSrc) return accent!;
     if (orange != null && color == _orangeSrc) return orange!;

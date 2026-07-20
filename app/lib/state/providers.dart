@@ -12,5 +12,6 @@ final repositoryProvider = ChangeNotifierProvider<AppRepository>(
 
 /// 這次啟動的 LINE 授權回跳結果；main() 以 override 傳入，
 /// HomeShell 首幀讀取後跳成功／失敗 toast。
-final lineRedirectResultProvider =
-    Provider<LineRedirectResult>((ref) => LineRedirectResult.none);
+final lineRedirectResultProvider = Provider<LineRedirectResult>(
+  (ref) => LineRedirectResult.none,
+);

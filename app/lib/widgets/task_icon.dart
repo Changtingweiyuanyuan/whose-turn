@@ -20,8 +20,11 @@ class TaskIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     if (isAsset) {
       final name = icon.substring(_assetPrefix.length);
-      return AppAssetIcon('assets/icons/$name.svg',
-          size: size, accentColor: AppColors.green);
+      return AppAssetIcon(
+        'assets/icons/$name.svg',
+        size: size,
+        accentColor: AppColors.green,
+      );
     }
     return Text(icon, style: TextStyle(fontSize: size * 0.9));
   }
