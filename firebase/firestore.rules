@@ -30,6 +30,8 @@ service cloud.firestore {
     match /users/{uid} {
       allow read: if signedIn();
       allow create: if signedIn() && request.auth.uid == uid;
+      // 刪除帳號：只能刪自己
+      allow delete: if signedIn() && request.auth.uid == uid;
       // 兩種合法 update：
       //   a) 本人改自己的資料（starTotal 不可下降、mergedInto 僅 Worker 可寫）
       //   b) 其他登入者「只動 starTotal 且遞增」——發起人確認完成時幫接單人 +1 ⭐
@@ -45,7 +47,7 @@ service cloud.firestore {
       );
 
       match /notifications/{notificationId} {
-        allow read, update: if signedIn() && request.auth.uid == uid;
+        allow read, update, delete: if signedIn() && request.auth.uid == uid;
         allow create: if signedIn(); // 其他成員的動作觸發通知（MVP：client 寫入；之後改 Cloud Functions/Worker）
       }
     }
@@ -88,6 +90,8 @@ service cloud.firestore {
         && (resource.data.createdBy == request.auth.uid
             || resource.data.claimedBy == request.auth.uid
             || resource.data.status == 'open');
+      // 刪除任務：只有發起人（刪除帳號時連自己發起的任務一起刪）
+      allow delete: if signedIn() && resource.data.createdBy == request.auth.uid;
 
       match /completions/{completionId} {
         // 送出完成：訪客也可以；只能以自己名義送出，且初始狀態必須是 pending
@@ -100,6 +104,10 @@ service cloud.firestore {
         allow update: if signedIn()
           && get(/databases/$(database)/documents/tasks/$(taskId)).data.createdBy == request.auth.uid
           && request.resource.data.status in ['confirmed', 'rejected'];
+        // 刪除：完成紀錄本人（刪自己的紀錄）或任務發起人（刪整個任務時）
+        allow delete: if signedIn()
+          && (resource.data.userId == request.auth.uid
+              || get(/databases/$(database)/documents/tasks/$(taskId)).data.createdBy == request.auth.uid);
       }
     }
 
