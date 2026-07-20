@@ -73,7 +73,7 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
             child: items.isEmpty
                 ? Center(
                     child: Text(
-                      _tab == 0 ? '沒有未讀訊息 🎉' : '還沒有訊息\n有人發起任務時會通知你 👀',
+                      _tab == 0 ? '沒有未讀訊息 🎉' : '還沒有訊息\n有人發起任務時會通知你',
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: AppColors.inkSoft,
